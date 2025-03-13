@@ -1,3 +1,3 @@
 export default function Faq() {
-  return <div>Faq</div>;
+  return <div>Faq xldf;ghbisopn gf </div>;
 }
