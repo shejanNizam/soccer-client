@@ -7,7 +7,9 @@ interface CustomHeadingProps {
 export default function CustomHeading({ children }: CustomHeadingProps) {
   return (
     <>
-      <div className="text-4xl font-bold text-primary">{children} </div>
+      <div className="text-3xl font-bold text-primary text-center py-8">
+        {children}{" "}
+      </div>
     </>
   );
 }

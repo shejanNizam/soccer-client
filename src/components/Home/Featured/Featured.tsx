@@ -41,6 +41,30 @@ const Featured: React.FC = () => {
     { id: 8, name: "image8.jpg", src: image8 },
   ];
 
+  const responsiveSettings = [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 4,
+        slidesToScroll: 4,
+      },
+    },
+    {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3,
+      },
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2,
+      },
+    },
+  ];
+
   return (
     <div className="featured-section p-8 text-center ">
       <CustomHeading>FEATURED</CustomHeading>
@@ -48,9 +72,8 @@ const Featured: React.FC = () => {
       {/* Text */}
       <p className="text-lg  mb-8">
         Live secrets, match candidates, move, place stars, scenario, local
-        backing, learn analysis,
-        <br />
-        Birthday blogs, but community, are overgain to plague.
+        backing, learn analysis, <br /> Birthday blogs, but community, are
+        overgain to plague.
       </p>
 
       <div className="relative max-w-6xl mx-auto">
@@ -68,6 +91,7 @@ const Featured: React.FC = () => {
           slidesToScroll={5}
           ref={sliderRef}
           className="overflow-hidden px-12"
+          responsive={responsiveSettings}
         >
           {images.map((image) => (
             <div key={image.id} className="p-2">
