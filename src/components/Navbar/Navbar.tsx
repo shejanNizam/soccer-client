@@ -110,7 +110,7 @@ export default function Navbar() {
                   onClick={closeMenu}
                 >
                   <div>
-                    <div className="flex justify-center items-center gap-4">
+                    <div className="flex justify-center items-center gap-4 p-4 md:p-0">
                       <Image
                         width={70}
                         height={70}

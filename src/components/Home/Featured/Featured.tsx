@@ -70,18 +70,18 @@ const Featured: React.FC = () => {
       <CustomHeading>FEATURED</CustomHeading>
 
       {/* Text */}
-      <p className="text-lg  mb-8">
+      <p className="lg:w-[50%] mx-auto text-lg mb-8">
         Live secrets, match candidates, move, place stars, scenario, local
-        backing, learn analysis, <br /> Birthday blogs, but community, are
-        overgain to plague.
+        backing, learn analysis, Birthday blogs, but community, are overgain to
+        plague.
       </p>
 
-      <div className="relative max-w-6xl mx-auto">
+      <div className="relative max-w-7xl mx-auto">
         <button
           className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10"
           onClick={() => sliderRef.current?.prev()}
         >
-          <BiSolidLeftArrow className="text-3xl" />
+          <BiSolidLeftArrow className="text-4xl" />
         </button>
 
         {/* Carousel */}
@@ -90,7 +90,7 @@ const Featured: React.FC = () => {
           slidesToShow={5}
           slidesToScroll={5}
           ref={sliderRef}
-          className="overflow-hidden px-12"
+          className="overflow-hidden px-8 md:px-12"
           responsive={responsiveSettings}
         >
           {images.map((image) => (
@@ -113,7 +113,7 @@ const Featured: React.FC = () => {
           className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10"
           onClick={() => sliderRef.current?.next()}
         >
-          <BiSolidRightArrow className="text-3xl" />
+          <BiSolidRightArrow className="text-4xl" />
         </button>
       </div>
     </div>

@@ -17,7 +17,7 @@ export default function NotFound() {
           <Link href={`/`}>
             <button
               //   onClick={reset}
-              className="px-4 py-2 bg-primary text-white rounded-full transition"
+              className="px-4 py-2 bg-button text-white rounded-full transition"
             >
               GO HOME
             </button>
