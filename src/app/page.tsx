@@ -1,12 +1,19 @@
+import Banner from "@/components/Home/Banner/Banner";
+import Faq from "@/components/Home/Faq/Faq";
+import Featured from "@/components/Home/Featured/Featured";
+import GetInTouch from "@/components/Home/GetInTouch/GetInTouch";
+import WhyChoose from "@/components/Home/WhyChoose/WhyChoose";
+
 export default function Home() {
   return (
-    <>
+    <div className="bg-secondary">
+      <Banner />
       <div className="container">
-        <h3 className="text-center font-bold text-purple-500">
-          {" "}
-          Soccer Social Website
-        </h3>
+        <Featured />
+        <WhyChoose />
+        <Faq />
+        <GetInTouch />
       </div>
-    </>
+    </div>
   );
 }

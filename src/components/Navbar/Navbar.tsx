@@ -98,104 +98,107 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="bg-secondary shadow-md fixed w-full p-2 z-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between h-16">
-            {/* Logo Section */}
-            <div className="flex-shrink-0 flex items-center">
-              <Link
-                href="/"
-                className="text-xl font-bold text-gray-800"
-                onClick={closeMenu}
-              >
-                <div className=" flex justify-center items-center gap-4 ">
-                  <Image
-                    width={50}
-                    height={50}
-                    src={main_logo_img}
-                    alt="main_logo"
-                  />
-                  <h2 className="text-primary font-semibold text-2xl">
-                    Soccersocial
-                  </h2>
-                </div>
-              </Link>
-            </div>
-
-            {/* Desktop Menu */}
-            <div className="hidden md:flex md:items-center space-x-4">
-              <div
-                className={`flex space-x-4 ${
-                  user?.role === "user" ? " text-center " : ""
-                }`}
-              >
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={`px-3 py-2 rounded-md text-sm font-medium hover:text-primary ${
-                      isActive(item.href)
-                        ? "text-button underline"
-                        : "text-primary/80 hover:text-primary"
-                    }`}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-
+      <nav className=" bg-hash shadow-md fixed w-full py-4 z-50">
+        <div className="md:container">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex justify-between h-16">
+              {/* Logo Section */}
+              <div className="flex-shrink-0 flex items-center">
                 <Link
-                  href="/profile/notifications"
-                  className="ml-4 text-primary hover:text-primary/90"
+                  href="/"
+                  className="text-xl font-bold text-gray-800"
+                  onClick={closeMenu}
                 >
-                  <FaBell size={24} />
+                  <div>
+                    <div className="flex justify-center items-center gap-4">
+                      <Image
+                        width={70}
+                        height={70}
+                        src={main_logo_img}
+                        alt="main_logo"
+                      />
+                      {/* <h2 className="text-primary font-semibold text-3xl">
+                        Soccersocial
+                      </h2> */}
+                    </div>
+                  </div>
                 </Link>
-
-                {user ? (
-                  <>
-                    <Dropdown
-                      overlay={
-                        <ProfileMenu
-                          closeMenu={closeMenu}
-                          handleLogout={handleLogout}
-                        />
-                      }
-                      trigger={["click"]}
-                      placement="bottomRight"
-                    >
-                      <div className="flex justify-start items-center gap-2 cursor-pointer">
-                        <Image
-                          width={1000}
-                          height={1000}
-                          className="w-12 h-12 rounded-full border-4 border-primary"
-                          src={
-                            user?.image
-                              ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${user.image}`
-                              : default_img
-                          }
-                          alt="profile_image"
-                        />
-                        <TiArrowSortedDown />
-                      </div>
-                    </Dropdown>
-                  </>
-                ) : (
-                  <>
-                    {" "}
-                    <Link
-                      href="/login"
-                      className="px-4 py-2 bg-button text-primary border border-primary rounded-md text-sm font-medium hover:text-primary/90 hover:bg-button/90 transition duration-200"
-                    >
-                      Login
-                    </Link>
-                  </>
-                )}
               </div>
 
-              {/* Action Buttons */}
-            </div>
+              {/* Desktop Menu */}
+              <div className="hidden md:flex md:items-center space-x-4">
+                <div
+                  className={`flex space-x-4 ${
+                    user?.role === "user" ? " text-center " : ""
+                  }`}
+                >
+                  {navigation.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className={`px-3 py-2 rounded-md text-sm font-medium hover:text-primary ${
+                        isActive(item.href)
+                          ? "text-button underline"
+                          : "text-primary/80 hover:text-primary"
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
 
-            {/* Mobile Menu Button */}
-            {/* <div className="flex items-center md:hidden">
+                  <Link
+                    href="/profile/notifications"
+                    className="ml-4 text-primary hover:text-primary/90"
+                  >
+                    <FaBell size={24} />
+                  </Link>
+
+                  {user ? (
+                    <>
+                      <Dropdown
+                        overlay={
+                          <ProfileMenu
+                            closeMenu={closeMenu}
+                            handleLogout={handleLogout}
+                          />
+                        }
+                        trigger={["click"]}
+                        placement="bottomRight"
+                      >
+                        <div className="flex justify-start items-center gap-2 cursor-pointer">
+                          <Image
+                            width={1000}
+                            height={1000}
+                            className="w-12 h-12 rounded-full border-4 border-primary"
+                            src={
+                              user?.image
+                                ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${user.image}`
+                                : default_img
+                            }
+                            alt="profile_image"
+                          />
+                          <TiArrowSortedDown />
+                        </div>
+                      </Dropdown>
+                    </>
+                  ) : (
+                    <>
+                      {" "}
+                      <Link
+                        href="/login"
+                        className="px-4 py-2 bg-button text-primary border border-primary rounded-md text-sm font-medium hover:text-primary/90 hover:bg-button/90 transition duration-200"
+                      >
+                        Login
+                      </Link>
+                    </>
+                  )}
+                </div>
+
+                {/* Action Buttons */}
+              </div>
+
+              {/* Mobile Menu Button */}
+              {/* <div className="flex items-center md:hidden">
               
 
               <button
@@ -214,146 +217,146 @@ export default function Navbar() {
               </button>
             </div> */}
 
-            <div className="flex items-center md:hidden">
-              <Link
-                href="/profile/notifications"
-                className="ml-4 text-primary hover:text-primary/90"
-              >
-                <FaBell size={24} />
-              </Link>
-              <button
-                onClick={toggleMenu}
-                type="button"
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary transition duration-200"
-                aria-controls="mobile-menu"
-                aria-expanded={isOpen}
-                aria-label="Toggle navigation menu"
-              >
-                {isOpen ? (
-                  <FaTimes className="block h-6 w-6" aria-hidden="true" />
-                ) : (
-                  <FaBars className="block h-6 w-6" aria-hidden="true" />
-                )}
-              </button>
+              <div className="flex items-center md:hidden">
+                <Link
+                  href="/profile/notifications"
+                  className="ml-4 text-primary hover:text-primary/90"
+                >
+                  <FaBell size={24} />
+                </Link>
+                <button
+                  onClick={toggleMenu}
+                  type="button"
+                  className="inline-flex items-center justify-center p-2 rounded-md text-primary hover:text-button hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary transition duration-200"
+                  aria-controls="mobile-menu"
+                  aria-expanded={isOpen}
+                  aria-label="Toggle navigation menu"
+                >
+                  {isOpen ? (
+                    <FaTimes className="block h-6 w-6" aria-hidden="true" />
+                  ) : (
+                    <FaBars className="block h-6 w-6" aria-hidden="true" />
+                  )}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Mobile Menu */}
-        {/* Slide-in Sidebar for Mobile */}
-        <div
-          className={`fixed inset-0 z-40 md:hidden transition-transform duration-300 ease-in-out ${
-            isOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
-          aria-hidden={!isOpen}
-        >
-          {/* Overlay */}
+          {/* Mobile Menu */}
+          {/* Slide-in Sidebar for Mobile */}
           <div
-            className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ${
-              isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-            }`}
-            onClick={closeMenu}
-            aria-hidden="true"
-          ></div>
-
-          {/* Sidebar */}
-          <div
-            className={`absolute left-0 top-0 bottom-0 w-64 bg-secondary shadow-lg transform ${
+            className={`fixed inset-0 z-40 md:hidden transition-transform duration-300 ease-in-out ${
               isOpen ? "translate-x-0" : "-translate-x-full"
-            } transition-transform duration-300 ease-in-out`}
+            }`}
+            aria-hidden={!isOpen}
           >
-            {/* Logo and Close Button */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-700">
-              <Link
-                href="/"
-                className="text-xl font-bold text-gray-800"
-                onClick={closeMenu}
-              >
-                <Image
-                  width={70}
-                  height={70}
-                  src={main_logo_img}
-                  alt="main_logo"
-                />
-              </Link>
-              <button
-                onClick={closeMenu}
-                className="text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
-                aria-label="Close menu"
-              >
-                <FaTimes size={24} />
-              </button>
-            </div>
+            {/* Overlay */}
+            <div
+              className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ${
+                isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+              }`}
+              onClick={closeMenu}
+              aria-hidden="true"
+            ></div>
 
-            {/* Navigation Links */}
-            <nav className="mt-4">
-              {navigation.map((item) => (
+            {/* Sidebar */}
+            <div
+              className={`absolute left-0 top-0 bottom-0 w-64 bg-secondary shadow-lg transform ${
+                isOpen ? "translate-x-0" : "-translate-x-full"
+              } transition-transform duration-300 ease-in-out`}
+            >
+              {/* Logo and Close Button */}
+              <div className="flex items-center justify-between p-4 border-b border-gray-700">
                 <Link
-                  href={item.href}
-                  key={item.name}
+                  href="/"
+                  className="text-xl font-bold text-gray-800"
                   onClick={closeMenu}
-                  className={`flex items-center px-6 py-3 mt-2 ${
-                    isActive(item.href)
-                      ? "text-primary underline font-semibold"
-                      : "text-primary hover:text-button"
-                  }`}
                 >
-                  {item.name}
+                  <Image
+                    width={70}
+                    height={70}
+                    src={main_logo_img}
+                    alt="main_logo"
+                  />
                 </Link>
-              ))}
+                <button
+                  onClick={closeMenu}
+                  className="text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
+                  aria-label="Close menu"
+                >
+                  <FaTimes size={24} />
+                </button>
+              </div>
 
-              {/* Divider */}
-              <hr className="my-4 border-gray-300" />
-
-              {user ? (
-                <>
-                  {" "}
-                  <Dropdown
-                    overlay={
-                      <ProfileMenu
-                        closeMenu={closeMenu}
-                        handleLogout={handleLogout}
-                      />
-                    }
-                    trigger={["click"]}
-                    placement="bottomRight"
-                  >
-                    <div
-                      className={`flex justify-start items-center gap-2 px-4 py-2 mt-2 cursor-pointer ${
-                        pathname === "/profile/my-profile"
-                          ? "text-primary underline font-semibold"
-                          : "text-gray-700 hover:text-gray-900"
-                      }`}
-                    >
-                      <Image
-                        width={1000}
-                        height={1000}
-                        className="w-16 h-16 rounded-full border-4 border-primary"
-                        src={
-                          user?.image
-                            ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${user.image}`
-                            : default_img
-                        }
-                        alt="profile_image"
-                      />
-                      <TiArrowSortedDown />
-                    </div>
-                  </Dropdown>
-                </>
-              ) : (
-                <>
-                  {" "}
+              {/* Navigation Links */}
+              <nav className="mt-4">
+                {navigation.map((item) => (
                   <Link
-                    href="/login"
+                    href={item.href}
+                    key={item.name}
                     onClick={closeMenu}
-                    className="block px-6 py-3 mt-2 bg-button text-primary border border-primary rounded-md text-sm font-medium hover:text-white hover:bg-button/90 transition duration-200"
+                    className={`flex items-center px-6 py-3 mt-2 ${
+                      isActive(item.href)
+                        ? "text-primary underline font-semibold"
+                        : "text-primary hover:text-button"
+                    }`}
                   >
-                    Login
+                    {item.name}
                   </Link>
-                </>
-              )}
-              {/* Action Links */}
-              {/* {user?.role === "user" ? (
+                ))}
+
+                {/* Divider */}
+                <hr className="my-4 border-gray-300" />
+
+                {user ? (
+                  <>
+                    {" "}
+                    <Dropdown
+                      overlay={
+                        <ProfileMenu
+                          closeMenu={closeMenu}
+                          handleLogout={handleLogout}
+                        />
+                      }
+                      trigger={["click"]}
+                      placement="bottomRight"
+                    >
+                      <div
+                        className={`flex justify-start items-center gap-2 px-4 py-2 mt-2 cursor-pointer ${
+                          pathname === "/profile/my-profile"
+                            ? "text-primary underline font-semibold"
+                            : "text-gray-700 hover:text-gray-900"
+                        }`}
+                      >
+                        <Image
+                          width={1000}
+                          height={1000}
+                          className="w-16 h-16 rounded-full border-4 border-primary"
+                          src={
+                            user?.image
+                              ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${user.image}`
+                              : default_img
+                          }
+                          alt="profile_image"
+                        />
+                        <TiArrowSortedDown />
+                      </div>
+                    </Dropdown>
+                  </>
+                ) : (
+                  <>
+                    {" "}
+                    <Link
+                      href="/login"
+                      onClick={closeMenu}
+                      className="block px-6 py-3 mt-2 bg-button text-primary border border-primary rounded-md text-sm font-medium hover:text-white hover:bg-button/90 transition duration-200"
+                    >
+                      Login
+                    </Link>
+                  </>
+                )}
+                {/* Action Links */}
+                {/* {user?.role === "user" ? (
                 <>
                   <Link
                     href="/join-contractor"
@@ -455,7 +458,8 @@ export default function Navbar() {
                   </>
                 </>
               )} */}
-            </nav>
+              </nav>
+            </div>
           </div>
         </div>
       </nav>
