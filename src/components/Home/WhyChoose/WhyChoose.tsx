@@ -15,8 +15,8 @@ export default function WhyChooseUs() {
           <Image
             src={choose_image}
             alt="Soccer Image"
-            width={500}
-            height={500}
+            width={1000}
+            height={1000}
             className="rounded-lg w-full h-auto"
           />
         </div>
