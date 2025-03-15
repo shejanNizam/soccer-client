@@ -7,7 +7,7 @@ export const mainTheme = {
   components: {
     Table: {
       colorTextHeading: "#DEAD35",
-      colorBgContainer: "#000000",
+      colorBgContainer: "#00321F",
       colorText: "#ffffff",
       colorBorder: "#000000",
       // Add other Table tokens as per documentation
@@ -77,6 +77,7 @@ export const mainTheme = {
       borderRadius: 8,
       // Add other Modal tokens as needed
     },
+
     // Add other components as needed
   },
 };

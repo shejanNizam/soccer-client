@@ -2,6 +2,7 @@
 
 import { Button, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 // Define the type for the data source
@@ -113,71 +114,70 @@ const dataSource: Booking[] = [
   },
   // Add more data as needed
 ];
-// Define columns with type safety
-const columns: ColumnsType<Booking> = [
-  {
-    title: "SI No",
-    dataIndex: "siNo",
-    key: "siNo",
-    responsive: ["xs", "sm", "md", "lg", "xl"],
-  },
-  {
-    title: "Venue Name",
-    dataIndex: "venueName",
-    key: "venueName",
-    responsive: ["xs", "sm", "md", "lg", "xl"],
-  },
-  {
-    title: "Schedule Date",
-    dataIndex: "scheduleDate",
-    key: "scheduleDate",
-    responsive: ["xs", "sm", "md", "lg", "xl"],
-  },
-  {
-    title: "Schedule Time",
-    dataIndex: "scheduleTime",
-    key: "scheduleTime",
-    responsive: ["xs", "sm", "md", "lg", "xl"],
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
-    key: "status",
-    render: (status: "Approved" | "Pending") => (
-      <span style={{ color: status === "Approved" ? "green" : "orange" }}>
-        {status}
-      </span>
-    ),
-    responsive: ["xs", "sm", "md", "lg", "xl"],
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (_, record: Booking) => (
-      <Button type="primary" onClick={() => handleDetails(record)}>
-        Details
-      </Button>
-    ),
-    responsive: ["xs", "sm", "md", "lg", "xl"],
-  },
-];
-
-// Handle details button click
-const handleDetails = (record: Booking) => {
-  console.log("Details clicked for:", record);
-  // Add your logic to show details here
-};
 
 // Main component
 const BookedList: React.FC = () => {
+  const router = useRouter();
+
+  const handleDetails = (record: Booking) => {
+    router.push(`/booked-list/${record.key}`);
+    console.log("Details clicked for:", record);
+  };
+
+  const columns: ColumnsType<Booking> = [
+    {
+      title: "SI No",
+      dataIndex: "siNo",
+      key: "siNo",
+      responsive: ["xs", "sm", "md", "lg", "xl"],
+    },
+    {
+      title: "Venue Name",
+      dataIndex: "venueName",
+      key: "venueName",
+      responsive: ["xs", "sm", "md", "lg", "xl"],
+    },
+    {
+      title: "Schedule Date",
+      dataIndex: "scheduleDate",
+      key: "scheduleDate",
+      responsive: ["xs", "sm", "md", "lg", "xl"],
+    },
+    {
+      title: "Schedule Time",
+      dataIndex: "scheduleTime",
+      key: "scheduleTime",
+      responsive: ["xs", "sm", "md", "lg", "xl"],
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (status: "Approved" | "Pending") => (
+        <span style={{ color: status === "Approved" ? "green" : "orange" }}>
+          {status}
+        </span>
+      ),
+      responsive: ["xs", "sm", "md", "lg", "xl"],
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record: Booking) => (
+        <Button type="primary" onClick={() => handleDetails(record)}>
+          Details
+        </Button>
+      ),
+      responsive: ["xs", "sm", "md", "lg", "xl"],
+    },
+  ];
   return (
-    <div className="p-4 bg-secondary">
+    <div className="p-4">
       <Table
         dataSource={dataSource}
         columns={columns}
         pagination={{ pageSize: 5 }}
         scroll={{ x: true }}
-        className="bg-secondary"
       />
     </div>
   );
