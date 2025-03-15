@@ -87,9 +87,9 @@ export default function Notifications() {
   };
 
   return (
-    <div className="bg-white min-h-screen px-4 py-8 md:py-0">
+    <div className="bg-secondary min-h-screen px-4 py-8 md:py-0">
       {/* Header */}
-      <div className="sticky top-20 flex justify-start gap-2 bg-secondary rounded-t-md h-20 text-white py-8 pl-8 font-bold">
+      <div className="sticky top-20 flex justify-start gap-2 bg-primary rounded-t-md h-20 text-black py-8 pl-8 font-bold">
         <button onClick={handleBack}>
           <IoIosArrowBack />
         </button>
@@ -110,8 +110,8 @@ export default function Notifications() {
             >
               <IoNotificationsOutline className="bg-[#E8EAEF] w-[40px] h-[40px] rounded-sm text-secondary p-2" />
               <div>
-                <p className="text-xl text-black">{notification.message}</p>
-                <p className="text-black">
+                <p className="text-xl text-white">{notification.message}</p>
+                <p className="text-white">
                   {new Date(notification.createdAt).toLocaleString()}
                 </p>
               </div>

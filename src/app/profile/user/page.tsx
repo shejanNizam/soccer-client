@@ -26,7 +26,7 @@ export default function UserProfile() {
   const { user } = useSelector((state: { auth: { user: User } }) => state.auth);
 
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
-  const [file, setFile] = useState<UploadFile<{ url: string }> | null>(null);
+  const [file, setFile] = useState<UploadFile | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [idCardFile, setIdCardFile] = useState<File | null>(null);
   const [idCardUrl, setIdCardUrl] = useState<string | null>(null);
@@ -47,17 +47,17 @@ export default function UserProfile() {
 
   // Set preview image for profile picture
   useEffect(() => {
-    if (file) {
-      const objectUrl = URL.createObjectURL(file.originFileObj as Blob);
+    if (file && file.originFileObj instanceof Blob) {
+      const objectUrl = URL.createObjectURL(file.originFileObj);
       setPreviewImage(objectUrl);
-      return () => URL.revokeObjectURL(objectUrl);
+      return () => URL.revokeObjectURL(objectUrl); // Clean up the object URL
     } else if (user?.image) {
       const formatted = user.image.replace(/^public/, "");
       setPreviewImage(
         baseUrl + (formatted.startsWith("/") ? formatted : "/" + formatted)
       );
     } else {
-      setPreviewImage(default_img.src);
+      setPreviewImage(default_img.src); // Fallback to default image
     }
   }, [file, user, baseUrl]);
 
@@ -69,15 +69,11 @@ export default function UserProfile() {
       return Upload.LIST_IGNORE;
     }
     setFile(file);
-    return false;
+    return false; // Prevent automatic upload
   };
 
   // Handle file change for profile image
-  const handleFileChange = ({
-    file,
-  }: {
-    file: UploadFile<{ url: string }>;
-  }) => {
+  const handleFileChange = ({ file }: { file: UploadFile }) => {
     if (!file.type || !file.type.startsWith("image/")) {
       message.error("Only image files (JPG, PNG, JPEG) are allowed!");
       return;
@@ -92,7 +88,7 @@ export default function UserProfile() {
       return Upload.LIST_IGNORE;
     }
     setIdCardFile(file);
-    return false;
+    return false; // Prevent automatic upload
   };
 
   // Open edit modal and set form values
@@ -131,34 +127,28 @@ export default function UserProfile() {
   }) => {
     const formData = new FormData();
 
+    // Append form values
     (Object.keys(values) as (keyof typeof values)[]).forEach((key) => {
       formData.append(key, values[key]);
     });
 
-    if (file) {
-      formData.append("image", file.originFileObj as Blob);
+    // Append profile image if a new file is selected
+    if (file && file.originFileObj instanceof Blob) {
+      formData.append("image", file.originFileObj);
     }
+
+    // Append ID card file if a new file is selected
     if (idCardFile) {
       formData.append("idCard", idCardFile);
     }
 
+    // Uncomment and implement your API call here
     // try {
     //   await updateUser(formData).unwrap();
-    //   SuccessSwal({
-    //     title: "",
-    //     text: "Profile updated successfully!",
-    //   });
+    //   message.success("Profile updated successfully!");
     //   handleCloseModal();
     // } catch (error) {
-    //   ErrorSwal({
-    //     title: "",
-    //     text:
-    //       (error as { message?: string; data?: { message?: string } })
-    //         ?.message ||
-    //       (error as { message?: string; data?: { message?: string } })?.data
-    //         ?.message ||
-    //       "Something went wrong",
-    //   });
+    //   message.error("Failed to update profile. Please try again.");
     // }
   };
 
@@ -300,9 +290,6 @@ export default function UserProfile() {
               <span className="text-black font-semibold">Profile Image</span>
             }
             name="image"
-            rules={[
-              { required: true, message: "Please upload a profile image." },
-            ]}
           >
             <div className="relative flex justify-center">
               <div className="relative">
@@ -414,12 +401,7 @@ export default function UserProfile() {
 
           {/* Save Changes Button */}
           <Form.Item>
-            <Button
-              type="primary"
-              //   loading={isLoading}
-              htmlType="submit"
-              className="w-full"
-            >
+            <Button type="primary" htmlType="submit" className="w-full">
               Save Changes
             </Button>
           </Form.Item>

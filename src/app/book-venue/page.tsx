@@ -1,7 +1,9 @@
 "use client";
 import { SuccessSwal } from "@/utils/allSwal";
-import { Button, Checkbox, DatePicker, Form, Select } from "antd";
+import { Button, Checkbox, DatePicker, Form, Modal, Select } from "antd";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import VENUE_IMG from "../../assets/book_venue/book_venue_img.png";
 
 const { Option } = Select;
@@ -12,12 +14,36 @@ type Venue = {
 };
 
 export default function BookVenue() {
+  const router = useRouter();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   const onFinish = (values: Venue) => {
+    setIsModalVisible(true);
+    console.log("Form values:", values);
+  };
+
+  const handlePoints = () => {
     SuccessSwal({
       title: "",
-      text: " Venue booked Successfully ",
+      text: ` Successfully booked venue by Points! `,
     });
-    console.log("Form values:", values);
+    router.push(`/profile/booked-list`);
+    console.log("Points button clicked");
+    setIsModalVisible(false);
+  };
+
+  const handleCard = () => {
+    SuccessSwal({
+      title: "",
+      text: ` Successfully booked venue by Card Payments! `,
+    });
+    router.push(`/profile/booked-list`);
+    console.log("Card button clicked");
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
   };
 
   return (
@@ -26,7 +52,7 @@ export default function BookVenue() {
         {/* Heading and Subtitle */}
         <div className="text-center">
           <h1 className="text-4xl font-bold text-primary mb-4">Book a Venue</h1>
-          <p className="text-xl w-[70%] mx-auto  ">
+          <p className="text-xl md:w-[70%] mx-auto">
             Easily book a soccer venue for matches, training, or events. Choose
             from top facilities, check availability, and secure your spot
             hassle-free. Perfect for teams, tournaments, and recreational play.
@@ -34,8 +60,8 @@ export default function BookVenue() {
           </p>
         </div>
 
-        {/* Main Content: Image  and Form */}
-        <div className="flex flex-col lg:flex-row items-center gap-4 rounded-lg w-[70%] mx-auto border border-primary p-8 ">
+        {/* Main Content: Image and Form */}
+        <div className="flex flex-col-reverse lg:flex-row items-center gap-4 rounded-lg md:w-[70%] mx-auto border border-primary p-4 md:p-8">
           {/* Left Side: Image */}
           <div className="w-full lg:w-1/2">
             <Image
@@ -101,24 +127,14 @@ export default function BookVenue() {
                   ]}
                 >
                   <Checkbox>
-                    {" "}
-                    {
-                      <span className="text-white">
-                        {" "}
-                        {`Don't show again.`}{" "}
-                      </span>
-                    }{" "}
+                    <span className="text-white"> {"Don't show again."} </span>
                   </Checkbox>
                 </Form.Item>
               </div>
 
               {/* Book Button */}
               <Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700"
-                >
+                <Button type="primary" htmlType="submit" className="w-full ">
                   Book Now
                 </Button>
               </Form.Item>
@@ -126,6 +142,41 @@ export default function BookVenue() {
           </div>
         </div>
       </div>
+
+      {/* Modal for Payment Confirmation */}
+      <Modal
+        title={
+          <div
+            style={{
+              textAlign: "center",
+              fontSize: "1.25rem",
+              fontWeight: "bold",
+            }}
+          >
+            Confirm Payment
+          </div>
+        }
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        centered
+        footer={
+          <div
+            style={{ display: "flex", justifyContent: "center", gap: "1rem" }}
+          >
+            <Button key="points" onClick={handlePoints}>
+              Points
+            </Button>
+            <Button key="card" type="primary" onClick={handleCard}>
+              Card
+            </Button>
+          </div>
+        }
+      >
+        <p style={{ textAlign: "center" }}>
+          Buy coins instantly for exclusive rewards, fast transactions, and
+          secure payments. Get yours now!
+        </p>
+      </Modal>
     </div>
   );
 }
