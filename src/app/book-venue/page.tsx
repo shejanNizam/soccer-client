@@ -24,8 +24,8 @@ export default function BookVenue() {
 
   const handlePoints = () => {
     SuccessSwal({
-      title: "",
-      text: ` Successfully booked venue by Points! `,
+      title: "By Points!",
+      text: ` Venue booked! `,
     });
     router.push(`/profile/booked-list`);
     console.log("Points button clicked");
@@ -34,8 +34,8 @@ export default function BookVenue() {
 
   const handleCard = () => {
     SuccessSwal({
-      title: "",
-      text: ` Successfully booked venue by Card Payments! `,
+      title: "By Card Payments!",
+      text: ` Venue booked! `,
     });
     router.push(`/profile/booked-list`);
     console.log("Card button clicked");

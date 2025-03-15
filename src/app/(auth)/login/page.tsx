@@ -19,6 +19,7 @@ export default function Login() {
   // const [login, { isLoading }] = useLoginMutation();
 
   const onFinish = async (values: { email: string; password: string }) => {
+    localStorage.setItem("email", values?.email);
     console.log(values);
     // try {
     //   const response = await login({

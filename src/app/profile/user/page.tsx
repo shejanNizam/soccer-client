@@ -186,8 +186,10 @@ export default function UserProfile() {
 
         {/* Profile Information */}
         <div className="flex flex-col w-full">
-          <h2 className="text-2xl font-bold">{user?.name}</h2>
-          <p className="text-primary mb-4">{user?.email}</p>
+          {/* <h2 className="text-2xl font-bold">{user?.name}</h2> */}
+          <h2 className="text-2xl font-bold">{"John Doe"}</h2>
+          {/* <p className="text-primary mb-4">{user?.email}</p> */}
+          <p className="text-primary mb-4">{"john@gmail.com"}</p>
           <form className="w-full">
             <div className="flex flex-col gap-4">
               <div>

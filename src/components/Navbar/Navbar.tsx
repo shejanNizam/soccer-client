@@ -5,7 +5,7 @@ import { Dropdown, Menu } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaBars, FaBell, FaTimes } from "react-icons/fa";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
@@ -47,6 +47,15 @@ export default function Navbar() {
   }
 
   const { user } = useSelector((state: { auth: { user: User } }) => state.auth);
+  const [email, setEmail] = useState<string | null>(null); // State to store the email
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedEmail = localStorage.getItem("email");
+      setEmail(storedEmail);
+      console.log("Email from localStorage:", storedEmail);
+    }
+  }, []);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -128,9 +137,7 @@ export default function Navbar() {
               {/* Desktop Menu */}
               <div className="hidden md:flex md:items-center space-x-4">
                 <div
-                  className={`flex space-x-4 ${
-                    user?.role === "user" ? " text-center " : ""
-                  }`}
+                  className={`flex space-x-4 ${user ? " text-center " : ""}`}
                 >
                   {navigation.map((item) => (
                     <Link
@@ -152,8 +159,8 @@ export default function Navbar() {
                   >
                     <FaBell size={24} />
                   </Link>
-
-                  {user ? (
+                  {/* user set after API integration */}
+                  {email ? (
                     <>
                       <Dropdown
                         overlay={
