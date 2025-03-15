@@ -34,7 +34,7 @@ export const mainTheme = {
       // Add other Button tokens as needed
     },
     Form: {
-      labelColor: "#ffffff",
+      labelColor: "#FFEB3B",
       // Add other Form tokens as needed
     },
     Input: {
@@ -73,7 +73,7 @@ export const mainTheme = {
       // Add other Select tokens as needed
     },
     Modal: {
-      colorBgContainer: "#ffffff",
+      colorBgContainer: "#00321F",
       borderRadius: 8,
       // Add other Modal tokens as needed
     },

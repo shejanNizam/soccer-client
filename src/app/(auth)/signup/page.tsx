@@ -3,18 +3,20 @@
 import { useSignupMutation } from "@/redux/api/authApi/authApi";
 import { useAppDispatch } from "@/redux/hooks";
 import { ErrorSwal, SuccessSwal } from "@/utils/allSwal";
-import { Button, Checkbox, Form, Input } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Form, Input, Upload } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa";
 import { setCredentials } from "../../../redux/slices/authSlice";
+
+// const { Dragger } = Upload;
 
 export default function Signup() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
 
-  // signup api call
   const [signup, { isLoading }] = useSignupMutation();
 
   const onFinish = async (values: {
@@ -22,19 +24,23 @@ export default function Signup() {
     email: string;
     password: string;
     confirmPassword: string;
+    image: { fileList: { originFileObj: File }[] };
   }) => {
     try {
-      const response = await signup({
-        name: values.name,
-        email: values.email,
-        password: values.password,
-        // confirmPassword: values.confirmPassword,
-      }).unwrap();
+      const formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("email", values.email);
+      formData.append("password", values.password);
+      formData.append("confirmPassword", values.confirmPassword);
+      if (values.image && values.image.fileList) {
+        formData.append("image", values.image.fileList[0].originFileObj);
+      }
+
+      const response = await signup(formData).unwrap();
 
       dispatch(
         setCredentials({
           user: response?.data?.user,
-          // token: response?.data?.token,
         })
       );
 
@@ -78,7 +84,6 @@ export default function Signup() {
             </h2>
           </div>
 
-          {/* Signup Form */}
           <Form
             form={form}
             layout="vertical"
@@ -86,7 +91,6 @@ export default function Signup() {
             className="space-y-2"
           >
             <div className="grid grid-cols-1">
-              {/* Name */}
               <Form.Item
                 label={<span className="font-semibold"> Name </span>}
                 name="name"
@@ -98,7 +102,6 @@ export default function Signup() {
                 <Input placeholder="Enter your name" size="large" />
               </Form.Item>
 
-              {/* Email */}
               <Form.Item
                 label={<span className="font-semibold"> Email </span>}
                 name="email"
@@ -113,7 +116,6 @@ export default function Signup() {
                 <Input placeholder="Enter your email" size="large" />
               </Form.Item>
 
-              {/* Password */}
               <Form.Item
                 label={<span className="font-semibold"> Password </span>}
                 name="password"
@@ -129,7 +131,6 @@ export default function Signup() {
                 />
               </Form.Item>
 
-              {/* Confirm Password */}
               <Form.Item
                 label={
                   <span className="font-semibold"> Confirm Password </span>
@@ -156,9 +157,27 @@ export default function Signup() {
                   size="large"
                 />
               </Form.Item>
+
+              <Form.Item
+                label={<span className="font-semibold"> Upload ID Card </span>}
+                name="image"
+                valuePropName="fileList"
+                getValueFromEvent={(e) => e.fileList}
+                rules={[
+                  { required: true, message: "Please upload your ID card" },
+                ]}
+              >
+                <Upload
+                  name="image"
+                  listType="picture"
+                  beforeUpload={() => false}
+                  maxCount={1}
+                >
+                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                </Upload>
+              </Form.Item>
             </div>
 
-            {/* I Agree Checkbox */}
             <Form.Item
               name="agree"
               valuePropName="checked"
@@ -185,7 +204,6 @@ export default function Signup() {
               </Checkbox>
             </Form.Item>
 
-            {/* Submit Button */}
             <Form.Item>
               <Button
                 type="primary"
