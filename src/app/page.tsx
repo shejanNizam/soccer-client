@@ -17,6 +17,7 @@ export default function Home() {
         <Faq />
         <GetInTouch />
       </div>
+      {/* bottom bar condiotionally show if user loggedin */}
       <BottomBar />
     </div>
   );

@@ -37,7 +37,7 @@ export default function RootLayout({
           <AntdRegistry>
             <ThemeProvider>
               <Navbar />
-              <div className="pt-20">{children}</div>
+              <div className="py-20 bg-secondary">{children}</div>
               <Footer />
             </ThemeProvider>
           </AntdRegistry>
