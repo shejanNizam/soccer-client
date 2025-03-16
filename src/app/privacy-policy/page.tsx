@@ -1,6 +1,6 @@
 import localImage from "../../assets/about/about-us.png";
 
-export default function About() {
+export default function Privacy() {
   return (
     <div className="min-h-screen bg-secondary">
       <div
@@ -10,7 +10,7 @@ export default function About() {
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
         <h3 className="text-4xl font-bold text-primary relative z-10">
-          About Us
+          Privacy Policy
         </h3>
         <p className=" md:w-[50%] mx-auto text-white ">
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ea

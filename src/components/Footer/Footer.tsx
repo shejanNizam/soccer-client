@@ -76,7 +76,7 @@ const Footer = () => (
                   </Link>
                 </li>
                 <li className="mb-1">
-                  <Link href="/about-us" className="text-sm hover:text-primary">
+                  <Link href="/about" className="text-sm hover:text-primary">
                     About Us
                   </Link>
                 </li>
@@ -104,7 +104,7 @@ const Footer = () => (
                 </li>
                 <li className="mb-1">
                   <Link
-                    href="/terms-of-use"
+                    href="/terms-condition"
                     className="text-sm hover:text-primary"
                   >
                     Terms of Use
@@ -119,19 +119,39 @@ const Footer = () => (
                 Get In Touch
               </h3>
               <ul className="text-center md:text-left">
-                <div className="flex items-center mb-2 justify-center md:justify-start">
-                  <FaMapMarkerAlt className="mr-2" />
-                  <span className="text-sm">1234 Street Name, City, State</span>
+                {/* Address with Google Maps Link */}
+                <div className="">
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=1234+Street+Name,City,State"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center mb-2 justify-center md:justify-start text-sm hover:text-primary transition"
+                  >
+                    <FaMapMarkerAlt className="mr-2" />
+                    1234 Street Name, City, State
+                  </a>
                 </div>
 
-                <div className="flex items-center mb-2 justify-center md:justify-start">
-                  <FaEnvelope className="mr-2" />
-                  <span className="text-sm">info@mycompany.com</span>
+                {/* Email with mailto Link */}
+                <div className="">
+                  <a
+                    href="mailto:info@mycompany.com"
+                    className="flex items-center mb-2 justify-center md:justify-start text-sm hover:text-primary transition"
+                  >
+                    <FaEnvelope className="mr-2" />
+                    info@mycompany.com
+                  </a>
                 </div>
 
-                <div className="flex items-center justify-center md:justify-start">
-                  <FaPhoneAlt className="mr-2" />
-                  <span className="text-sm">(123) 456-7890</span>
+                {/* Phone Number with tel Link */}
+                <div className="">
+                  <a
+                    href="tel:1234567890"
+                    className="flex items-center justify-center md:justify-start text-sm hover:text-primary transition"
+                  >
+                    <FaPhoneAlt className="mr-2" />
+                    (123) 456-7890
+                  </a>
                 </div>
               </ul>
             </div>
