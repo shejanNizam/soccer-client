@@ -68,7 +68,7 @@ const Venue: React.FC = () => {
             </div>
 
             {/* Right Side: Text and Buttons */}
-            <div className="w-full md:w-1/2 p-6 flex flex-col">
+            <div className="w-full md:w-1/2 p-4 flex flex-col">
               <div>
                 <h1 className="text-4xl text-primary font-bold">
                   {" "}

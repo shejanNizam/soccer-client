@@ -67,7 +67,7 @@ export default function VenueDetailPage({
   }
 
   return (
-    <div className="min-h-screen py-40 bg-secondary">
+    <div className="min-h-screen bg-secondary">
       <div className="max-w-4xl mx-auto bg-secondary rounded-lg shadow-lg overflow-hidden">
         {/* Image Section */}
         <div className="relative h-64 md:h-96">

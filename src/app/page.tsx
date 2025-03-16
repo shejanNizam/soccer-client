@@ -11,12 +11,10 @@ export default function Home() {
   return (
     <div className="bg-secondary">
       <Banner />
-      <div className="container">
-        <Featured />
-        <WhyChoose />
-        <Faq />
-        <GetInTouch />
-      </div>
+      <Featured />
+      <WhyChoose />
+      <Faq />
+      <GetInTouch />
       {/* bottom bar condiotionally show if user loggedin */}
       <BottomBar />
     </div>

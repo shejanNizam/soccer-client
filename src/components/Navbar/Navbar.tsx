@@ -106,7 +106,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="bg-hash shadow-2xl fixed w-full py-4 z-50">
+      <nav className="bg-hash shadow-2xl fixed w-full py-2 z-50">
         <div className="px-4 md:container">
           <div className="max-w-7xl mx-auto">
             <div className="flex justify-between items-center">

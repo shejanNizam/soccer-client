@@ -16,7 +16,7 @@ const Footer = () => (
   <footer className="hidden md:block bg-hash text-white py-8 w-full">
     <div className="px-4 md:container">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row items-start">
+        <div className="flex flex-col md:flex-row items-start gap-4">
           {/* Logo & text & Social icon here */}
           <div className="w-full md:w-2/5 flex flex-col gap-4 items-center md:items-start">
             <Link href="/">
@@ -63,7 +63,7 @@ const Footer = () => (
             </div>
           </div>
 
-          <div className="w-full md:w-3/5 flex flex-col md:flex-row justify-evenly mt-8 md:mt-0">
+          <div className="w-full md:w-3/5 flex flex-col md:flex-row justify-evenly mt-8 md:mt-0 gap-4">
             {/* Explore */}
             <div className="mb-8 md:mb-0">
               <h3 className="font-semibold text-primary text-xl mb-2 text-center md:text-left">

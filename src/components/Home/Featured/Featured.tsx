@@ -66,11 +66,11 @@ const Featured: React.FC = () => {
   ];
 
   return (
-    <div className="featured-section p-8 text-center ">
+    <div className="featured-section p-4 text-center ">
       <CustomHeading>FEATURED</CustomHeading>
 
       {/* Text */}
-      <p className="lg:w-[50%] mx-auto text-lg mb-8">
+      <p className="w-full lg:w-[50%] mx-auto mb-8">
         Live secrets, match candidates, move, place stars, scenario, local
         backing, learn analysis, Birthday blogs, but community, are overgain to
         plague.
