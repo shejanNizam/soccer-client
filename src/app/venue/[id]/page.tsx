@@ -6,10 +6,12 @@ import VENUE_IMG from "../../../assets/venue_img.png";
 type Venue = {
   _id: number;
   name: string;
+  address: string;
   image: StaticImageData;
   title: string;
   description: string;
   price: number;
+  point: number;
   maxCapacity: number;
   details: string;
 };
@@ -20,10 +22,12 @@ const venues: Venue[] = [
     _id: 1,
     image: VENUE_IMG,
     name: "Wembley Stadium",
+    address: "USA, New York, New York",
     title: "Wembley Stadium",
     description:
       'Known as the "Home of Football," hosts major finals and international matches.',
-    price: 9.8,
+    price: 9,
+    point: 9,
     maxCapacity: 15,
     details:
       "It has a 90,000-seat capacity and a retractable roof. The floor extends a little wide, allowing easy access to all areas. The venue is equipped with state-of-the-art facilities, including a large number of connected buildings and natural resources. It is designed to meet the needs of large-scale events and provides a safe and secure environment for all visitors.",
@@ -32,10 +36,12 @@ const venues: Venue[] = [
     _id: 2,
     image: VENUE_IMG,
     name: "Wembley Stadium",
+    address: "USA, New York, New York",
     title: "Wembley Stadium",
     description:
       'Known as the "Home of Football," hosts major finals and international matches.',
-    price: 9.8,
+    price: 9,
+    point: 9,
     maxCapacity: 15,
     details:
       "It has a 90,000-seat capacity and a retractable roof. The floor extends a little wide, allowing easy access to all areas. The venue is equipped with state-of-the-art facilities, including a large number of connected buildings and natural resources. It is designed to meet the needs of large-scale events and provides a safe and secure environment for all visitors.",
@@ -44,10 +50,12 @@ const venues: Venue[] = [
     _id: 3,
     image: VENUE_IMG,
     name: "Wembley Stadium",
+    address: "USA, New York, New York",
     title: "Wembley Stadium",
     description:
       'Known as the "Home of Football," hosts major finals and international matches.',
-    price: 9.8,
+    price: 9,
+    point: 9,
     maxCapacity: 15,
     details:
       "It has a 90,000-seat capacity and a retractable roof. The floor extends a little wide, allowing easy access to all areas. The venue is equipped with state-of-the-art facilities, including a large number of connected buildings and natural resources. It is designed to meet the needs of large-scale events and provides a safe and secure environment for all visitors.",
@@ -82,12 +90,21 @@ export default function VenueDetailPage({
 
         {/* Details Section */}
         <div className="p-8">
-          <h1 className="text-4xl font-bold text-primary mb-4">
-            {venue.title}
-          </h1>
-          <div className="flex items-center mb-6">
-            <span className="text-lg font-semibold mr-2">Price:</span>
-            <span className="text-lg text-yellow-500">{venue.price}</span>
+          <div className="flex justify-between items-center">
+            <h1 className="text-4xl font-bold text-primary mb-4">
+              {venue.title}
+              <p className="text-primary text-sm"> {venue.address} </p>
+            </h1>
+            <div className="">
+              <div className="flex items-center text-2xl">
+                <span className=" font-semibold mr-2">Price:</span>
+                <span className=" text-yellow-500">${venue.price}</span>
+              </div>
+              <div className="flex items-center mb-6 text-2xl">
+                <span className=" font-semibold mr-2">Point:</span>
+                <span className=" text-yellow-500">{venue.point}</span>
+              </div>
+            </div>
           </div>
           <div className="flex items-center mb-6 text-primary">
             <span className="text-lg font-semibold  mr-2">Max Capacity:</span>
