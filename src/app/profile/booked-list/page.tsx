@@ -7,6 +7,7 @@ import React from "react";
 
 // Define the type for the data source
 interface Booking {
+  id: number;
   key: string;
   siNo: number;
   venueName: string;
@@ -17,6 +18,7 @@ interface Booking {
 
 const dataSource: Booking[] = [
   {
+    id: 1,
     key: "1",
     siNo: 1,
     venueName: "Venue 1",
@@ -25,6 +27,7 @@ const dataSource: Booking[] = [
     status: "Approved",
   },
   {
+    id: 2,
     key: "2",
     siNo: 2,
     venueName: "Venue 2",
@@ -33,6 +36,7 @@ const dataSource: Booking[] = [
     status: "Pending",
   },
   {
+    id: 3,
     key: "3",
     siNo: 3,
     venueName: "Venue 1",
@@ -41,6 +45,7 @@ const dataSource: Booking[] = [
     status: "Approved",
   },
   {
+    id: 4,
     key: "4",
     siNo: 4,
     venueName: "Venue 2",
@@ -49,6 +54,7 @@ const dataSource: Booking[] = [
     status: "Pending",
   },
   {
+    id: 5,
     key: "5",
     siNo: 5,
     venueName: "Venue 1",
@@ -57,6 +63,7 @@ const dataSource: Booking[] = [
     status: "Approved",
   },
   {
+    id: 6,
     key: "6",
     siNo: 6,
     venueName: "Venue 2",
@@ -65,6 +72,7 @@ const dataSource: Booking[] = [
     status: "Pending",
   },
   {
+    id: 7,
     key: "7",
     siNo: 7,
     venueName: "Venue 2",
@@ -73,6 +81,7 @@ const dataSource: Booking[] = [
     status: "Pending",
   },
   {
+    id: 8,
     key: "8",
     siNo: 8,
     venueName: "Venue 2",
@@ -81,6 +90,7 @@ const dataSource: Booking[] = [
     status: "Pending",
   },
   {
+    id: 9,
     key: "9",
     siNo: 9,
     venueName: "Venue 2",
@@ -89,6 +99,7 @@ const dataSource: Booking[] = [
     status: "Pending",
   },
   {
+    id: 10,
     key: "10",
     siNo: 10,
     venueName: "Venue 2",
@@ -97,6 +108,7 @@ const dataSource: Booking[] = [
     status: "Pending",
   },
   {
+    id: 11,
     key: "11",
     siNo: 11,
     venueName: "Venue 2",
@@ -105,6 +117,7 @@ const dataSource: Booking[] = [
     status: "Pending",
   },
   {
+    id: 12,
     key: "12",
     siNo: 12,
     venueName: "Venue 2",
@@ -120,8 +133,8 @@ const BookedList: React.FC = () => {
   const router = useRouter();
 
   const handleDetails = (record: Booking) => {
-    router.push(`/booked-list/${record.key}`);
-    console.log("Details clicked for:", record);
+    router.push(`/profile/booked-list/${record.id}`);
+    // console.log("Details clicked for:", record);
   };
 
   const columns: ColumnsType<Booking> = [
