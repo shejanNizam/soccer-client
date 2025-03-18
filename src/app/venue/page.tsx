@@ -57,7 +57,7 @@ const Venue: React.FC = () => {
             className="flex flex-col md:flex-row items-center w-full rounded overflow-hidden shadow-lg"
           >
             {/* Left Side: Image */}
-            <div className="w-full md:w-1/2 relative h-64 md:h-auto">
+            <div className="w-full md:w-1/2 h-64 md:h-auto">
               <Image
                 src={venue.image}
                 alt="Venue Image"
