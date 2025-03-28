@@ -1,5 +1,8 @@
 "use client";
-import { useResendOtpMutation } from "@/redux/api/authApi/authApi";
+import {
+  useResendOtpMutation,
+  useVerifyForgetOtpMutation,
+} from "@/redux/api/authApi/authApi";
 import { ErrorSwal, SuccessSwal } from "@/utils/allSwal";
 import type { InputRef } from "antd";
 import { Button, Form, Input } from "antd";
@@ -8,20 +11,20 @@ import { useEffect, useRef, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 
 type OtpState = string[];
-// interface VerifyEmailResponse {
-//   success: boolean;
-//   message: string;
-//   data?: { token: string };
-// }
+interface VerifyEmailResponse {
+  success: boolean;
+  message: string;
+  data?: { token: string; message?: string };
+}
 
 const VerifyEmail = () => {
-  const router = useRouter(),
-    email = useSearchParams().get("email");
+  const router = useRouter();
+  const email = useSearchParams().get("email");
   const [otp, setOtp] = useState<OtpState>(Array(6).fill(""));
   const inputRefs = useRef<(InputRef | null)[]>([]);
   const [resendDisabled, setResendDisabled] = useState(false),
     [resendTimer, setResendTimer] = useState(180);
-  // const [verifyForgetOtp, { isLoading }] = useForgetPasswordMutation();
+  const [verifyForgetOtp, { isLoading }] = useVerifyForgetOtpMutation();
   const [resendOtp, { isLoading: resendLoading }] = useResendOtpMutation();
 
   useEffect(() => {
@@ -79,22 +82,27 @@ const VerifyEmail = () => {
         text: "Please enter the complete 6-digit OTP.",
       });
     try {
-      // const res = (await verifyForgetOtp({
-      //   otp: code,
-      // }).unwrap()) as VerifyEmailResponse;
-      // if (res.success) {
-      //   SuccessSwal({
-      //     title: "",
-      //     text: res.message || "Something went wrong!",
-      //   });
-      //   localStorage.setItem("user_token", res.data?.token || "");
-      //   router.push(`/reset-password`);
-      // } else
-      //   ErrorSwal({
-      //     title: "",
-      //     text: res.message || "Invalid OTP. Please try again.",
-      //   });
-      router.push(`/reset-password`);
+      const res = (await verifyForgetOtp({
+        otp: code,
+      }).unwrap()) as VerifyEmailResponse;
+      if (res.success) {
+        SuccessSwal({
+          title: "",
+          text: res.message || res?.data?.message || "Something went wrong!",
+        });
+        localStorage.setItem("user_token", res.data?.token || "");
+        router.push(`/reset-password`);
+      } else
+        SuccessSwal({
+          title: "",
+          text: res.message || "Invalid OTP. Please try again.",
+        });
+
+      if (email) {
+        router.push(`/reset-password`);
+      } else {
+        router.push(`/login`);
+      }
     } catch (error: unknown) {
       ErrorSwal({
         title: "",
@@ -200,7 +208,7 @@ const VerifyEmail = () => {
               type="primary"
               htmlType="submit"
               size="large"
-              // loading={isLoading}
+              loading={isLoading}
               className="w-full bg-green-500 hover:bg-green-600 transition-colors"
             >
               Verify

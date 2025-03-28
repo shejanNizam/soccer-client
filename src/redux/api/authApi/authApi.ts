@@ -6,7 +6,7 @@ export const authApi = baseApi.injectEndpoints({
     signup: builder.mutation({
       query: (userData) => {
         return {
-          url: "/user/signup",
+          url: "/auth/register",
           method: "POST",
           body: userData,
         };
@@ -42,9 +42,9 @@ export const authApi = baseApi.injectEndpoints({
     verifyForgetOtp: builder.mutation({
       query: ({ otp }) => {
         return {
-          url: `/user/verify-forget-otp`,
+          url: `/auth/verify-email`,
           method: "POST",
-          body: otp,
+          body: { otp: otp },
         };
       },
       invalidatesTags: ["auth"],

@@ -4,7 +4,7 @@ import { useSignupMutation } from "@/redux/api/authApi/authApi";
 import { useAppDispatch } from "@/redux/hooks";
 import { ErrorSwal, SuccessSwal } from "@/utils/allSwal";
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, Upload } from "antd";
+import { Button, Checkbox, Form, Input, Upload, UploadFile } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa";
@@ -24,7 +24,7 @@ export default function Signup() {
     email: string;
     password: string;
     confirmPassword: string;
-    image: { fileList: { originFileObj: File }[] };
+    idCardImage: UploadFile[];
   }) => {
     try {
       const formData = new FormData();
@@ -32,11 +32,17 @@ export default function Signup() {
       formData.append("email", values.email);
       formData.append("password", values.password);
       formData.append("confirmPassword", values.confirmPassword);
-      if (values.image && values.image.fileList) {
-        formData.append("image", values.image.fileList[0].originFileObj);
+
+      // More robust file handling
+      if (values.idCardImage && values.idCardImage.length > 0) {
+        const file = values.idCardImage[0].originFileObj;
+        if (file instanceof File) {
+          formData.append("idCardImage", file);
+        }
       }
 
       const response = await signup(formData).unwrap();
+      localStorage.setItem("user_token", response?.data?.verificationToken);
 
       dispatch(
         setCredentials({
@@ -45,10 +51,10 @@ export default function Signup() {
       );
 
       SuccessSwal({
-        title: `Signup Successful!`,
-        text: `Please login to continue!`,
+        title: ``,
+        text: response?.message || response?.data?.message || `Static Success!`,
       });
-      router.push("/login");
+      router.push("/verify-email");
     } catch (error) {
       ErrorSwal({
         title: ``,
@@ -160,7 +166,7 @@ export default function Signup() {
 
               <Form.Item
                 label={<span className="font-semibold"> Upload ID Card </span>}
-                name="image"
+                name="idCardImage"
                 valuePropName="fileList"
                 getValueFromEvent={(e) => e.fileList}
                 rules={[
@@ -168,7 +174,7 @@ export default function Signup() {
                 ]}
               >
                 <Upload
-                  name="image"
+                  name="idCardImage"
                   listType="picture"
                   beforeUpload={() => false}
                   maxCount={1}
