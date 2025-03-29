@@ -54,7 +54,7 @@ export const authApi = baseApi.injectEndpoints({
     resendOtp: builder.mutation({
       query: (email) => {
         return {
-          url: `/user/resend?email=${encodeURIComponent(email)}`,
+          url: `/auth/resend-otp?email=${encodeURIComponent(email)}`,
           method: "POST",
         };
       },
