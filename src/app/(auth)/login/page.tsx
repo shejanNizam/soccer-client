@@ -53,7 +53,6 @@ export default function Login() {
           `Login Failed!`,
       });
     }
-    router.push("/");
   };
 
   const handleBack = () => {

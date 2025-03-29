@@ -91,7 +91,7 @@ export const authApi = baseApi.injectEndpoints({
     changePassword: builder.mutation({
       query: (body) => {
         return {
-          url: "/user/change-password",
+          url: "/auth/change-password",
           method: "POST",
           body,
         };
@@ -100,15 +100,15 @@ export const authApi = baseApi.injectEndpoints({
     }),
 
     // 09. logout api endpoint
-    logout: builder.mutation({
-      query: () => {
-        return {
-          url: "/logout",
-          method: "POST",
-        };
-      },
-      invalidatesTags: ["auth"],
-    }),
+    // logout: builder.mutation({
+    //   query: () => {
+    //     return {
+    //       url: "/logout",
+    //       method: "POST",
+    //     };
+    //   },
+    //   invalidatesTags: ["auth"],
+    // }),
   }),
 });
 
@@ -121,5 +121,5 @@ export const {
   useResetPasswordMutation, // 06
   useVerifyEmailMutation, // 07
   useChangePasswordMutation, // 08
-  useLogoutMutation, // 09
+  // useLogoutMutation, // 09
 } = authApi;

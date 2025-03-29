@@ -1,6 +1,8 @@
 "use client";
 
-// import { useChangePasswordMutation } from "@/redux/features/authApi";
+import { useChangePasswordMutation } from "@/redux/api/authApi/authApi";
+import { ErrorSwal, SuccessSwal } from "@/utils/allSwal";
+
 import { Button, Form, Input, Modal } from "antd";
 import Link from "next/link";
 import { FaTimes } from "react-icons/fa";
@@ -16,30 +18,35 @@ export default function ChangePasswordModal({
 }: ChangePasswordModalProps) {
   const [form] = Form.useForm();
 
-  //   const [changePass, { isLoading }] = useChangePasswordMutation();
+  const [changePass, { isLoading }] = useChangePasswordMutation();
 
   const handleChangePassword = async (values: {
-    oldPassword: string;
-    newPassword: string;
+    currentPassword: string;
+    password: string;
     confirmPassword: string;
   }) => {
     console.log(values);
 
-    // try {
-    //   const response = await changePass(values).unwrap();
-    //   SuccessSwal({
-    //     title: "",
-    //     text: response?.message,
-    //   });
-    // } catch (error) {
-    //   ErrorSwal({
-    //     title: "",
-    //     text: error?.message || error?.data?.message,
-    //   });
-    // }
+    try {
+      const response = await changePass(values).unwrap();
+      SuccessSwal({
+        title: "",
+        text: response?.message,
+      });
+    } catch (error) {
+      ErrorSwal({
+        title: "",
+        text:
+          (error as { message?: string; data?: { message?: string } })
+            ?.message ||
+          (error as { message?: string; data?: { message?: string } })?.data
+            ?.message ||
+          "Static Failed!",
+      });
+    }
 
-    // form.resetFields();
-    // if (onClose) onClose();
+    form.resetFields();
+    if (onClose) onClose();
   };
 
   return (
@@ -65,7 +72,7 @@ export default function ChangePasswordModal({
       <Form layout="vertical" onFinish={handleChangePassword} form={form}>
         <Form.Item
           label="Old Password"
-          name="oldPassword"
+          name="currentPassword"
           rules={[
             { required: true, message: "Please enter your old password" },
           ]}
@@ -75,7 +82,7 @@ export default function ChangePasswordModal({
 
         <Form.Item
           label="New Password"
-          name="newPassword"
+          name="password"
           rules={[
             { required: true, message: "Please enter your new password" },
           ]}
@@ -86,12 +93,12 @@ export default function ChangePasswordModal({
         <Form.Item
           label="Confirm New Password"
           name="confirmPassword"
-          dependencies={["newPassword"]}
+          dependencies={["confirmPassword"]}
           rules={[
             { required: true, message: "Please confirm your new password" },
             ({ getFieldValue }) => ({
               validator(_, value) {
-                if (!value || getFieldValue("newPassword") === value) {
+                if (!value || getFieldValue("confirmPassword") === value) {
                   return Promise.resolve();
                 }
                 return Promise.reject(
@@ -114,7 +121,7 @@ export default function ChangePasswordModal({
         <Form.Item>
           <Button
             type="primary"
-            // loading={isLoading}
+            loading={isLoading}
             htmlType="submit"
             className="w-full"
           >
