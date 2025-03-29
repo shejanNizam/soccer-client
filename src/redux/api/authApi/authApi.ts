@@ -18,7 +18,7 @@ export const authApi = baseApi.injectEndpoints({
     login: builder.mutation({
       query: (credentials) => {
         return {
-          url: "/user/login",
+          url: "/auth/login",
           method: "POST",
           body: credentials,
         };

@@ -47,6 +47,7 @@ export default function Signup() {
       dispatch(
         setCredentials({
           user: response?.data?.user,
+          token: response?.data?.verificationToken,
         })
       );
 

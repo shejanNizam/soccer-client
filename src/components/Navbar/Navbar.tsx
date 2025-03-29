@@ -5,7 +5,7 @@ import { Dropdown, Menu } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaBars, FaBell, FaTimes } from "react-icons/fa";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,18 +44,13 @@ export default function Navbar() {
   interface User {
     role: string;
     image?: string;
+    profileImage?: {
+      url: string;
+    };
   }
 
   const { user } = useSelector((state: { auth: { user: User } }) => state.auth);
-  const [email, setEmail] = useState<string | null>(null); // remove when api integrate
-
-  // remove when api integrate
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedEmail = localStorage.getItem("email");
-      setEmail(storedEmail);
-    }
-  }, []);
+  console.log(user);
 
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
@@ -96,8 +91,7 @@ export default function Navbar() {
           confirmButtonColor: "#3085d6",
         }).then(() => {
           dispatch(logout());
-          // localStorage.removeItem("user_token");
-          localStorage.removeItem("email"); // remove when api integrate
+          localStorage.removeItem("user_token");
           router.push("/login");
         });
       }
@@ -149,8 +143,7 @@ export default function Navbar() {
                     <FaBell size={24} />
                   </Link>
 
-                  {/* user set after API integration */}
-                  {email ? (
+                  {user ? (
                     <>
                       <Dropdown
                         overlay={
@@ -169,7 +162,9 @@ export default function Navbar() {
                             className="w-16 h-16 rounded-full border-4 border-primary"
                             src={
                               user?.image
-                                ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${user.image}`
+                                ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${
+                                    user?.profileImage?.url ?? ""
+                                  }`
                                 : default_img
                             }
                             alt="profile_image"
@@ -286,7 +281,7 @@ export default function Navbar() {
                 {/* Divider */}
                 <hr className="my-4 border-gray-500" />
 
-                {email ? (
+                {user ? (
                   <>
                     {" "}
                     <Dropdown
@@ -310,9 +305,16 @@ export default function Navbar() {
                           width={1000}
                           height={1000}
                           className="w-16 h-16 rounded-full border-4 border-primary"
+                          // src={
+                          //   user?.image
+                          //     ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${user.image}`
+                          //     : default_img
+                          // }
                           src={
                             user?.image
-                              ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${user.image}`
+                              ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${
+                                  user?.profileImage?.url ?? ""
+                                }`
                               : default_img
                           }
                           alt="profile_image"

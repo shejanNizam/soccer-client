@@ -1,56 +1,58 @@
 "use client";
 
-// import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch } from "@/redux/hooks";
 import { Button, Checkbox, Form, Input } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa";
 
-// import { useLoginMutation } from "@/redux/api/authApi/authApi";
-// import { ErrorSwal, SuccessSwal } from "@/utils/allSwal";
-// import { setCredentials } from "../../../redux/slices/authSlice";
+import { useLoginMutation } from "@/redux/api/authApi/authApi";
+import { ErrorSwal, SuccessSwal } from "@/utils/allSwal";
+import { setCredentials } from "../../../redux/slices/authSlice";
 
 export default function Login() {
   const router = useRouter();
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const [form] = Form.useForm();
 
   // login api call
-  // const [login, { isLoading }] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
 
   const onFinish = async (values: { email: string; password: string }) => {
-    localStorage.setItem("email", values?.email);
-    console.log(values);
-    // try {
-    //   const response = await login({
-    //     email: values.email,
-    //     password: values.password,
-    //   }).unwrap();
-    //   localStorage.setItem("user_token", response?.data?.accesstoken);
+    // console.log(values);
+    try {
+      const response = await login({
+        email: values.email,
+        password: values.password,
+      }).unwrap();
+      localStorage.setItem("user_token", response?.data?.token);
 
-    //   dispatch(
-    //     setCredentials({
-    //       user: response?.data?.user,
-    //       // token: response?.data?.accesstoken,
-    //     })
-    //   );
+      dispatch(
+        setCredentials({
+          user: response?.data?.user,
+          token: response?.data?.token,
+        })
+      );
 
-    //   SuccessSwal({
-    //     title: `Login successful!`,
-    //     text: "Welcome to GrassRootz!",
-    //   });
-    //   router.push("/");
-    // } catch (error) {
-    //   ErrorSwal({
-    //     title: `Login failed!`,
-    //     text:
-    //       (error as { message?: string; data?: { message?: string } })
-    //         ?.message ||
-    //       (error as { message?: string; data?: { message?: string } })?.data
-    //         ?.message ||
-    //       `Login Failed!`,
-    //   });
-    // }
+      SuccessSwal({
+        title: `Login successful!`,
+        text:
+          response?.data?.message ||
+          response?.message ||
+          "Welcome to GrassRootz!",
+      });
+      router.push("/");
+    } catch (error) {
+      ErrorSwal({
+        title: `Login failed!`,
+        text:
+          (error as { message?: string; data?: { message?: string } })
+            ?.message ||
+          (error as { message?: string; data?: { message?: string } })?.data
+            ?.message ||
+          `Login Failed!`,
+      });
+    }
     router.push("/");
   };
 
@@ -131,7 +133,7 @@ export default function Login() {
               type="primary"
               htmlType="submit"
               size="large"
-              // loading={isLoading}
+              loading={isLoading}
               className="w-full transition-colors"
             >
               Login

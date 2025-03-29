@@ -1,7 +1,7 @@
 "use client";
 import { useGetUserDataQuery } from "@/redux/api/userApi/userApi";
 import { useAppDispatch } from "@/redux/hooks";
-import { setCredentials } from "@/redux/slices/authSlice";
+import { setUser } from "@/redux/slices/authSlice";
 import { mainTheme } from "@/utils/antTheme";
 import { ConfigProvider } from "antd";
 import "antd/dist/reset.css";
@@ -15,9 +15,8 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     dispatch(
-      setCredentials({
+      setUser({
         user: data?.data,
-        // token: "",
       })
     );
   }, [data?.data, dispatch]);
