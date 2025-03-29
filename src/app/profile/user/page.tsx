@@ -8,42 +8,50 @@ import { FaPlus, FaTimes } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
 import ChangePasswordModal from "@/components/modals/ChangePasswordModal";
+import { useUpdateUserDataMutation } from "@/redux/api/userApi/userApi";
 import default_img from "../../../assets/user_img_default.png";
 
 interface User {
   name?: string;
   email?: string;
-  country?: string;
-  state?: string;
-  city?: string;
+  address?: {
+    country?: string;
+    state?: string;
+    city?: string;
+  };
   phone?: string;
-  image?: string;
-  idCard?: string;
+  profileImage?: {
+    url?: string;
+  };
+  idCardImage?: {
+    url?: string;
+  };
+  points?: number;
+  role?: string;
+  createdAt?: string;
+  id?: string;
 }
 
 export default function UserProfile() {
   const baseUrl = process.env.NEXT_PUBLIC_IMAGE_URL || "";
-  const { user } = useSelector((state: { auth: { user: User } }) => state.auth);
+  const { user: authUser } = useSelector(
+    (state: { auth: { user: User } }) => state.auth
+  );
+
+  const [updateUserData, { isLoading: isUpdating }] =
+    useUpdateUserDataMutation();
+
+  const user = authUser;
 
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [file, setFile] = useState<UploadFile | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [idCardFile, setIdCardFile] = useState<File | null>(null);
-  const [idCardUrl, setIdCardUrl] = useState<string | null>(null);
 
   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
     useState<boolean>(false);
 
   const [form] = Form.useForm();
-
-  // Set ID card URL when user data changes
-  useEffect(() => {
-    if (user?.idCard) {
-      setIdCardUrl(
-        user.idCard.startsWith("http") ? user.idCard : baseUrl + user.idCard
-      );
-    }
-  }, [user, baseUrl]);
 
   // Set preview image for profile picture
   useEffect(() => {
@@ -51,10 +59,11 @@ export default function UserProfile() {
       const objectUrl = URL.createObjectURL(file.originFileObj);
       setPreviewImage(objectUrl);
       return () => URL.revokeObjectURL(objectUrl); // Clean up the object URL
-    } else if (user?.image) {
-      const formatted = user.image.replace(/^public/, "");
+    } else if (user?.profileImage?.url) {
       setPreviewImage(
-        baseUrl + (formatted.startsWith("/") ? formatted : "/" + formatted)
+        user.profileImage.url.startsWith("http")
+          ? user.profileImage.url
+          : baseUrl + user.profileImage.url
       );
     } else {
       setPreviewImage(default_img.src); // Fallback to default image
@@ -83,8 +92,9 @@ export default function UserProfile() {
 
   // Handle file upload for ID card
   const handleBeforeUploadIdCard = (file: File) => {
-    if (file.type !== "application/pdf") {
-      message.error("Only PDF files are allowed for ID Card!");
+    const isImage = file.type && file.type.startsWith("image/");
+    if (!isImage) {
+      message.error("Only image files (JPG, PNG, JPEG) are allowed!");
       return Upload.LIST_IGNORE;
     }
     setIdCardFile(file);
@@ -96,17 +106,11 @@ export default function UserProfile() {
     setIsEditModalOpen(true);
     form.setFieldsValue({
       name: user?.name || "",
-      country: user?.country || "",
-      state: user?.state || "",
-      city: user?.city || "",
+      country: user?.address?.country || "",
+      state: user?.address?.state || "",
+      city: user?.address?.city || "",
       phone: user?.phone || "",
     });
-    if (user?.image && !file) {
-      const formatted = user.image.replace(/^public/, "");
-      setPreviewImage(
-        baseUrl + (formatted.startsWith("/") ? formatted : "/" + formatted)
-      );
-    }
   };
 
   // Close edit modal and reset state
@@ -128,33 +132,31 @@ export default function UserProfile() {
     const formData = new FormData();
 
     // Append form values
-    (Object.keys(values) as (keyof typeof values)[]).forEach((key) => {
-      formData.append(key, values[key]);
-    });
+    formData.append("name", values.name);
+    formData.append("phone", values.phone);
+    formData.append("address.country", values.country);
+    formData.append("address.state", values.state);
+    formData.append("address.city", values.city);
 
     // Append profile image if a new file is selected
     if (file && file.originFileObj instanceof Blob) {
-      formData.append("image", file.originFileObj);
+      formData.append("profileImage", file.originFileObj);
     }
 
     // Append ID card file if a new file is selected
     if (idCardFile) {
-      formData.append("idCard", idCardFile);
+      formData.append("idCardImage", idCardFile);
     }
 
-    // Uncomment and implement your API call here
-    // try {
-    //   await updateUser(formData).unwrap();
-    //   message.success("Profile updated successfully!");
-    //   handleCloseModal();
-    // } catch (error) {
-    //   message.error("Failed to update profile. Please try again.");
-    // }
+    try {
+      await updateUserData(formData).unwrap();
+      message.success("Profile updated successfully!");
+      handleCloseModal();
+    } catch (error) {
+      console.log(error);
+      message.error("Failed to update profile. Please try again.");
+    }
   };
-
-  const formattedImage = user?.image
-    ? user.image.replace(/^public/, "")
-    : default_img.src;
 
   return (
     <div className="flex flex-col justify-center items-center gap-6 min-h-screen">
@@ -169,27 +171,17 @@ export default function UserProfile() {
 
         {/* Profile Image */}
         <Image
-          src={
-            previewImage ||
-            (user?.image
-              ? baseUrl +
-                (formattedImage.startsWith("/")
-                  ? formattedImage
-                  : "/" + formattedImage)
-              : default_img.src)
-          }
+          src={previewImage || default_img.src}
           alt="User Profile Image"
           className="w-32 h-32 md:w-64 md:h-64 object-cover rounded-full"
-          width={1000}
-          height={1000}
+          width={256}
+          height={256}
         />
 
         {/* Profile Information */}
         <div className="flex flex-col w-full">
-          {/* <h2 className="text-2xl font-bold">{user?.name}</h2> */}
-          <h2 className="text-2xl font-bold">{"John Doe"}</h2>
-          {/* <p className="text-primary mb-4">{user?.email}</p> */}
-          <p className="text-primary mb-4">{"john@gmail.com"}</p>
+          <h2 className="text-2xl font-bold">{user?.name}</h2>
+          <p className="text-primary mb-4">{user?.email}</p>
           <form className="w-full">
             <div className="flex flex-col gap-4">
               <div>
@@ -198,7 +190,7 @@ export default function UserProfile() {
                 </label>
                 <input
                   type="text"
-                  value={user?.country || ""}
+                  value={user?.address?.country || ""}
                   readOnly
                   className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-400 cursor-not-allowed"
                 />
@@ -210,7 +202,7 @@ export default function UserProfile() {
                   </label>
                   <input
                     type="text"
-                    value={user?.state || ""}
+                    value={user?.address?.state || ""}
                     readOnly
                     className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-400 cursor-not-allowed"
                   />
@@ -221,7 +213,7 @@ export default function UserProfile() {
                   </label>
                   <input
                     type="text"
-                    value={user?.city || ""}
+                    value={user?.address?.city || ""}
                     readOnly
                     className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-400 cursor-not-allowed"
                   />
@@ -239,9 +231,13 @@ export default function UserProfile() {
                 />
               </div>
               <div>
-                {idCardUrl ? (
+                {user?.idCardImage?.url ? (
                   <Link
-                    href={idCardUrl}
+                    href={
+                      user.idCardImage.url.startsWith("http")
+                        ? user.idCardImage.url
+                        : baseUrl + user.idCardImage.url
+                    }
                     target="_blank"
                     rel="noreferrer"
                     className="text-purple-600 font-semibold"
@@ -270,7 +266,7 @@ export default function UserProfile() {
         title={
           <span className="text-xl font-bold text-primary">Update Profile</span>
         }
-        visible={isEditModalOpen}
+        open={isEditModalOpen}
         onCancel={handleCloseModal}
         footer={null}
         centered
@@ -284,14 +280,12 @@ export default function UserProfile() {
           form={form}
           onFinish={handleEditFormSubmit}
           className="space-y-4"
-          initialValues={user}
         >
           {/* Profile Image Upload */}
           <Form.Item
             label={
               <span className="text-black font-semibold">Profile Image</span>
             }
-            name="image"
           >
             <div className="relative flex justify-center">
               <div className="relative">
@@ -307,7 +301,7 @@ export default function UserProfile() {
                   <div className="w-24 h-24 bg-gray-200 rounded-full" />
                 )}
                 <Upload
-                  name="image"
+                  name="profileImage"
                   maxCount={1}
                   fileList={file ? [file] : []}
                   beforeUpload={handleBeforeUpload}
@@ -374,14 +368,10 @@ export default function UserProfile() {
           </Form.Item>
 
           {/* ID Card Upload */}
-          <Form.Item
-            label="ID Card"
-            name="idCard"
-            rules={[{ required: true, message: "Please upload your ID card" }]}
-          >
+          <Form.Item label="ID Card">
             <Upload
               maxCount={1}
-              accept="application/pdf"
+              accept="image/*"
               beforeUpload={handleBeforeUploadIdCard}
               showUploadList={!!idCardFile}
               fileList={
@@ -403,7 +393,12 @@ export default function UserProfile() {
 
           {/* Save Changes Button */}
           <Form.Item>
-            <Button type="primary" htmlType="submit" className="w-full">
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="w-full"
+              loading={isUpdating}
+            >
               Save Changes
             </Button>
           </Form.Item>

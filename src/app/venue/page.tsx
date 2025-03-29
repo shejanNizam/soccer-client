@@ -38,6 +38,8 @@ const venues: Venue[] = [
   },
 ];
 
+const {data} = 
+
 const Venue: React.FC = () => {
   return (
     <div className="min-h-screen py-40">

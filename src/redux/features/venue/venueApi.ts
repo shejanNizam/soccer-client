@@ -1,6 +1,6 @@
 import baseApi from "@/redux/api/baseApi/baseApi";
 
-export const nizamApi = baseApi.injectEndpoints({
+export const venueApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // gel all
     getSomethings: builder.query({
@@ -26,4 +26,4 @@ export const nizamApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetSomethingsQuery, usePostSomethingsMutation } = nizamApi;
+export const { useGetSomethingsQuery, usePostSomethingsMutation } = venueApi;
