@@ -22,13 +22,38 @@ export const venueApi = baseApi.injectEndpoints({
       },
       providesTags: ["venue"],
     }),
-    // contact us
-    postSomethings: builder.mutation({
-      query: (contactData) => {
+
+    // get schedule
+    getShift: builder.query({
+      query: ({ venueId, date }) => ({
+        url: "/venue-request/shift",
+        method: "GET",
+        params: {
+          venueId,
+          date,
+        },
+      }),
+      providesTags: ["venue"],
+    }),
+
+    // add book request using point
+    addBookUsingPoint: builder.mutation({
+      query: (pointData) => {
         return {
-          url: "/",
+          url: "/venue-request/with-points",
           method: "POST",
-          body: contactData,
+          body: pointData,
+        };
+      },
+      invalidatesTags: ["venue"],
+    }),
+    // add book request using payment
+    addBookUsingPayment: builder.mutation({
+      query: (paymentData) => {
+        return {
+          url: "/checkout",
+          method: "POST",
+          body: paymentData,
         };
       },
       invalidatesTags: ["venue"],
@@ -39,5 +64,7 @@ export const venueApi = baseApi.injectEndpoints({
 export const {
   useGetVenueQuery,
   useGetVenueByIdQuery,
-  usePostSomethingsMutation,
+  useGetShiftQuery,
+  useAddBookUsingPointMutation,
+  useAddBookUsingPaymentMutation,
 } = venueApi;

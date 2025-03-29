@@ -121,7 +121,7 @@ const Venue = () => {
                     Details
                   </button>
                 </Link>
-                <Link href={`/book-venue/${venue.id}`}>
+                <Link href={`/book-venue?venueId=${venue.id}`}>
                   <button className="bg-button hover:bg-button/90 text-white font-bold py-2 px-4 rounded">
                     Book now
                   </button>

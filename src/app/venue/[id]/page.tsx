@@ -36,7 +36,7 @@ import VENUE_IMG from "../../../assets/venue_img.png";
 export default function VenueDetailPage() {
   const params = useParams();
   const { id } = params;
-  console.log(id);
+  // console.log(id);
   const baseImageUrl = process.env.NEXT_PUBLIC_IMAGE_URL || "";
 
   const { data, isLoading, isError } = useGetVenueByIdQuery(id as string);
@@ -125,7 +125,7 @@ export default function VenueDetailPage() {
             <p className="whitespace-pre-line">{venue.description}</p>
           </div>
 
-          <Link href={`/book-venue/${venue.id}`}>
+          <Link href={`/book-venue?venueId=${venue.id}`}>
             <button className="bg-button hover:bg-button/90 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
               Book Now
             </button>

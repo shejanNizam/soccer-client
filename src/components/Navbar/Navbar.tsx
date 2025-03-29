@@ -50,7 +50,7 @@ export default function Navbar() {
   }
 
   const { user } = useSelector((state: { auth: { user: User } }) => state.auth);
-  console.log(user);
+  // console.log(user);
 
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();

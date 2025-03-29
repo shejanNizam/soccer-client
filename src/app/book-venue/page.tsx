@@ -1,45 +1,120 @@
 "use client";
-import { SuccessSwal } from "@/utils/allSwal";
-import { Button, Checkbox, DatePicker, Form, Modal, Select } from "antd";
+import {
+  useAddBookUsingPaymentMutation,
+  useAddBookUsingPointMutation,
+  useGetShiftQuery,
+} from "@/redux/features/venue/venueApi";
+import { ErrorSwal, SuccessSwal } from "@/utils/allSwal";
+import { Button, Checkbox, DatePicker, Form, Modal, Select, Spin } from "antd";
+import dayjs from "dayjs";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import VENUE_IMG from "../../assets/book_venue/book_venue_img.png";
 
 const { Option } = Select;
 
-type Venue = {
+type VenueBookingForm = {
   date: string;
   time: string;
+  agree: boolean;
 };
 
 export default function BookVenue() {
+  const [form] = Form.useForm();
+  const [date, setDate] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const venueId = searchParams.get("venueId");
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedTimeRange, setSelectedTimeRange] = useState("");
 
-  const onFinish = (values: Venue) => {
+  const { data, isLoading } = useGetShiftQuery({ venueId, date });
+  const timeSlots = data?.data;
+
+  const [bookByPoint, { isLoading: isLoadingPoint }] =
+    useAddBookUsingPointMutation();
+  const [bookByPayment, { isLoading: isLoadingPayment }] =
+    useAddBookUsingPaymentMutation();
+
+  const onFinish = (values: VenueBookingForm) => {
     setIsModalVisible(true);
-    console.log("Form values:", values);
+    setSelectedTimeRange(values.time);
   };
 
-  const handlePoints = () => {
-    SuccessSwal({
-      title: "By Points!",
-      text: ` Venue booked! `,
-    });
-    router.push(`/profile/booked-list`);
-    console.log("Points button clicked");
-    setIsModalVisible(false);
+  const handlePoints = async () => {
+    try {
+      if (!venueId || !date || !selectedTimeRange) {
+        throw new Error("Missing required booking information");
+      }
+
+      const bookingData = {
+        venue: venueId,
+        date: date,
+        timeRange: selectedTimeRange,
+      };
+
+      const response = await bookByPoint(bookingData).unwrap();
+
+      if (response.code === 200) {
+        SuccessSwal({
+          title: "Booked with Points!",
+          text: response.message || "Venue booked successfully!",
+        });
+        router.push(`/profile/booked-list`);
+      } else {
+        throw new Error(response.message || "Failed to book with points");
+      }
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred";
+      ErrorSwal({
+        title: "Booking Failed",
+        text: errorMessage || "Failed to book venue with points",
+      });
+    } finally {
+      setIsModalVisible(false);
+    }
   };
 
-  const handleCard = () => {
-    SuccessSwal({
-      title: "By Card Payments!",
-      text: ` Venue booked! `,
-    });
-    router.push(`/profile/booked-list`);
-    console.log("Card button clicked");
-    setIsModalVisible(false);
+  const handleCard = async () => {
+    try {
+      if (!venueId || !date || !selectedTimeRange) {
+        throw new Error("Missing required booking information");
+      }
+
+      const bookingData = {
+        venue: venueId,
+        date: date,
+        timeRange: selectedTimeRange,
+      };
+
+      const response = await bookByPayment(bookingData).unwrap();
+
+      if (response.code === 200 && response.data?.url) {
+        // Redirect to payment URL
+        window.location.href = response.data.url;
+      } else {
+        throw new Error(response.message || "Failed to initiate payment");
+      }
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred";
+      ErrorSwal({
+        title: "Payment Failed",
+        text: errorMessage || "Failed to process payment",
+      });
+      setIsModalVisible(false);
+    }
+  };
+
+  const handleDateChange = (
+    date: dayjs.Dayjs | null,
+    dateString: string | string[]
+  ) => {
+    if (typeof dateString === "string") {
+      setDate(dateString);
+    }
   };
 
   const handleCancel = () => {
@@ -75,14 +150,18 @@ export default function BookVenue() {
 
           {/* Right Side: Form */}
           <div className="w-full lg:w-1/2">
-            <Form onFinish={onFinish} layout="vertical">
+            <Form form={form} onFinish={onFinish} layout="vertical">
               {/* Date Input */}
               <Form.Item
                 label="Date"
                 name="date"
                 rules={[{ required: true, message: "Please select a date!" }]}
               >
-                <DatePicker className="w-full" />
+                <DatePicker
+                  className="w-full"
+                  onChange={handleDateChange}
+                  value={date ? dayjs(date) : null}
+                />
               </Form.Item>
 
               {/* Time Schedule Select */}
@@ -91,19 +170,38 @@ export default function BookVenue() {
                 name="time"
                 rules={[{ required: true, message: "Please select a time!" }]}
               >
-                <Select placeholder="Select a time slot" className="w-full">
-                  <Option value="02:00 am – 03:00 am">
-                    02:00 am – 03:00 am
-                  </Option>
-                  <Option value="10:00 am – 11:00 am">
-                    10:00 am – 11:00 am
-                  </Option>
-                  <Option value="02:00 pm – 03:00 pm">
-                    02:00 pm – 03:00 pm
-                  </Option>
-                  <Option value="10:00 pm – 11:00 pm">
-                    10:00 pm – 11:00 pm
-                  </Option>
+                <Select
+                  allowClear
+                  placeholder="Select a time slot"
+                  className="w-full"
+                  notFoundContent={
+                    isLoading ? (
+                      <Spin size="small" />
+                    ) : (
+                      "No time slots available"
+                    )
+                  }
+                >
+                  {timeSlots?.map(
+                    (slot: {
+                      timeRange: string;
+                      isMute: boolean;
+                      totalBooking: number;
+                    }) => (
+                      <Option
+                        key={slot.timeRange}
+                        value={slot.timeRange}
+                        disabled={slot.isMute}
+                      >
+                        <div className="flex justify-between">
+                          <span>{slot.timeRange}</span>
+                          <span className="text-gray-500 ml-2">
+                            ({slot.totalBooking} booked)
+                          </span>
+                        </div>
+                      </Option>
+                    )
+                  )}
                 </Select>
               </Form.Item>
 
@@ -127,14 +225,19 @@ export default function BookVenue() {
                   ]}
                 >
                   <Checkbox>
-                    <span className="text-white"> {"Don't show again."} </span>
+                    <span className="text-white">{"Don't show again."}</span>
                   </Checkbox>
                 </Form.Item>
               </div>
 
               {/* Book Button */}
               <Form.Item>
-                <Button type="primary" htmlType="submit" className="w-full ">
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="w-full"
+                  loading={isLoading}
+                >
                   Book Now
                 </Button>
               </Form.Item>
@@ -146,35 +249,33 @@ export default function BookVenue() {
       {/* Modal for Payment Confirmation */}
       <Modal
         title={
-          <div
-            style={{
-              textAlign: "center",
-              fontSize: "1.25rem",
-              fontWeight: "bold",
-            }}
-          >
-            Confirm Payment
-          </div>
+          <div className="text-center text-xl font-bold">Confirm Payment</div>
         }
-        visible={isModalVisible}
+        open={isModalVisible}
         onCancel={handleCancel}
         centered
         footer={
-          <div
-            style={{ display: "flex", justifyContent: "center", gap: "1rem" }}
-          >
-            <Button key="points" onClick={handlePoints}>
+          <div className="flex justify-center gap-4">
+            <Button
+              key="points"
+              onClick={handlePoints}
+              loading={isLoadingPoint}
+            >
               Points
             </Button>
-            <Button key="card" type="primary" onClick={handleCard}>
+            <Button
+              key="card"
+              type="primary"
+              onClick={handleCard}
+              loading={isLoadingPayment}
+            >
               Card
             </Button>
           </div>
         }
       >
-        <p style={{ textAlign: "center" }}>
-          Buy coins instantly for exclusive rewards, fast transactions, and
-          secure payments. Get yours now!
+        <p className="text-center">
+          Please choose your preferred payment method to complete the booking.
         </p>
       </Modal>
     </div>
