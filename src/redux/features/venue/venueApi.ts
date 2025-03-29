@@ -3,14 +3,24 @@ import baseApi from "@/redux/api/baseApi/baseApi";
 export const venueApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // gel all
-    getSomethings: builder.query({
+    getVenue: builder.query({
       query: () => {
         return {
-          url: "/",
+          url: "/venue",
           method: "GET",
         };
       },
-      providesTags: ["user"],
+      providesTags: ["venue"],
+    }),
+    // gel by id
+    getVenueById: builder.query({
+      query: (id) => {
+        return {
+          url: `/venue/${id}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["venue"],
     }),
     // contact us
     postSomethings: builder.mutation({
@@ -21,9 +31,13 @@ export const venueApi = baseApi.injectEndpoints({
           body: contactData,
         };
       },
-      invalidatesTags: ["user"],
+      invalidatesTags: ["venue"],
     }),
   }),
 });
 
-export const { useGetSomethingsQuery, usePostSomethingsMutation } = venueApi;
+export const {
+  useGetVenueQuery,
+  useGetVenueByIdQuery,
+  usePostSomethingsMutation,
+} = venueApi;

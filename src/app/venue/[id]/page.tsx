@@ -1,117 +1,131 @@
-// app/venues/[id]/page.tsx
-import Image, { StaticImageData } from "next/image";
+"use client";
+
+import { useGetVenueByIdQuery } from "@/redux/features/venue/venueApi";
+import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import VENUE_IMG from "../../../assets/venue_img.png";
 
-type Venue = {
-  _id: number;
-  name: string;
-  address: string;
-  image: StaticImageData;
-  title: string;
-  description: string;
-  price: number;
-  point: number;
-  maxCapacity: number;
-  details: string;
-};
+// type Address = {
+//   country: string;
+//   state: string;
+//   city: string;
+// };
 
-// Dummy JSON data
-const venues: Venue[] = [
-  {
-    _id: 1,
-    image: VENUE_IMG,
-    name: "Wembley Stadium",
-    address: "USA, New York, New York",
-    title: "Wembley Stadium",
-    description:
-      'Known as the "Home of Football," hosts major finals and international matches.',
-    price: 9,
-    point: 9,
-    maxCapacity: 15,
-    details:
-      "It has a 90,000-seat capacity and a retractable roof. The floor extends a little wide, allowing easy access to all areas. The venue is equipped with state-of-the-art facilities, including a large number of connected buildings and natural resources. It is designed to meet the needs of large-scale events and provides a safe and secure environment for all visitors.",
-  },
-  {
-    _id: 2,
-    image: VENUE_IMG,
-    name: "Wembley Stadium",
-    address: "USA, New York, New York",
-    title: "Wembley Stadium",
-    description:
-      'Known as the "Home of Football," hosts major finals and international matches.',
-    price: 9,
-    point: 9,
-    maxCapacity: 15,
-    details:
-      "It has a 90,000-seat capacity and a retractable roof. The floor extends a little wide, allowing easy access to all areas. The venue is equipped with state-of-the-art facilities, including a large number of connected buildings and natural resources. It is designed to meet the needs of large-scale events and provides a safe and secure environment for all visitors.",
-  },
-  {
-    _id: 3,
-    image: VENUE_IMG,
-    name: "Wembley Stadium",
-    address: "USA, New York, New York",
-    title: "Wembley Stadium",
-    description:
-      'Known as the "Home of Football," hosts major finals and international matches.',
-    price: 9,
-    point: 9,
-    maxCapacity: 15,
-    details:
-      "It has a 90,000-seat capacity and a retractable roof. The floor extends a little wide, allowing easy access to all areas. The venue is equipped with state-of-the-art facilities, including a large number of connected buildings and natural resources. It is designed to meet the needs of large-scale events and provides a safe and secure environment for all visitors.",
-  },
-  // Add more venues as needed
-];
+// type CoverPhoto = {
+//   url: string;
+//   path: string;
+// };
 
-export default function VenueDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const venue = venues.find((v) => v._id === parseInt(params.id));
+// type Venue = {
+//   id: string;
+//   name: string;
+//   title: string;
+//   address: Address;
+//   coverPhoto: CoverPhoto;
+//   startTime: string;
+//   endTime: string;
+//   scheduleDuration: number;
+//   description: string;
+//   price: number;
+//   points: number;
+//   maxCapacity: number;
+//   createdAt: string;
+// };
 
-  if (!venue) {
-    return <div>Venue not found</div>;
-  }
+export default function VenueDetailPage() {
+  const params = useParams();
+  const { id } = params;
+  console.log(id);
+  const baseImageUrl = process.env.NEXT_PUBLIC_IMAGE_URL || "";
+
+  const { data, isLoading, isError } = useGetVenueByIdQuery(id as string);
+  const venue = data?.data;
+
+  if (isLoading)
+    return (
+      <div className="min-h-screen bg-secondary flex items-center justify-center">
+        Loading venue details...
+      </div>
+    );
+  if (isError)
+    return (
+      <div className="min-h-screen bg-secondary flex items-center justify-center">
+        Error loading venue details
+      </div>
+    );
+  if (!venue)
+    return (
+      <div className="min-h-screen bg-secondary flex items-center justify-center">
+        Venue not found
+      </div>
+    );
+
+  const formattedAddress = `${venue.address?.city}, ${venue.address?.state}, ${venue.address?.country}`;
+  const imageUrl = venue.coverPhoto?.url
+    ? venue.coverPhoto.url.startsWith("http")
+      ? venue.coverPhoto.url
+      : baseImageUrl + venue.coverPhoto.url
+    : VENUE_IMG;
 
   return (
-    <div className="min-h-screen bg-secondary">
-      <div className="max-w-4xl mx-auto bg-secondary rounded-lg shadow-lg overflow-hidden">
+    <div className="min-h-screen bg-secondary py-8">
+      <div className="max-w-4xl mx-auto  rounded-lg shadow-lg overflow-hidden">
         {/* Image Section */}
         <div className="relative h-64 md:h-96">
           <Image
-            src={venue.image}
-            alt="Venue Image"
-            layout="fill"
-            objectFit="cover"
-            className="rounded-t-lg"
+            src={imageUrl}
+            alt={venue.name || "Venue Image"}
+            fill
+            className="object-cover rounded-t-lg"
+            priority
           />
         </div>
 
         {/* Details Section */}
-        <div className="p-8">
-          <div className="flex justify-between items-center">
-            <h1 className="text-4xl font-bold text-primary mb-4">
-              {venue.title}
-              <p className="text-primary text-sm"> {venue.address} </p>
-            </h1>
-            <div className="">
-              <div className="flex items-center text-2xl">
-                <span className=" font-semibold mr-2">Price:</span>
-                <span className=" text-yellow-500">${venue.price}</span>
+        <div className="p-6 md:p-8">
+          <div className="flex flex-col md:flex-row justify-between gap-12 items-start md:items-center mb-6">
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2">
+                {venue.name}
+              </h1>
+              <p className="text-lg text-gray-300 mb-2">{venue.title}</p>
+              <p className="text-primary text-sm">{formattedAddress}</p>
+            </div>
+
+            <div className="mt-4 md:mt-0">
+              <div className="flex items-center text-xl md:text-2xl">
+                <span className="font-semibold mr-2">Price:</span>
+                <span className="text-yellow-500">${venue.price}</span>
               </div>
-              <div className="flex items-center mb-6 text-2xl">
-                <span className=" font-semibold mr-2">Point:</span>
-                <span className=" text-yellow-500">{venue.point}</span>
+              <div className="flex items-center text-xl md:text-2xl">
+                <span className="font-semibold mr-2">Points:</span>
+                <span className="text-yellow-500">{venue.points}</span>
               </div>
             </div>
           </div>
-          <div className="flex items-center mb-6 text-primary">
-            <span className="text-lg font-semibold  mr-2">Max Capacity:</span>
-            <span className="text-xl fong-bold">{venue.maxCapacity}</span>
+
+          <div className="mb-6">
+            <div className="flex items-center text-primary">
+              <span className="text-lg font-semibold mr-2">Max Capacity:</span>
+              <span className="text-lg font-bold">
+                {venue.maxCapacity} people
+              </span>
+            </div>
+            <div className="flex items-center text-primary mt-2">
+              <span className="text-lg font-semibold mr-2">Opening Hours:</span>
+              <span className="text-lg">
+                {venue.startTime} - {venue.endTime}
+              </span>
+            </div>
           </div>
-          <p className=" mb-8">{venue.details}</p>
-          <Link href={`/book-venue`}>
+
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold mb-2">Description</h2>
+            <p className="whitespace-pre-line">{venue.description}</p>
+          </div>
+
+          <Link href={`/book-venue/${venue.id}`}>
             <button className="bg-button hover:bg-button/90 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
               Book Now
             </button>
