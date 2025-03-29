@@ -30,7 +30,7 @@ export const authApi = baseApi.injectEndpoints({
     forgetPassword: builder.mutation({
       query: (email) => {
         return {
-          url: "/user/forget-password",
+          url: "/auth/forgot-password",
           method: "POST",
           body: email,
         };
@@ -63,11 +63,14 @@ export const authApi = baseApi.injectEndpoints({
 
     // 06. reset password api endpoint
     resetPassword: builder.mutation({
-      query: ({ password }) => {
+      query: ({ password, confirmPassword }) => {
         return {
-          url: "/user/reset-password",
+          url: "/auth/reset-password",
           method: "POST",
-          body: password,
+          body: {
+            password: password,
+            confirmPassword: confirmPassword,
+          },
         };
       },
       invalidatesTags: ["auth"],

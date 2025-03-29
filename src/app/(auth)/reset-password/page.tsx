@@ -1,7 +1,7 @@
 "use client";
 
-// import { useResetPasswordMutation } from "@/redux/api/authApi/authApi";
-// import { ErrorSwal, SuccessSwal } from "@/utils/allSwal";
+import { useResetPasswordMutation } from "@/redux/api/authApi/authApi";
+import { ErrorSwal, SuccessSwal } from "@/utils/allSwal";
 import { Button, Form, Input, message } from "antd";
 import { useRouter } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa";
@@ -11,7 +11,7 @@ const ResetPassword = () => {
   // const searchParams = useSearchParams();
 
   const [form] = Form.useForm();
-  // const [resetPassword, { isLoading }] = useResetPasswordMutation();
+  const [resetPassword, { isLoading }] = useResetPasswordMutation();
 
   const onFinish = async (values: {
     password: string;
@@ -22,34 +22,34 @@ const ResetPassword = () => {
       return;
     }
 
-    // try {
-    //   const token = localStorage.getItem("user_token");
-    //   const response = await resetPassword({
-    //     token,
-    //     password: values.password,
-    //   }).unwrap();
+    try {
+      const token = localStorage.getItem("user_token");
+      const response = await resetPassword({
+        token,
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+      }).unwrap();
 
-    //   SuccessSwal({
-    //     title: ``,
-    //     text:
-    //       response?.message ||
-    //       response?.data.message ||
-    //       `Password Reset Successful!`,
-    //   });
+      SuccessSwal({
+        title: ``,
+        text:
+          response?.message ||
+          response?.data.message ||
+          `Password Reset Successful!`,
+      });
 
-    //   router.push("/login");
-    // } catch (error) {
-    //   ErrorSwal({
-    //     title: ``,
-    //     text:
-    //       (error as { message?: string; data?: { message?: string } })
-    //         ?.message ||
-    //       (error as { message?: string; data?: { message?: string } })?.data
-    //         ?.message ||
-    //       `Something went wrong!`,
-    //   });
-    // }
-    router.push("/login");
+      router.push("/login");
+    } catch (error) {
+      ErrorSwal({
+        title: ``,
+        text:
+          (error as { message?: string; data?: { message?: string } })
+            ?.message ||
+          (error as { message?: string; data?: { message?: string } })?.data
+            ?.message ||
+          `Something went wrong!`,
+      });
+    }
   };
 
   return (
@@ -113,7 +113,7 @@ const ResetPassword = () => {
             <Button
               type="primary"
               htmlType="submit"
-              // loading={isLoading}
+              loading={isLoading}
               className="w-full"
             >
               Reset Password

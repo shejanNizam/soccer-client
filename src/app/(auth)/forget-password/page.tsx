@@ -1,6 +1,6 @@
 "use client";
 
-// import { useForgetPasswordMutation } from "@/redux/api/authApi/authApi";
+import { useForgetPasswordMutation } from "@/redux/api/authApi/authApi";
 import { ErrorSwal, SuccessSwal } from "@/utils/allSwal";
 import { Button, Form, Input } from "antd";
 import Link from "next/link";
@@ -12,13 +12,14 @@ const ForgetPassword = () => {
   const [form] = Form.useForm();
 
   // Initialize the forgot password mutation hook
-  //   const [forgetPassword, { isLoading }] = useForgetPasswordMutation();
+  const [forgetPassword, { isLoading }] = useForgetPasswordMutation();
 
   const onFinish = async (values: { email: string }) => {
     try {
-      //   await forgetPassword({
-      //     email: values?.email,
-      //   }).unwrap();
+      const response = await forgetPassword({
+        email: values?.email,
+      }).unwrap();
+      localStorage.setItem("user_token", response?.data?.resetPasswordToken);
 
       SuccessSwal({
         title: "Sent OTP in your email!",
@@ -89,7 +90,7 @@ const ForgetPassword = () => {
               type="primary"
               htmlType="submit"
               size="large"
-              //   loading={isLoading}
+              loading={isLoading}
               className="w-full bg-green-500 hover:bg-green-600 transition-colors"
             >
               Send OTP
