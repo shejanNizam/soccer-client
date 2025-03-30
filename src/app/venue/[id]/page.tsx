@@ -69,7 +69,7 @@ export default function VenueDetailPage() {
             }
             alt={venue.name || "Venue Image"}
             fill
-            className="object-cover rounded-t-lg"
+            className="object-cover rounded-xl"
             priority
           />
         </div>

@@ -122,14 +122,14 @@ export default function Navbar() {
                     user ? " text-center " : ""
                   }`}
                 >
-                  {navigation.map((item) => (
+                  {navigation?.map((item) => (
                     <Link
                       key={item.name}
                       href={item.href}
-                      className={`px-4 font-medium hover:text-primary ${
+                      className={`px-4 font-semibold hover:text-button ${
                         isActive(item.href)
-                          ? "text-button underline"
-                          : "text-primary/80 hover:text-primary"
+                          ? "text-button underline font-bold"
+                          : "text-primary/80  "
                       }`}
                     >
                       {item.name}
@@ -162,7 +162,7 @@ export default function Navbar() {
                             className="w-16 h-16 rounded-full border-4 border-primary"
                             src={
                               user?.image
-                                ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${
+                                ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${
                                     user?.profileImage?.url ?? ""
                                   }`
                                 : default_img
@@ -237,7 +237,6 @@ export default function Navbar() {
                 isOpen ? "translate-x-0" : "-translate-x-full"
               } transition-transform duration-300 ease-in-out`}
             >
-              {/* Logo and Close Button */}
               <div className="flex items-center justify-between p-4 border-b border-gray-700">
                 <Link
                   href="/"
@@ -261,17 +260,16 @@ export default function Navbar() {
                 </button>
               </div>
 
-              {/* Navigation Links */}
               <nav className="mt-4">
-                {navigation.map((item) => (
+                {navigation?.map((item) => (
                   <Link
                     href={item.href}
                     key={item.name}
                     onClick={closeMenu}
-                    className={`flex items-center px-6 py-3 mt-2 ${
+                    className={`flex items-center px-6 py-3 mt-2 font-semibold hover:text-button ${
                       isActive(item.href)
-                        ? "text-primary underline font-semibold"
-                        : "text-primary hover:text-button"
+                        ? "text-button underline font-bold"
+                        : "text-primary/80 "
                     }`}
                   >
                     {item.name}
@@ -305,11 +303,6 @@ export default function Navbar() {
                           width={1000}
                           height={1000}
                           className="w-16 h-16 rounded-full border-4 border-primary"
-                          // src={
-                          //   user?.image
-                          //     ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${user.image}`
-                          //     : default_img
-                          // }
                           src={
                             user?.image
                               ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${

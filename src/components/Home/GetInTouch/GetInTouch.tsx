@@ -66,7 +66,7 @@ export default function GetInTouch() {
           <Image
             src={GET_IN_TOUCH}
             alt="Contact Us"
-            className="rounded-lg"
+            className="rounded-xl"
             layout="responsive"
             width={1000}
             height={1000}

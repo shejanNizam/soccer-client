@@ -1,6 +1,7 @@
 "use client";
 
 import { useGetVenueQuery } from "@/redux/features/venue/venueApi";
+import { Spin } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import VENUE_IMG from "../../assets/venue_img.png";
@@ -33,9 +34,16 @@ type Venue = {
 };
 
 const Venue = () => {
-  const { data } = useGetVenueQuery([]);
+  const { data, isLoading } = useGetVenueQuery([]);
   const venues = data?.data?.results || [];
   const baseImageUrl = process.env.NEXT_PUBLIC_IMAGE_URL || "";
+
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center w-full h-64">
+        <Spin size="large" />
+      </div>
+    );
 
   return (
     <div className="min-h-screen py-40">
@@ -55,7 +63,7 @@ const Venue = () => {
             className="flex flex-col md:flex-row items-center w-full rounded overflow-hidden shadow-lg"
           >
             {/* Left Side: Image */}
-            <div className="w-full md:w-1/2 h-64 md:h-auto">
+            <div className="w-full md:w-1/2 h-64 md:h-auto ">
               <Image
                 src={
                   venue?.coverPhoto?.url
@@ -65,7 +73,7 @@ const Venue = () => {
                 alt={venue.name || "Venue Image"}
                 width={500}
                 height={300}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover rounded-xl"
               />
             </div>
 

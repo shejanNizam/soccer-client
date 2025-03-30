@@ -42,7 +42,7 @@ export default function BookedListDetails() {
               alt="venue_image"
               width={600}
               height={400}
-              className="rounded-lg object-cover w-full h-64 lg:h-auto"
+              className="rounded-xl object-cover w-full h-64 lg:h-auto"
             />
           </div>
 

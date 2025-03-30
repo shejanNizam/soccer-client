@@ -67,7 +67,7 @@ const Faq: React.FC = () => {
             alt="FAQ"
             width={600}
             height={300}
-            className="rounded-lg w-full h-auto"
+            className="rounded-xl w-full h-auto"
           />
         </div>
 

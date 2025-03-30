@@ -3,6 +3,7 @@
 import {
   Button,
   Form,
+  FormInstance,
   Input,
   Modal,
   Upload,
@@ -15,8 +16,14 @@ import { FaPlus, FaTimes } from "react-icons/fa";
 interface EditProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (values: any) => Promise<void>;
-  form: any;
+  onSubmit: (values: {
+    name: string;
+    country: string;
+    state: string;
+    city: string;
+    phone: string;
+  }) => void;
+  form: FormInstance;
   previewImage: string | null;
   setPreviewImage: (url: string | null) => void;
   file: UploadFile | null;
@@ -24,7 +31,10 @@ interface EditProfileModalProps {
   idCardFile: File | null;
   setIdCardFile: (file: File | null) => void;
   isUpdating: boolean;
-  user: any;
+  user: {
+    profileImage?: { url?: string };
+    idCardImage?: { url?: string };
+  };
   baseUrl: string;
 }
 
@@ -114,10 +124,12 @@ export default function EditProfileModal({
               <div className="relative">
                 <Image
                   src={
-                    previewImage || user?.profileImage?.url?.startsWith("http")
+                    previewImage ||
+                    (user?.profileImage?.url?.startsWith("http")
                       ? user?.profileImage?.url
-                      : `${baseUrl}${user?.profileImage?.url}` ||
-                        "/default-profile.png"
+                      : user?.profileImage?.url
+                      ? `${baseUrl}${user.profileImage.url}`
+                      : "/default-profile.png")
                   }
                   alt="Profile Preview"
                   width={100}

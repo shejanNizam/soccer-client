@@ -148,7 +148,7 @@ export default function BookVenue() {
               alt="Venue Image"
               width={1000}
               height={1000}
-              className="rounded-lg"
+              className="rounded-xl"
             />
           </div>
 

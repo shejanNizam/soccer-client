@@ -95,13 +95,14 @@ const Featured: React.FC = () => {
         >
           {images.map((image) => (
             <div key={image.id} className="p-2">
-              <div className="w-full h-80 relative rounded-lg overflow-hidden">
+              <div className="w-full h-80 relative  overflow-hidden">
                 <Image
                   src={image.src}
                   alt={`Slide ${image.id}`}
                   layout="fill"
                   objectFit="cover"
                   placeholder="blur"
+                  className="rounded-xl"
                 />
               </div>
             </div>

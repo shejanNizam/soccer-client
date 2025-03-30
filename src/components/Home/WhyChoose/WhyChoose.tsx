@@ -17,7 +17,7 @@ export default function WhyChooseUs() {
             alt="Soccer Image"
             width={1000}
             height={1000}
-            className="rounded-lg w-full h-auto"
+            className="rounded-xl w-full h-auto"
           />
         </div>
 
