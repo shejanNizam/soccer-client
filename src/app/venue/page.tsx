@@ -33,18 +33,9 @@ type Venue = {
 };
 
 const Venue = () => {
-  const { data, isLoading, isError } = useGetVenueQuery([]);
+  const { data } = useGetVenueQuery([]);
   const venues = data?.data?.results || [];
   const baseImageUrl = process.env.NEXT_PUBLIC_IMAGE_URL || "";
-
-  if (isLoading)
-    return (
-      <div className="min-h-screen py-40 text-center">Loading venues...</div>
-    );
-  if (isError)
-    return (
-      <div className="min-h-screen py-40 text-center">Error loading venues</div>
-    );
 
   return (
     <div className="min-h-screen py-40">
@@ -66,13 +57,6 @@ const Venue = () => {
             {/* Left Side: Image */}
             <div className="w-full md:w-1/2 h-64 md:h-auto">
               <Image
-                // src={
-                //   venue.coverPhoto?.url
-                //     ? venue.coverPhoto.url.startsWith("http")
-                //       ? venue.coverPhoto.url
-                //       : baseImageUrl + venue.coverPhoto.url
-                //     : VENUE_IMG
-                // }
                 src={
                   venue?.coverPhoto?.url
                     ? `${baseImageUrl}${venue?.coverPhoto?.url}`
@@ -93,26 +77,6 @@ const Venue = () => {
                 </h1>
                 <h4 className="font-bold text-xl mb-2">{venue.title}</h4>
                 <p className="mb-2">{venue.description}</p>
-
-                {/* <div className="mb-2">
-                  <span className="font-semibold">Location: </span>
-                  {venue.address?.city}, {venue.address?.state},{" "}
-                  {venue.address?.country}
-                </div>
-
-                <div className="mb-2">
-                  <span className="font-semibold">Timing: </span>
-                  {venue.startTime} - {venue.endTime}
-                </div>
-
-                <div className="mb-2">
-                  <span className="font-semibold">Price: </span>${venue.price}
-                </div>
-
-                <div className="mb-2">
-                  <span className="font-semibold">Capacity: </span>
-                  {venue.maxCapacity} people
-                </div> */}
               </div>
 
               <div className="mt-4 flex gap-2">

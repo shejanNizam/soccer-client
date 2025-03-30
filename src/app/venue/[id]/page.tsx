@@ -1,6 +1,7 @@
 "use client";
 
 import { useGetVenueByIdQuery } from "@/redux/features/venue/venueApi";
+import { Spin } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -39,34 +40,21 @@ export default function VenueDetailPage() {
   // console.log(id);
   const baseImageUrl = process.env.NEXT_PUBLIC_IMAGE_URL || "";
 
-  const { data, isLoading, isError } = useGetVenueByIdQuery(id as string);
+  const { data, isLoading } = useGetVenueByIdQuery(id as string);
   const venue = data?.data;
 
   if (isLoading)
     return (
-      <div className="min-h-screen bg-secondary flex items-center justify-center">
-        Loading venue details...
+      <div className="flex justify-center items-center w-full h-64">
+        <Spin size="large" />
       </div>
     );
-  if (isError)
-    return (
-      <div className="min-h-screen bg-secondary flex items-center justify-center">
-        Error loading venue details
-      </div>
-    );
-  if (!venue)
-    return (
-      <div className="min-h-screen bg-secondary flex items-center justify-center">
-        Venue not found
-      </div>
-    );
-
   const formattedAddress = `${venue.address?.city}, ${venue.address?.state}, ${venue.address?.country}`;
-  const imageUrl = venue.coverPhoto?.url
-    ? venue.coverPhoto.url.startsWith("http")
-      ? venue.coverPhoto.url
-      : baseImageUrl + venue.coverPhoto.url
-    : VENUE_IMG;
+  // const imageUrl = venue.coverPhoto?.url
+  //   ? venue.coverPhoto.url.startsWith("http")
+  //     ? venue.coverPhoto.url
+  //     : baseImageUrl + venue.coverPhoto.url
+  //   : VENUE_IMG;
 
   return (
     <div className="min-h-screen bg-secondary py-8">
@@ -74,7 +62,11 @@ export default function VenueDetailPage() {
         {/* Image Section */}
         <div className="relative h-64 md:h-96">
           <Image
-            src={imageUrl}
+            src={
+              venue.coverPhoto.url
+                ? baseImageUrl + venue.coverPhoto.url
+                : VENUE_IMG
+            }
             alt={venue.name || "Venue Image"}
             fill
             className="object-cover rounded-t-lg"

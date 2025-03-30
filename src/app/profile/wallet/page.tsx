@@ -16,16 +16,18 @@ export default function Wallet() {
           key="1"
         >
           <div className="flex flex-col md:flex-row justify-center items-center">
-            <WalletBalance status="points" />
-            <RecentWalletHistory status="points" />
+            <WalletBalance paymentType="point" />
+            <RecentWalletHistory paymentType="point" />
           </div>
         </TabPane>
         <TabPane
           tab={<span className="font-bold text-xl text-white">Payments</span>}
           key="2"
         >
-          <WalletBalance status="payments" />
-          <RecentWalletHistory status="payments" />
+          <div className="flex flex-col md:flex-row justify-center items-center">
+            <WalletBalance paymentType="card" />
+            <RecentWalletHistory paymentType="card" />
+          </div>
         </TabPane>
       </Tabs>
     </div>

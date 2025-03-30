@@ -6,10 +6,11 @@ import type { ColumnsType } from "antd/es/table";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface Booking {
   id: string;
+  venue: string;
   key: string;
   siNo: number;
   venueName: string;
@@ -18,7 +19,11 @@ interface Booking {
   status: "approved" | "pending" | "re-schedule";
 }
 
-const BookedListTable: React.FC<{ status?: string }> = ({ status }) => {
+interface BookingTableProps {
+  status?: string;
+}
+
+const BookedListTable = ({ status }: BookingTableProps) => {
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
 
@@ -27,7 +32,7 @@ const BookedListTable: React.FC<{ status?: string }> = ({ status }) => {
     date: selectedDate ? dayjs(selectedDate).format("YYYY-MM-DD") : undefined,
   });
 
-  console.log(data?.data?.results);
+  //   console.log(data?.data?.results);
 
   // Transform API data to match table structure
   const dataSource =
@@ -38,7 +43,7 @@ const BookedListTable: React.FC<{ status?: string }> = ({ status }) => {
           transaction: string;
           timeRange: string;
           status: string;
-          venue?: { name: string };
+          venue: string;
           createdAt: string;
         },
         index: number
@@ -46,15 +51,17 @@ const BookedListTable: React.FC<{ status?: string }> = ({ status }) => {
         id: item.id,
         key: item.id,
         siNo: index + 1,
-        venueName: item.venue?.name || "Venue Name",
+        venue: item?.venue,
+        venueName: item.id || "Venue Name",
         scheduleDate: dayjs(item.createdAt).format("DD MMM YYYY"),
         scheduleTime: item.timeRange,
         status: item.status,
       })
     ) || [];
+  console.log(dataSource);
 
   const handleDetails = (record: Booking) => {
-    router.push(`/profile/booked-list/${record.id}`);
+    router.push(`/profile/booked-list/${record.venue}`);
   };
 
   const handleReschedule = (record: Booking) => {

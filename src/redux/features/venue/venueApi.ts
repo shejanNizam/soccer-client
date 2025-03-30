@@ -76,6 +76,16 @@ export const venueApi = baseApi.injectEndpoints({
       },
       providesTags: ["venue"],
     }),
+
+    //  get booked list by ID
+    getBookedListById: builder.query({
+      query: (id) => {
+        return {
+          url: `venue/${id}`,
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
@@ -86,4 +96,5 @@ export const {
   useAddBookUsingPointMutation,
   useAddBookUsingPaymentMutation,
   useGetBookedListQuery,
+  useGetBookedListByIdQuery,
 } = venueApi;

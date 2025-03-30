@@ -5,13 +5,13 @@ import { format } from "date-fns";
 const { Title, Text } = Typography;
 
 interface RecentWalletHistoryProps {
-  status: string;
+  paymentType: string;
 }
 
 export default function RecentWalletHistory({
-  status,
+  paymentType,
 }: RecentWalletHistoryProps) {
-  console.log(status);
+  console.log(paymentType);
   // Commented out Redux-related code
   // const { data } = useRecentPaymentHistoryQuery();
   // const historyData = data?.data || [];
