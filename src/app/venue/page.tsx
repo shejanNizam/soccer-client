@@ -94,7 +94,7 @@ const Venue = () => {
                 <h4 className="font-bold text-xl mb-2">{venue.title}</h4>
                 <p className="mb-2">{venue.description}</p>
 
-                <div className="mb-2">
+                {/* <div className="mb-2">
                   <span className="font-semibold">Location: </span>
                   {venue.address?.city}, {venue.address?.state},{" "}
                   {venue.address?.country}
@@ -112,7 +112,7 @@ const Venue = () => {
                 <div className="mb-2">
                   <span className="font-semibold">Capacity: </span>
                   {venue.maxCapacity} people
-                </div>
+                </div> */}
               </div>
 
               <div className="mt-4 flex gap-2">

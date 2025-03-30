@@ -58,6 +58,24 @@ export const venueApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["venue"],
     }),
+
+    // get venue request in dashboard (approved, pending, re-schedule)
+    getBookedList: builder.query({
+      query: ({ page = 1, limit = 15, status, date }) => {
+        console.log(status);
+        return {
+          url: `/venue-request`,
+          method: "GET",
+          params: {
+            status,
+            date,
+            page,
+            limit,
+          },
+        };
+      },
+      providesTags: ["venue"],
+    }),
   }),
 });
 
@@ -67,4 +85,5 @@ export const {
   useGetShiftQuery,
   useAddBookUsingPointMutation,
   useAddBookUsingPaymentMutation,
+  useGetBookedListQuery,
 } = venueApi;

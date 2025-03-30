@@ -10,7 +10,7 @@ import { ReactNode, useEffect } from "react";
 
 const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const { data } = useGetUserDataQuery(undefined);
-  console.log(data);
+  // console.log(data);
 
   const dispatch = useAppDispatch();
 

@@ -59,18 +59,22 @@ export default function BookVenue() {
       if (response.code === 200) {
         SuccessSwal({
           title: "Booked with Points!",
-          text: response.message || "Venue booked successfully!",
+          text:
+            response?.message ||
+            response?.data?.message ||
+            "Venue booked successfully!",
         });
         router.push(`/profile/booked-list`);
       } else {
         throw new Error(response.message || "Failed to book with points");
       }
     } catch (error: unknown) {
-      const errorMessage =
-        error instanceof Error ? error.message : "An unknown error occurred";
       ErrorSwal({
         title: "Booking Failed",
-        text: errorMessage || "Failed to book venue with points",
+        text:
+          (error as { data?: { message?: string } })?.data?.message ||
+          (error as { message?: string })?.message ||
+          "Failed to book venue with points",
       });
     } finally {
       setIsModalVisible(false);
@@ -122,7 +126,7 @@ export default function BookVenue() {
   };
 
   return (
-    <div className="min-h-screen bg-secondary py-40 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-secondary py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Heading and Subtitle */}
         <div className="text-center">
