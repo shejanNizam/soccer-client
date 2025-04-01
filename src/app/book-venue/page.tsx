@@ -200,7 +200,12 @@ export default function BookVenue() {
                         <div className="flex justify-between">
                           <span>{slot.timeRange}</span>
                           <span className="text-gray-500 ml-2">
-                            ({slot.totalBooking} booked)
+                            ({" "}
+                            <span className="text-secondary font-bold text-lg">
+                              {" "}
+                              {slot.totalBooking}{" "}
+                            </span>{" "}
+                            booked)
                           </span>
                         </div>
                       </Option>
