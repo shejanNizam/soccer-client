@@ -26,7 +26,9 @@ export default function WalletBalance({ paymentType }: WalletBalanceProps) {
           <h2 className="text-2xl font-bold text-gray-800">
             {paymentType === "point"
               ? data?.data?.totalPoints
-              : `$${data?.data?.totalCost}`}
+                ? data?.data?.totalPoints
+                : "N/A"
+              : `$${data?.data?.totalCost ? data?.data?.totalCost : "N/A"}`}
 
             {/* {balance?.toLocaleString(undefined, {
               minimumFractionDigits: 2,

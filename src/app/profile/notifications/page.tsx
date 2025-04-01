@@ -1,6 +1,5 @@
 "use client";
 
-// import { useAllNotificationsQuery } from "@/redux/features/notifications/notificationsApi";
 import { Pagination } from "antd";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -29,10 +28,9 @@ export default function Notifications() {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   // Fetch notifications data
-  // const { data, isLoading, error } =
-  //   useAllNotificationsQuery<NotificationsResponse>({
-  //     page: currentPage,
-  //   });
+  // const { data, isLoading } = useAllNotificationsQuery<NotificationsResponse>({
+  //   page: currentPage,
+  // });
 
   // Dummy data for notifications
   const dummyNotifications: Notification[] = [

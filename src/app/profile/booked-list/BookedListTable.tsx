@@ -32,9 +32,6 @@ const BookedListTable = ({ status }: BookingTableProps) => {
     date: selectedDate ? dayjs(selectedDate).format("YYYY-MM-DD") : undefined,
   });
 
-  //   console.log(data?.data?.results);
-
-  // Transform API data to match table structure
   const dataSource =
     data?.data?.results?.map(
       (
@@ -65,7 +62,7 @@ const BookedListTable = ({ status }: BookingTableProps) => {
   };
 
   const handleReschedule = (record: Booking) => {
-    console.log("Re-schedule clicked for:", record);
+    router.push(`/book-venue?venueId=${record?.venue}`);
   };
 
   const columns: ColumnsType<Booking> = [

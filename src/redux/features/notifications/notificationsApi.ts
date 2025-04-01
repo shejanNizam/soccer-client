@@ -6,11 +6,11 @@ export const notificationsApi = baseApi.injectEndpoints({
     allNotifications: builder.query({
       query: () => {
         return {
-          url: "/notifications",
+          url: "/notification",
           method: "GET",
         };
       },
-      // providesTags: ["notifications"],
+      providesTags: ["notification"],
     }),
   }),
 });

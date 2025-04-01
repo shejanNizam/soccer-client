@@ -73,7 +73,7 @@ const Venue = () => {
                 alt={venue.name || "Venue Image"}
                 width={500}
                 height={300}
-                className="w-full h-full object-cover rounded-xl"
+                className="w-full h-full object-cover rounded-xl px-4 md:px-0"
               />
             </div>
 

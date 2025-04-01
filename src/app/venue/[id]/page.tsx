@@ -57,10 +57,10 @@ export default function VenueDetailPage() {
   //   : VENUE_IMG;
 
   return (
-    <div className="min-h-screen bg-secondary py-8">
+    <div className="min-h-screen bg-secondary py-40">
       <div className="max-w-4xl mx-auto  rounded-lg shadow-lg overflow-hidden">
         {/* Image Section */}
-        <div className="relative h-64 md:h-96">
+        <div className="relative h-64 md:h-96 ">
           <Image
             src={
               venue.coverPhoto.url
@@ -69,7 +69,7 @@ export default function VenueDetailPage() {
             }
             alt={venue.name || "Venue Image"}
             fill
-            className="object-cover rounded-xl"
+            className="object-cover rounded-xl px-4 md:px-0"
             priority
           />
         </div>
