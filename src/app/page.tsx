@@ -1,5 +1,6 @@
 "use client";
 
+import Footer from "@/components/Footer/Footer";
 import Banner from "@/components/Home/Banner/Banner";
 import Faq from "@/components/Home/Faq/Faq";
 import Featured from "@/components/Home/Featured/Featured";
@@ -15,6 +16,7 @@ export default function Home() {
       <WhyChoose />
       <Faq />
       <GetInTouch />
+      <Footer />
       {/* bottom bar condiotionally show if user loggedin */}
       <BottomBar />
     </div>

@@ -1,4 +1,3 @@
-import Footer from "@/components/Footer/Footer";
 import Navbar from "@/components/Navbar/Navbar";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import type { Metadata } from "next";
@@ -37,8 +36,8 @@ export default function RootLayout({
           <AntdRegistry>
             <ThemeProvider>
               <Navbar />
-              <div className="py-20 bg-secondary">{children}</div>
-              <Footer />
+              <div className=" bg-secondary">{children}</div>
+              {/* <Footer /> */}
             </ThemeProvider>
           </AntdRegistry>
         </StoreProvider>

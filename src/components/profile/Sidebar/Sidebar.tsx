@@ -40,29 +40,12 @@ export default function Sidebar({
       icon: <FaBell />,
       path: "/profile/notifications",
     },
-    {
-      name: `Re-schedule`,
-      icon: <FaBell />,
-      path: "/profile/re-schedule",
-    },
+    // {
+    //   name: `Re-schedule`,
+    //   icon: <FaBell />,
+    //   path: "/profile/re-schedule",
+    // },
   ];
-
-  //   const menuItemsCont = [
-  //     { name: "My Profile", icon: <FaUser />, path: "/profile/user" },
-  //     {
-  //       name: "Current Projects",
-  //       icon: <FaProjectDiagram />,
-  //       path: "/profile/current-projects",
-  //     },
-  //     { name: "Pending Bids", icon: <FaCheckCircle />, path: "/profile/my-bids" },
-  //     { name: "Wallet", icon: <FaWallet />, path: "/profile/wallet" },
-  //     {
-  //       name: `Notifications`,
-  //       icon: <FaStar />,
-  //       path: "/profile/notifications",
-  //     },
-  //     { name: "My Review", icon: <FaBell />, path: "/profile/my-review" },
-  //   ];
 
   return (
     <div
@@ -107,45 +90,6 @@ export default function Sidebar({
               </Link>
             ))}
           </>
-          {/* {user?.role === "provider" ? (
-            <>
-              {menuItemsCont.map((item, index) => (
-                <Link
-                  href={item.path}
-                  key={item.name}
-                  ref={index === 0 ? firstLinkRef : null}
-                  onClick={onLinkClick}
-                  className={`flex items-center px-4 py-3 mt-2 ${
-                    pathname === item.path
-                      ? "bg-gray-700 text-primary font-semibold border-l-4 border-primary"
-                      : "hover:bg-gray-700 transition-colors duration-200"
-                  }`}
-                >
-                  <span className="text-lg">{item.icon}</span>
-                  {!isCollapsed && <span className="mx-3">{item.name}</span>}
-                </Link>
-              ))}
-            </>
-          ) : (
-            <>
-              {menuItems.map((item, index) => (
-                <Link
-                  href={item.path}
-                  key={item.name}
-                  ref={index === 0 ? firstLinkRef : null}
-                  onClick={onLinkClick}
-                  className={`flex items-center px-4 py-3 mt-2 ${
-                    pathname === item.path
-                      ? "bg-gray-700 text-primary font-semibold border-l-4 border-primary"
-                      : "hover:bg-gray-700 transition-colors duration-200"
-                  }`}
-                >
-                  <span className="text-lg">{item.icon}</span>
-                  {!isCollapsed && <span className="mx-3">{item.name}</span>}
-                </Link>
-              ))}
-            </>
-          )} */}
         </nav>
       </div>
     </div>
