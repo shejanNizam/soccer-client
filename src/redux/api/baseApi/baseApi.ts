@@ -37,7 +37,7 @@ const baseApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["auth", "user", "venue", "notification"],
+  tagTypes: ["auth", "user", "venue", "notification", "common"],
   endpoints: () => ({}),
 });
 
