@@ -32,6 +32,7 @@ export default function Navbar() {
   const { user } = useSelector(
     (state: { auth: { user: User | null } }) => state.auth
   );
+  console.log(user);
   const { data } = useNotificationCountQuery({});
   const [animateBadge, setAnimateBadge] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -229,7 +230,7 @@ export default function Navbar() {
                               ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${
                                   user?.profileImage?.url ?? ""
                                 }`
-                              : default_img
+                              : default_img.src
                           }
                           alt="profile_image"
                         />
@@ -362,9 +363,16 @@ export default function Navbar() {
                         width={1000}
                         height={1000}
                         className="w-16 h-16 rounded-full border-4 border-primary"
+                        // src={
+                        //   user?.profileImage?.url
+                        //     ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${
+                        //         user?.profileImage?.url ?? ""
+                        //       }`
+                        //     : default_img.src
+                        // }
                         src={
                           user?.profileImage?.url
-                            ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${
+                            ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${
                                 user?.profileImage?.url ?? ""
                               }`
                             : default_img
