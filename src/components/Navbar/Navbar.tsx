@@ -1,7 +1,7 @@
 "use client";
 
 import { logout } from "@/redux/slices/authSlice";
-import { Dropdown, Menu } from "antd";
+import { Badge, Dropdown, Menu } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import main_logo_img from "../../assets/mail_logo_img.png";
 
+import { useNotificationCountQuery } from "@/redux/features/notifications/notificationsApi";
 import default_img from "../../assets/user_img_default.png";
 
 const ProfileMenu = ({
@@ -50,7 +51,7 @@ export default function Navbar() {
   }
 
   const { user } = useSelector((state: { auth: { user: User } }) => state.auth);
-  // console.log(user);
+  const { data } = useNotificationCountQuery({});
 
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
@@ -140,7 +141,9 @@ export default function Navbar() {
                     href="/profile/notifications"
                     className="text-primary hover:text-primary/90 pr-4"
                   >
-                    <FaBell size={24} />
+                    <Badge count={data?.data?.count || 0} overflowCount={99}>
+                      <FaBell size={24} />
+                    </Badge>
                   </Link>
 
                   {user ? (
@@ -193,7 +196,9 @@ export default function Navbar() {
                   href="/profile/notifications"
                   className="text-primary hover:text-primary/90 pr-4"
                 >
-                  <FaBell size={24} />
+                  <Badge count={data?.data?.count || 0} overflowCount={99}>
+                    <FaBell size={24} />
+                  </Badge>
                 </Link>
 
                 <button

@@ -12,7 +12,18 @@ export const notificationsApi = baseApi.injectEndpoints({
       },
       providesTags: ["notification"],
     }),
+    // unseen notification count
+    notificationCount: builder.query({
+      query: () => {
+        return {
+          url: "/notification/count",
+          method: "GET",
+        };
+      },
+      providesTags: ["notification"],
+    }),
   }),
 });
 
-export const { useAllNotificationsQuery } = notificationsApi;
+export const { useAllNotificationsQuery, useNotificationCountQuery } =
+  notificationsApi;
