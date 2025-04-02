@@ -1,38 +1,29 @@
 "use client";
 
+import { useMarkAllReadMutation } from "@/redux/features/notifications/notificationsApi";
 import { Pagination } from "antd";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoNotificationsOutline } from "react-icons/io5";
 
-// Define the type for a notification
 interface Notification {
   _id: string;
   message: string;
   createdAt: string;
 }
 
-// Define the type for the API response
-// interface NotificationsResponse {
-//   data: {
-//     notifications: Notification[];
-//     pagination: {
-//       totalData: number;
-//     };
-//   };
-// }
-
 export default function Notifications() {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  // Fetch notifications data
-  // const { data, isLoading } = useAllNotificationsQuery<NotificationsResponse>({
-  //   page: currentPage,
-  // });
+  // কম্পোনেন্ট লোড হলে সব নোটিফিকেশন রিড করার জন্য মিউটেশন কল করা হচ্ছে
+  const [markAllRead] = useMarkAllReadMutation();
+  useEffect(() => {
+    markAllRead({}); // Pass an empty object or the required argument based on your API's expectations
+  }, [markAllRead]);
 
-  // Dummy data for notifications
+  // ডেমো ডেটার জন্য dummy data ব্যবহার করা হচ্ছে
   const dummyNotifications: Notification[] = [
     {
       _id: "1",
@@ -66,7 +57,7 @@ export default function Notifications() {
     },
   ];
 
-  // Simulate pagination with dummy data
+  // Pagination এর জন্য ডেমো ডেটা ভাগ করা হচ্ছে
   const pageSize = 10;
   const totalData = dummyNotifications.length;
   const paginatedData = dummyNotifications.slice(
@@ -74,27 +65,25 @@ export default function Notifications() {
     currentPage * pageSize
   );
 
-  // Handle back button click
   const handleBack = () => {
     router.back();
   };
 
-  // Handle pagination change
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
   return (
     <div className="bg-secondary min-h-screen px-4 py-8 md:py-0">
-      {/* Header */}
-      <div className="sticky top-20 flex justify-start gap-2 bg-primary rounded-t-md h-20 text-black py-8 pl-8 font-bold">
+      {/* হেডার */}
+      <div className="sticky top-20 flex justify-start items-start gap-2 bg-primary rounded-t-md h-20 text-secondary py-8 pl-8 font-bold">
         <button onClick={handleBack}>
-          <IoIosArrowBack />
+          <IoIosArrowBack size={28} />
         </button>
-        <h2>All Notifications</h2>
+        <h2 className="text-2xl font-semibold">All Notifications</h2>
       </div>
 
-      {/* Notifications List */}
+      {/* নোটিফিকেশনস লিস্ট */}
       <div className="ml-6">
         {paginatedData.length === 0 ? (
           <div className="text-center text-gray-500 mt-4">
@@ -118,7 +107,7 @@ export default function Notifications() {
         )}
       </div>
 
-      {/* Pagination Component */}
+      {/* Pagination কম্পোনেন্ট */}
       <div className="flex justify-center mt-4">
         <Pagination
           current={currentPage}

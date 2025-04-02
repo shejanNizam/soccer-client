@@ -1,11 +1,96 @@
+01. এই হুকটি একটি সকার্ট কানেকশন তৈরি করে (সকার্ট আইও ক্লায়েন্ট ব্যবহার করে) এবং ব্যাকএন্ড থেকে "newNotification" ইভেন্ট এলে একটি কলব্যাক ফাংশনকে কল করে। এই কলব্যাক ফাংশনের মাধ্যমে আপনি আপনার UI-তে নতুন নোটিফিকেশন যুক্ত করতে পারবেন।
+
+-------------------------- start ---------------------------------->>
 "use client";
 
-import { useSocket } from "@/hooks/useSocket";
-import {
-  notificationsApi,
+import { useEffect, useMemo } from "react";
+import { io, Socket } from "socket.io-client";
+
+const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL!;
+
+export const useSocket = (onNewNotification: (notification: any) => void) => {
+  // একাধিক কানেকশন এড়াতে useMemo ব্যবহার করা হচ্ছে
+  const socket: Socket = useMemo(() => io(SOCKET_URL), []);
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("Socket connected:", socket.id);
+    });
+
+    // ব্যাকএন্ড থেকে "newNotification" ইভেন্টের মাধ্যমে নতুন নোটিফিকেশন পাওয়ার জন্য লিসেন করা হচ্ছে
+    socket.on("newNotification", (notification) => {
+      console.log("New notification received:", notification);
+      onNewNotification(notification);
+    });
+
+    // কম্পোনেন্ট আনমাউন্ট হলে ক্লিনআপ করা হচ্ছে
+    return () => {
+      socket.off("newNotification");
+      socket.disconnect();
+    };
+  }, [socket, onNewNotification]);
+
+  return socket;
+};
+
+-------------------------- end ---------------------------------->>
+
+02. এখানে আমরা একটি নতুন মিউটেশন (markAllRead) যোগ করেছি, যা ব্যাকএন্ডের PATCH API কল করে সব নোটিফিকেশন রিড হিসাবে চিহ্নিত করে। এই মিউটেশন চালানোর পর, ট্যাগ ইনভ্যালিডেশনের মাধ্যমে RTK Query স্বয়ংক্রিয়ভাবে নতুন ডেটা ফেচ করে (যেমন, নোটিফিকেশন কাউন্ট আপডেট করে)।
+
+-------------------------- start ---------------------------------->>
+import baseApi from "@/redux/api/baseApi/baseApi";
+
+export const notificationsApi = baseApi.injectEndpoints({
+  endpoints: (builder) => ({
+    // সব নোটিফিকেশন পাওয়ার জন্য
+    allNotifications: builder.query({
+      query: () => ({
+        url: "/notification",
+        method: "GET",
+      }),
+      providesTags: ["notification"],
+    }),
+    // আনসিন (অপ্রত্যক্ষ) নোটিফিকেশনের সংখ্যা পাওয়ার জন্য
+    notificationCount: builder.query({
+      query: () => ({
+        url: "/notification/count",
+        method: "GET",
+      }),
+      providesTags: ["notification"],
+    }),
+    // সব নোটিফিকেশন রিড করা (read) করার জন্য
+    markAllRead: builder.mutation({
+      query: () => ({
+        url: "/notification/mark-all-read",
+        method: "PATCH",
+      }),
+      // এই মিউটেশন চালানোর পর "notification" ট্যাগ ইনভ্যালিডেট হবে, ফলে count এবং notifications list refetch হবে
+      invalidatesTags: ["notification"],
+    }),
+  }),
+});
+
+export const {
+  useAllNotificationsQuery,
   useNotificationCountQuery,
-} from "@/redux/features/notifications/notificationsApi";
-import { useAppDispatch } from "@/redux/hooks";
+  useMarkAllReadMutation,
+} = notificationsApi;
+
+-------------------------- end ---------------------------------->>
+
+
+Socket ইন্টিগ্রেশন:
+useSocket(handleNewNotification) হুকটি নতুন নোটিফিকেশন পাওয়ার সময় handleNewNotification কল করে, যার মাধ্যমে RTK Query-এর cache (notifications list এবং count) আপডেট করা হচ্ছে।
+
+Badge Animation:
+যখন নতুন নোটিফিকেশন আসে, তখন animateBadge স্টেট true করা হয় এবং টেইমআউটের মাধ্যমে ১ সেকেন্ড পরে false করা হয়। এই স্টেটের উপর ভিত্তি করে Tailwind এর animate-bounce ক্লাস প্রয়োগ করা হয়, যাতে ব্যাজটি অ্যানিমেটেড দেখায়।
+
+নেভিগেশন:
+ব্যাজের উপর ক্লিক করলে ব্যবহারকারী নোটিফিকেশন পেজে চলে যাবে, যেখানে পরবর্তীতে সব নোটিফিকেশন রিড করা হবে।
+
+-------------------------- start ---------------------------------->>
+"use client";
+
 import { logout } from "@/redux/slices/authSlice";
 import { Badge, Dropdown, Menu } from "antd";
 import Image from "next/image";
@@ -18,6 +103,13 @@ import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import main_logo_img from "../../assets/mail_logo_img.png";
 import default_img from "../../assets/user_img_default.png";
+
+import { useSocket } from "@/hooks/useSocket";
+import {
+  notificationsApi,
+  useNotificationCountQuery,
+} from "@/redux/features/notifications/notificationsApi";
+import { useAppDispatch } from "@/redux/hooks";
 
 export default function Navbar() {
   const dispatch = useAppDispatch();
@@ -199,8 +291,7 @@ export default function Navbar() {
                     className="text-primary hover:text-primary/90 pr-4"
                   >
                     <Badge
-                      count="9"
-                      // count={data?.data?.count || 0}
+                      count={data?.data?.count || 0}
                       overflowCount={99}
                       className={animateBadge ? "animate-bounce" : ""}
                     >
@@ -253,11 +344,7 @@ export default function Navbar() {
                   href="/profile/notifications"
                   className="text-primary hover:text-primary/90 pr-4"
                 >
-                  <Badge
-                    count="7"
-                    // count={data?.data?.count || 0}
-                    overflowCount={99}
-                  >
+                  <Badge count={data?.data?.count || 0} overflowCount={99}>
                     <FaBell size={24} />
                   </Badge>
                 </Link>
@@ -391,3 +478,137 @@ export default function Navbar() {
     </>
   );
 }
+
+-------------------------- end ---------------------------------->>
+
+Mark as Read:
+যখন এই কম্পোনেন্ট লোড হয় (নোটিফিকেশন পেজে প্রবেশ করা হলে), markAllRead মিউটেশন কল করা হয় যা ব্যাকএন্ডে রিকোয়েস্ট পাঠায়। ফলে নোটিফিকেশন কাউন্ট রিফেচ হয়ে শূন্য (0) দেখায়।
+
+ডেমো ডেটা:
+এখানে ডেমো ডেটা ব্যবহার করা হয়েছে। বাস্তবে, আপনি useAllNotificationsQuery হুকের মাধ্যমে ডেটা ফেচ করবেন।
+
+-------------------------- start ---------------------------------->>
+"use client";
+
+import { useMarkAllReadMutation } from "@/redux/features/notifications/notificationsApi";
+import { Pagination } from "antd";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { IoIosArrowBack } from "react-icons/io";
+import { IoNotificationsOutline } from "react-icons/io5";
+
+interface Notification {
+  _id: string;
+  message: string;
+  createdAt: string;
+}
+
+export default function Notifications() {
+  const router = useRouter();
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  // কম্পোনেন্ট লোড হলে সব নোটিফিকেশন রিড করার জন্য মিউটেশন কল করা হচ্ছে
+  const [markAllRead] = useMarkAllReadMutation();
+  useEffect(() => {
+    markAllRead({}); // Pass an empty object or the required argument based on your API's expectations
+  }, [markAllRead]);
+
+  // ডেমো ডেটার জন্য dummy data ব্যবহার করা হচ্ছে
+  const dummyNotifications: Notification[] = [
+    {
+      _id: "1",
+      message: "Your order has been shipped.",
+      createdAt: "2023-10-01T12:00:00Z",
+    },
+    {
+      _id: "2",
+      message: "New message from support.",
+      createdAt: "2023-10-02T14:30:00Z",
+    },
+    {
+      _id: "3",
+      message: "Your account has been updated.",
+      createdAt: "2023-10-03T09:15:00Z",
+    },
+    {
+      _id: "4",
+      message: "Reminder: Your appointment is tomorrow.",
+      createdAt: "2023-10-04T18:45:00Z",
+    },
+    {
+      _id: "5",
+      message: "Payment received for invoice #12345.",
+      createdAt: "2023-10-05T11:00:00Z",
+    },
+    {
+      _id: "6",
+      message: "Your subscription is about to expire.",
+      createdAt: "2023-10-06T16:20:00Z",
+    },
+  ];
+
+  // Pagination এর জন্য ডেমো ডেটা ভাগ করা হচ্ছে
+  const pageSize = 10;
+  const totalData = dummyNotifications.length;
+  const paginatedData = dummyNotifications.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
+  const handleBack = () => {
+    router.back();
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  return (
+    <div className="bg-secondary min-h-screen px-4 py-8 md:py-0">
+      {/* হেডার */}
+      <div className="sticky top-20 flex justify-start gap-2 bg-primary rounded-t-md h-20 text-black py-8 pl-8 font-bold">
+        <button onClick={handleBack}>
+          <IoIosArrowBack />
+        </button>
+        <h2>All Notifications</h2>
+      </div>
+
+      {/* নোটিফিকেশনস লিস্ট */}
+      <div className="ml-6">
+        {paginatedData.length === 0 ? (
+          <div className="text-center text-gray-500 mt-4">
+            No notifications available
+          </div>
+        ) : (
+          paginatedData.map((notification) => (
+            <div
+              key={notification._id}
+              className="flex justify-start items-center gap-4 m-4"
+            >
+              <IoNotificationsOutline className="bg-[#E8EAEF] w-[40px] h-[40px] rounded-sm text-secondary p-2" />
+              <div>
+                <p className="text-xl text-white">{notification.message}</p>
+                <p className="text-white">
+                  {new Date(notification.createdAt).toLocaleString()}
+                </p>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Pagination কম্পোনেন্ট */}
+      <div className="flex justify-center mt-4">
+        <Pagination
+          current={currentPage}
+          pageSize={pageSize}
+          total={totalData}
+          onChange={handlePageChange}
+          showSizeChanger={false}
+        />
+      </div>
+    </div>
+  );
+}
+
+-------------------------- end ---------------------------------->>

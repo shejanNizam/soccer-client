@@ -55,7 +55,7 @@ export default function Sidebar({
     >
       <div className="flex flex-col h-full">
         {/* Header */}
-        <div className="flex justify-between items-center p-4">
+        <div className="flex justify-between items-center p-6">
           <div></div>
           <button
             onClick={toggleSidebarCollapsed}
