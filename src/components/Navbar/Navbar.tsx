@@ -75,7 +75,7 @@ export default function Navbar() {
 
       // Trigger badge animation
       setAnimateBadge(true);
-      const timer = setTimeout(() => setAnimateBadge(false), 3000);
+      const timer = setTimeout(() => setAnimateBadge(false), 1000);
       return () => clearTimeout(timer);
     },
     [dispatch, refetchCount]
@@ -88,7 +88,7 @@ export default function Navbar() {
   useEffect(() => {
     const interval = setInterval(() => {
       refetchCount();
-    }, 30000);
+    }, 10000);
     return () => clearInterval(interval);
   }, [refetchCount]);
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useAllNotificationsQuery } from "@/redux/features/notifications/notificationsApi";
-import { Pagination } from "antd";
+import { Pagination, Spin } from "antd";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
@@ -35,11 +35,15 @@ export default function Notifications() {
   const pageSize = 15;
 
   // Fetch notifications with pagination
-  const {
-    data: apiResponse,
-    isLoading,
-    isError,
-  } = useAllNotificationsQuery({ page: currentPage, limit: pageSize });
+  const { data: apiResponse, isLoading } = useAllNotificationsQuery(
+    {
+      page: currentPage,
+      limit: pageSize,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
 
   // Extract data from the response
   const notifications = apiResponse?.data?.results || [];
@@ -58,21 +62,12 @@ export default function Notifications() {
     setCurrentPage(page);
   };
 
-  if (isLoading) {
+  if (isLoading)
     return (
-      <div className="bg-secondary min-h-screen px-4 py-8 md:py-0">
-        Loading...
+      <div className="flex justify-center items-center w-full h-64">
+        <Spin size="large" />
       </div>
     );
-  }
-
-  if (isError) {
-    return (
-      <div className="bg-secondary min-h-screen px-4 py-8 md:py-0">
-        Error loading notifications
-      </div>
-    );
-  }
 
   return (
     <div className="bg-secondary min-h-screen px-4 py-8 md:py-0">
@@ -95,7 +90,7 @@ export default function Notifications() {
             <div
               key={`${notification.receiverId}-${notification.createdAt}`}
               className={`flex justify-start items-center gap-4 m-4 p-3 rounded-lg ${
-                notification.viewStatus ? "bg-gray-800" : "bg-blue-900"
+                notification.viewStatus ? "shadow-2xl" : "bg-hash"
               }`}
             >
               <IoNotificationsOutline className="bg-[#E8EAEF] w-[40px] h-[40px] rounded-sm text-secondary p-2" />
