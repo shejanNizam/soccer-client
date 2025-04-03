@@ -1,6 +1,8 @@
 "use client";
-import { List, Tag, Typography } from "antd";
+import { useGetWalletQuery } from "@/redux/features/wallet/walletApi";
+import { List, Pagination, Tag, Typography } from "antd";
 import { format } from "date-fns";
+import { useState } from "react";
 
 const { Title, Text } = Typography;
 
@@ -11,50 +13,61 @@ interface RecentWalletHistoryProps {
 export default function RecentWalletHistory({
   paymentType,
 }: RecentWalletHistoryProps) {
-  console.log(paymentType);
-  // Commented out Redux-related code
-  // const { data } = useRecentPaymentHistoryQuery();
-  // const historyData = data?.data || [];
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5); // You can adjust this as needed
 
-  // Dummy JSON data
-  const historyData = [
-    {
-      historyName: "Deposit",
-      paymentType: "deposit",
-      balance: 100,
-      createdAt: "2023-10-01T12:34:56Z",
-    },
-    {
-      historyName: "Withdrawal",
-      paymentType: "withdrawal",
-      balance: 50,
-      createdAt: "2023-10-02T14:20:10Z",
-    },
-    {
-      historyName: "Deposit",
-      paymentType: "deposit",
-      balance: 200,
-      createdAt: "2023-10-03T09:15:30Z",
-    },
-    {
-      historyName: "Withdrawal",
-      paymentType: "withdrawal",
-      balance: 75,
-      createdAt: "2023-10-04T16:45:00Z",
-    },
-  ];
+  // Fetch data with pagination parameters
+  const { data, isLoading } = useGetWalletQuery({
+    paymentType,
+    page: currentPage,
+    limit: pageSize,
+  });
 
-  const formattedTransactions = historyData.map((transaction) => {
+  const historyData = data?.data?.transactionList || [];
+  const totalItems = data?.data?.totalResults || 0;
+
+  const getTransactionLabel = (paymentType: string) => {
+    switch (paymentType) {
+      case "point":
+        return "Points Transaction";
+      // Add more cases as needed for other payment types
+      default:
+        return "Transaction";
+    }
+  };
+
+  interface Transaction {
+    id: string;
+    paymentType: string;
+    points: number;
+    createdAt: string;
+  }
+
+  const formattedTransactions: {
+    label: string;
+    amount: string;
+    date: string;
+    color: string;
+    key: string;
+  }[] = historyData.map((transaction: Transaction) => {
     return {
-      label: transaction.historyName,
+      label: getTransactionLabel(transaction.paymentType),
       amount:
-        transaction.paymentType === "deposit"
-          ? `+ $${transaction.balance}`
-          : `- $${transaction.balance}`,
+        transaction.paymentType === "point"
+          ? `+ ${transaction.points} pts`
+          : `- ${transaction.points} pts`,
       date: format(new Date(transaction.createdAt), "dd MMM yyyy, hh:mm a"),
-      color: transaction.paymentType === "deposit" ? "green" : "red",
+      color: "green", // You can adjust this based on your logic
+      key: transaction.id,
     };
   });
+
+  const handlePageChange = (page: number, pageSize?: number) => {
+    setCurrentPage(page);
+    if (pageSize) {
+      setPageSize(pageSize);
+    }
+  };
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-8 w-full sm:w-96 mx-auto">
@@ -64,8 +77,12 @@ export default function RecentWalletHistory({
       <List
         itemLayout="horizontal"
         dataSource={formattedTransactions}
+        loading={isLoading}
         renderItem={(item) => (
-          <List.Item className="hover:bg-gray-50 rounded transition">
+          <List.Item
+            className="hover:bg-gray-50 rounded transition"
+            key={item.key}
+          >
             <List.Item.Meta
               title={<Text strong>{item.label}</Text>}
               description={<Text type="secondary">{item.date}</Text>}
@@ -79,6 +96,21 @@ export default function RecentWalletHistory({
           </List.Item>
         )}
       />
+      {totalItems > 0 && (
+        <div className="mt-4 flex justify-center">
+          <Pagination
+            current={currentPage}
+            pageSize={pageSize}
+            total={totalItems}
+            onChange={handlePageChange}
+            showSizeChanger
+            pageSizeOptions={["5", "10", "15", "20"]}
+            showTotal={(total, range) =>
+              `${range[0]}-${range[1]} of ${total} items`
+            }
+          />
+        </div>
+      )}
     </div>
   );
 }
