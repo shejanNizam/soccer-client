@@ -22,9 +22,11 @@ interface User {
   phone?: string;
   profileImage?: {
     url?: string;
+    path?: string;
   };
   idCardImage?: {
     url?: string;
+    path?: string;
   };
   points?: number;
   role?: string;
@@ -47,6 +49,7 @@ export default function UserProfile() {
   const [file, setFile] = useState<UploadFile | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [idCardFile, setIdCardFile] = useState<File | null>(null);
+  const [idCardError, setIdCardError] = useState(false);
 
   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
     useState<boolean>(false);
@@ -59,7 +62,7 @@ export default function UserProfile() {
       setPreviewImage(
         user.profileImage.url.startsWith("http")
           ? user.profileImage.url
-          : baseUrl + user.profileImage.url
+          : `${baseUrl}${user.profileImage.url}`
       );
     } else {
       setPreviewImage(default_img.src);
@@ -117,8 +120,32 @@ export default function UserProfile() {
 
       handleCloseModal();
     } catch (error) {
-      console.log(error);
+      console.error("Update error:", error);
       message.error("Failed to update profile. Please try again.");
+    }
+  };
+
+  const handleIdCardClick = async (e: React.MouseEvent) => {
+    if (!user?.idCardImage?.url) {
+      e.preventDefault();
+      return;
+    }
+
+    // Optional: Verify the file exists before opening
+    const idCardUrl = user.idCardImage.url.startsWith("http")
+      ? user.idCardImage.url
+      : `${baseUrl}${user.idCardImage.url}`;
+
+    try {
+      const response = await fetch(idCardUrl, { method: "HEAD" });
+      if (!response.ok) {
+        e.preventDefault();
+        setIdCardError(true);
+        message.error("ID Card not found. Please upload again.");
+      }
+    } catch (error) {
+      console.error("Error checking ID card:", error);
+      // Continue with opening the link anyway
     }
   };
 
@@ -140,6 +167,7 @@ export default function UserProfile() {
           className="w-32 h-32 md:w-64 md:h-64 object-cover rounded-full"
           width={256}
           height={256}
+          onError={() => setPreviewImage(default_img.src)}
         />
 
         {/* Profile Information */}
@@ -198,18 +226,23 @@ export default function UserProfile() {
                 {user?.idCardImage?.url ? (
                   <Link
                     href={
-                      user.idCardImage.url.startsWith("http")
-                        ? user.idCardImage.url
+                      user?.idCardImage?.url.startsWith("http")
+                        ? user?.idCardImage?.url
                         : `${baseUrl}${user.idCardImage.url}`
                     }
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-purple-600 font-semibold hover:underline"
+                    onClick={handleIdCardClick}
                   >
                     View ID Card
                   </Link>
                 ) : (
-                  <p className="text-gray-200">No ID card uploaded</p>
+                  <p className="text-gray-200">
+                    {idCardError
+                      ? "ID Card not available"
+                      : "No ID card uploaded"}
+                  </p>
                 )}
               </div>
             </div>
