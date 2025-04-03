@@ -5,7 +5,16 @@ import {
   useGetShiftQuery,
 } from "@/redux/features/venue/venueApi";
 import { ErrorSwal, SuccessSwal } from "@/utils/allSwal";
-import { Button, Checkbox, DatePicker, Form, Modal, Select, Spin } from "antd";
+import {
+  Button,
+  Checkbox,
+  DatePicker,
+  Form,
+  message,
+  Modal,
+  Select,
+  Spin,
+} from "antd";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -99,14 +108,21 @@ export default function BookVenue() {
         // Redirect to payment URL
         window.location.href = response.data.url;
       } else {
-        throw new Error(response.message || "Failed to initiate payment");
+        message.error(
+          response?.message ||
+            response?.data?.message ||
+            "Failed to initiate payment. Please try again."
+        );
+        // throw new Error(response.message || "Failed to initiate payment");
       }
     } catch (error: unknown) {
-      const errorMessage =
-        error instanceof Error ? error.message : "An unknown error occurred";
       ErrorSwal({
         title: "Payment Failed",
-        text: errorMessage || "Failed to process payment",
+        text:
+          (error as { message?: string; data?: { message?: string } })
+            ?.message ||
+          (error as { data?: { message?: string } })?.data?.message ||
+          "Failed to process payment",
       });
       setIsModalVisible(false);
     }

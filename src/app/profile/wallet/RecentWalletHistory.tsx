@@ -10,13 +10,22 @@ interface RecentWalletHistoryProps {
   paymentType: string;
 }
 
+interface Transaction {
+  id: string;
+  paymentType: string;
+  points?: number;
+  amount?: number;
+  createdAt: string;
+  venue?: string;
+  transactionId: string;
+}
+
 export default function RecentWalletHistory({
   paymentType,
 }: RecentWalletHistoryProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5); // You can adjust this as needed
+  const [pageSize, setPageSize] = useState(5);
 
-  // Fetch data with pagination parameters
   const { data, isLoading } = useGetWalletQuery({
     paymentType,
     page: currentPage,
@@ -26,41 +35,46 @@ export default function RecentWalletHistory({
   const historyData = data?.data?.transactionList || [];
   const totalItems = data?.data?.totalResults || 0;
 
-  const getTransactionLabel = (paymentType: string) => {
-    switch (paymentType) {
+  const getTransactionLabel = (transaction: Transaction) => {
+    switch (transaction.paymentType) {
       case "point":
         return "Points Transaction";
-      // Add more cases as needed for other payment types
+      case "card":
+        return "Card Payment";
       default:
         return "Transaction";
     }
   };
 
-  interface Transaction {
-    id: string;
-    paymentType: string;
-    points: number;
-    createdAt: string;
-  }
+  const getTransactionAmount = (transaction: Transaction) => {
+    switch (transaction.paymentType) {
+      case "point":
+        return `+ ${transaction.points} pts`;
+      case "card":
+        return `- $${transaction.amount?.toFixed(2)}`;
+      default:
+        return "";
+    }
+  };
 
-  const formattedTransactions: {
-    label: string;
-    amount: string;
-    date: string;
-    color: string;
-    key: string;
-  }[] = historyData.map((transaction: Transaction) => {
-    return {
-      label: getTransactionLabel(transaction.paymentType),
-      amount:
-        transaction.paymentType === "point"
-          ? `+ ${transaction.points} pts`
-          : `- ${transaction.points} pts`,
-      date: format(new Date(transaction.createdAt), "dd MMM yyyy, hh:mm a"),
-      color: "green", // You can adjust this based on your logic
-      key: transaction.id,
-    };
-  });
+  const getTransactionColor = (transaction: Transaction) => {
+    switch (transaction.paymentType) {
+      case "point":
+        return "green";
+      case "card":
+        return "volcano";
+      default:
+        return "blue";
+    }
+  };
+
+  const formattedTransactions = historyData.map((transaction: Transaction) => ({
+    label: getTransactionLabel(transaction),
+    amount: getTransactionAmount(transaction),
+    date: format(new Date(transaction.createdAt), "dd MMM yyyy, hh:mm a"),
+    color: getTransactionColor(transaction),
+    key: transaction.id,
+  }));
 
   const handlePageChange = (page: number, pageSize?: number) => {
     setCurrentPage(page);
@@ -72,11 +86,19 @@ export default function RecentWalletHistory({
   return (
     <div className="bg-white rounded-xl shadow-lg p-8 w-full sm:w-96 mx-auto">
       <Title level={4} className="text-gray-800 mb-6">
-        Recent History
+        Recent {paymentType === "point" ? "Points" : "Card"} History
       </Title>
       <List
         itemLayout="horizontal"
-        dataSource={formattedTransactions}
+        dataSource={
+          formattedTransactions as Array<{
+            label: string;
+            amount: string;
+            date: string;
+            color: string;
+            key: string;
+          }>
+        }
         loading={isLoading}
         renderItem={(item) => (
           <List.Item
@@ -87,10 +109,7 @@ export default function RecentWalletHistory({
               title={<Text strong>{item.label}</Text>}
               description={<Text type="secondary">{item.date}</Text>}
             />
-            <Tag
-              color={item.color === "green" ? "green" : "volcano"}
-              style={{ fontWeight: "bold" }}
-            >
+            <Tag color={item.color} style={{ fontWeight: "bold" }}>
               {item.amount}
             </Tag>
           </List.Item>

@@ -21,19 +21,17 @@ export default function WalletBalance({ paymentType }: WalletBalanceProps) {
         />
         <div className="absolute top-8 left-4 md:top-16 md:left-12 text-center">
           <p className="text-green-700 text-sm font-medium">
-            {paymentType === "point" ? `Available points` : `Available balance`}
+            {paymentType === "point" ? `Available points` : `Total Cost`}
           </p>
           <h2 className="text-2xl font-bold text-gray-800">
             {paymentType === "point"
               ? data?.data?.totalPoints
+              : `$${data?.data?.totalCost}`}
+            {/* {paymentType === "point"
+              ? data?.data?.totalPoints
                 ? data?.data?.totalPoints
                 : "N/A"
-              : `$${data?.data?.totalCost ? data?.data?.totalCost : "N/A"}`}
-
-            {/* {balance?.toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })} */}
+              : `$${data?.data?.totalCost ? data?.data?.totalCost : "N/A"}`} */}
           </h2>
         </div>
       </div>
