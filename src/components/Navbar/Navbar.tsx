@@ -11,7 +11,7 @@ import { Badge, Dropdown, Menu } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FaBars, FaBell, FaTimes } from "react-icons/fa";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { useSelector } from "react-redux";
@@ -26,20 +26,20 @@ export default function Navbar() {
     name: string;
     email: string;
     profileImage?: { url: string };
-    // Add other fields as per your user object structure
   }
 
   const { user } = useSelector(
     (state: { auth: { user: User | null } }) => state.auth
   );
-  console.log(user);
-  const { data } = useNotificationCountQuery({});
+  const { data: countData, refetch: refetchCount } = useNotificationCountQuery(
+    {}
+  );
   const [animateBadge, setAnimateBadge] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
-  // নতুন নোটিফিকেশন এলে RTK Query cache আপডেট করার জন্য ফাংশন
+  // Handle new notifications from WebSocket
   const handleNewNotification = useCallback(
     (notification: {
       id: string;
@@ -47,7 +47,7 @@ export default function Navbar() {
       timestamp: string;
       type?: string;
     }) => {
-      // notifications list cache আপডেট: নতুন নোটিফিকেশনকে প্রথমে যোগ করা হচ্ছে
+      // Update notifications list cache
       dispatch(
         notificationsApi.util.updateQueryData(
           "allNotifications",
@@ -64,31 +64,33 @@ export default function Navbar() {
           }) => {
             draft.data.results.unshift({
               ...notification,
-              type: notification.type || "default", // Provide a default value for type
+              type: notification.type || "default",
             });
           }
         )
       );
-      // notification count cache আপডেট: কাউন্ট ১ বাড়ানো হচ্ছে
-      dispatch(
-        notificationsApi.util.updateQueryData(
-          "notificationCount",
-          undefined,
-          (draft: { data: { count: number } }) => {
-            draft.data.count += 1;
-          }
-        )
-      );
 
-      // ব্যাজ অ্যানিমেশন ট্রিগার করা হচ্ছে
+      // Refetch the count to ensure it's up-to-date
+      refetchCount();
+
+      // Trigger badge animation
       setAnimateBadge(true);
-      setTimeout(() => setAnimateBadge(false), 1000);
+      const timer = setTimeout(() => setAnimateBadge(false), 3000);
+      return () => clearTimeout(timer);
     },
-    [dispatch]
+    [dispatch, refetchCount]
   );
 
-  // সকার্ট কানেকশন ইনিশিয়ালাইজ করা হচ্ছে
+  // Initialize WebSocket connection
   useSocket(handleNewNotification);
+
+  // Poll for notification count updates every 30 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetchCount();
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [refetchCount]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -163,7 +165,7 @@ export default function Navbar() {
         <div className="px-4 md:container">
           <div className="max-w-7xl mx-auto">
             <div className="flex justify-between items-center">
-              {/* লোগো */}
+              {/* Logo */}
               <Link href="/" onClick={closeMenu}>
                 <Image
                   className="w-20 h-20"
@@ -174,7 +176,7 @@ export default function Navbar() {
                 />
               </Link>
 
-              {/* ডেস্কটপ মেনু */}
+              {/* Desktop Menu */}
               <div className="hidden md:flex">
                 <div
                   className={`flex items-center space-x-2 ${
@@ -200,10 +202,9 @@ export default function Navbar() {
                     className="text-primary hover:text-primary/90 pr-4"
                   >
                     <Badge
-                      count="9"
-                      // count={data?.data?.count || 0}
+                      count={countData?.data?.count || 0}
                       overflowCount={99}
-                      className={animateBadge ? "animate-bounce" : ""}
+                      className={animateBadge ? "animate-ping" : ""}
                     >
                       <FaBell size={24} />
                     </Badge>
@@ -221,19 +222,22 @@ export default function Navbar() {
                       placement="bottomRight"
                     >
                       <div className="flex justify-center items-center gap-1 cursor-pointer">
-                        <Image
-                          width={1000}
-                          height={1000}
-                          className="w-16 h-16 rounded-full border-4 border-primary"
-                          src={
-                            user?.profileImage?.url
-                              ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${
-                                  user?.profileImage?.url ?? ""
-                                }`
-                              : default_img.src
-                          }
-                          alt="profile_image"
-                        />
+                        <div className="relative rounded-full overflow-hidden border-4 border-primary">
+                          <Image
+                            width={1000}
+                            height={1000}
+                            className="w-12 h-12 rounded-full"
+                            src={
+                              user?.profileImage?.url
+                                ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${
+                                    user?.profileImage?.url ?? ""
+                                  }`
+                                : default_img.src
+                            }
+                            alt="profile_image"
+                          />
+                        </div>
+
                         <TiArrowSortedDown size={20} className="text-white" />
                       </div>
                     </Dropdown>
@@ -248,16 +252,16 @@ export default function Navbar() {
                 </div>
               </div>
 
-              {/* মোবাইল ভিউ */}
+              {/* Mobile View */}
               <div className="flex items-center md:hidden">
                 <Link
                   href="/profile/notifications"
                   className="text-primary hover:text-primary/90 pr-4"
                 >
                   <Badge
-                    count="7"
-                    // count={data?.data?.count || 0}
+                    count={countData?.data?.count || 0}
                     overflowCount={99}
+                    className={animateBadge ? "animate-ping" : ""}
                   >
                     <FaBell size={24} />
                   </Badge>
@@ -280,14 +284,14 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* মোবাইল মেনু */}
+          {/* Mobile Menu */}
           <div
             className={`fixed inset-0 z-40 md:hidden transition-transform duration-300 ease-in-out ${
               isOpen ? "translate-x-0" : "-translate-x-full"
             }`}
             aria-hidden={!isOpen}
           >
-            {/* ওভারলে */}
+            {/* Overlay */}
             <div
               className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ${
                 isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -296,7 +300,7 @@ export default function Navbar() {
               aria-hidden="true"
             ></div>
 
-            {/* সাইডবার */}
+            {/* Sidebar */}
             <div
               className={`absolute left-0 top-0 bottom-0 w-64 bg-secondary shadow-lg transform ${
                 isOpen ? "translate-x-0" : "-translate-x-full"
@@ -359,26 +363,21 @@ export default function Navbar() {
                           : "text-gray-700 hover:text-gray-900"
                       }`}
                     >
-                      <Image
-                        width={1000}
-                        height={1000}
-                        className="w-16 h-16 rounded-full border-4 border-primary"
-                        // src={
-                        //   user?.profileImage?.url
-                        //     ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${
-                        //         user?.profileImage?.url ?? ""
-                        //       }`
-                        //     : default_img.src
-                        // }
-                        src={
-                          user?.profileImage?.url
-                            ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${
-                                user?.profileImage?.url ?? ""
-                              }`
-                            : default_img
-                        }
-                        alt="profile_image"
-                      />
+                      <div className="relative rounded-full overflow-hidden border-4 border-primary">
+                        <Image
+                          width={1000}
+                          height={1000}
+                          className="w-12 h-12 rounded-full"
+                          src={
+                            user?.profileImage?.url
+                              ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${
+                                  user?.profileImage?.url ?? ""
+                                }`
+                              : default_img
+                          }
+                          alt="profile_image"
+                        />
+                      </div>
                       <TiArrowSortedDown size={20} className="text-white" />
                     </div>
                   </Dropdown>

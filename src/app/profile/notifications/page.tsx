@@ -1,69 +1,54 @@
 "use client";
 
-import { useMarkAllReadMutation } from "@/redux/features/notifications/notificationsApi";
+import { useAllNotificationsQuery } from "@/redux/features/notifications/notificationsApi";
 import { Pagination } from "antd";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoNotificationsOutline } from "react-icons/io5";
 
 interface Notification {
-  _id: string;
+  title: string;
   message: string;
+  receiverId: string;
+  viewStatus: boolean;
   createdAt: string;
 }
+
+// interface ApiResponse {
+//   code: number;
+//   message: string;
+//   data: {
+//     results: Notification[];
+//     page: number;
+//     limit: number;
+//     totalPages: number;
+//     totalResults: number;
+//     nextPage: number | null;
+//     previousPage: number | null;
+//   };
+// }
 
 export default function Notifications() {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const pageSize = 15;
 
-  // কম্পোনেন্ট লোড হলে সব নোটিফিকেশন রিড করার জন্য মিউটেশন কল করা হচ্ছে
-  const [markAllRead] = useMarkAllReadMutation();
-  useEffect(() => {
-    markAllRead({}); // Pass an empty object or the required argument based on your API's expectations
-  }, [markAllRead]);
+  // Fetch notifications with pagination
+  const {
+    data: apiResponse,
+    isLoading,
+    isError,
+  } = useAllNotificationsQuery({ page: currentPage, limit: pageSize });
 
-  // ডেমো ডেটার জন্য dummy data ব্যবহার করা হচ্ছে
-  const dummyNotifications: Notification[] = [
-    {
-      _id: "1",
-      message: "Your order has been shipped.",
-      createdAt: "2023-10-01T12:00:00Z",
-    },
-    {
-      _id: "2",
-      message: "New message from support.",
-      createdAt: "2023-10-02T14:30:00Z",
-    },
-    {
-      _id: "3",
-      message: "Your account has been updated.",
-      createdAt: "2023-10-03T09:15:00Z",
-    },
-    {
-      _id: "4",
-      message: "Reminder: Your appointment is tomorrow.",
-      createdAt: "2023-10-04T18:45:00Z",
-    },
-    {
-      _id: "5",
-      message: "Payment received for invoice #12345.",
-      createdAt: "2023-10-05T11:00:00Z",
-    },
-    {
-      _id: "6",
-      message: "Your subscription is about to expire.",
-      createdAt: "2023-10-06T16:20:00Z",
-    },
-  ];
-
-  // Pagination এর জন্য ডেমো ডেটা ভাগ করা হচ্ছে
-  const pageSize = 10;
-  const totalData = dummyNotifications.length;
-  const paginatedData = dummyNotifications.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
+  // Extract data from the response
+  const notifications = apiResponse?.data?.results || [];
+  const pagination = apiResponse?.data || {
+    page: 1,
+    limit: pageSize,
+    totalPages: 1,
+    totalResults: 0,
+  };
 
   const handleBack = () => {
     router.back();
@@ -73,9 +58,25 @@ export default function Notifications() {
     setCurrentPage(page);
   };
 
+  if (isLoading) {
+    return (
+      <div className="bg-secondary min-h-screen px-4 py-8 md:py-0">
+        Loading...
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="bg-secondary min-h-screen px-4 py-8 md:py-0">
+        Error loading notifications
+      </div>
+    );
+  }
+
   return (
     <div className="bg-secondary min-h-screen px-4 py-8 md:py-0">
-      {/* হেডার */}
+      {/* Header */}
       <div className="sticky top-20 flex justify-start items-start gap-2 bg-primary rounded-t-md h-20 text-secondary py-8 pl-8 font-bold">
         <button onClick={handleBack}>
           <IoIosArrowBack size={28} />
@@ -83,22 +84,27 @@ export default function Notifications() {
         <h2 className="text-2xl font-semibold">All Notifications</h2>
       </div>
 
-      {/* নোটিফিকেশনস লিস্ট */}
+      {/* Notifications list */}
       <div className="ml-6">
-        {paginatedData.length === 0 ? (
+        {notifications.length === 0 ? (
           <div className="text-center text-gray-500 mt-4">
             No notifications available
           </div>
         ) : (
-          paginatedData.map((notification) => (
+          notifications.map((notification: Notification) => (
             <div
-              key={notification._id}
-              className="flex justify-start items-center gap-4 m-4"
+              key={`${notification.receiverId}-${notification.createdAt}`}
+              className={`flex justify-start items-center gap-4 m-4 p-3 rounded-lg ${
+                notification.viewStatus ? "bg-gray-800" : "bg-blue-900"
+              }`}
             >
               <IoNotificationsOutline className="bg-[#E8EAEF] w-[40px] h-[40px] rounded-sm text-secondary p-2" />
               <div>
-                <p className="text-xl text-white">{notification.message}</p>
-                <p className="text-white">
+                <h3 className="text-xl font-semibold text-white">
+                  {notification.title}
+                </h3>
+                <p className="text-white">{notification.message}</p>
+                <p className="text-gray-400 text-sm mt-1">
                   {new Date(notification.createdAt).toLocaleString()}
                 </p>
               </div>
@@ -107,16 +113,18 @@ export default function Notifications() {
         )}
       </div>
 
-      {/* Pagination কম্পোনেন্ট */}
-      <div className="flex justify-center mt-4">
-        <Pagination
-          current={currentPage}
-          pageSize={pageSize}
-          total={totalData}
-          onChange={handlePageChange}
-          showSizeChanger={false}
-        />
-      </div>
+      {/* Server-side pagination */}
+      {pagination.totalPages > 1 && (
+        <div className="flex justify-center mt-4">
+          <Pagination
+            current={currentPage}
+            pageSize={pagination.limit}
+            total={pagination.totalResults}
+            onChange={handlePageChange}
+            showSizeChanger={false}
+          />
+        </div>
+      )}
     </div>
   );
 }

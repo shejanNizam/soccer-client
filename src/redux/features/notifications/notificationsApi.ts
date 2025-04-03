@@ -4,9 +4,13 @@ export const notificationsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // get all notifications
     allNotifications: builder.query({
-      query: () => ({
+      query: ({ page = 1, limit = 15 }) => ({
         url: "/notification",
         method: "GET",
+        params: {
+          page,
+          limit,
+        },
       }),
       providesTags: ["notification"],
     }),
@@ -18,19 +22,8 @@ export const notificationsApi = baseApi.injectEndpoints({
       }),
       providesTags: ["notification"],
     }),
-    // mark all notifications as read
-    markAllRead: builder.mutation({
-      query: () => ({
-        url: "/notification/mark-all-read",
-        method: "PATCH",
-      }),
-      invalidatesTags: ["notification"],
-    }),
   }),
 });
 
-export const {
-  useAllNotificationsQuery,
-  useNotificationCountQuery,
-  useMarkAllReadMutation,
-} = notificationsApi;
+export const { useAllNotificationsQuery, useNotificationCountQuery } =
+  notificationsApi;
