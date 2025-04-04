@@ -36,36 +36,38 @@ export default function RecentWalletHistory({
   const totalItems = data?.data?.totalResults || 0;
 
   const getTransactionLabel = (transaction: Transaction) => {
-    switch (transaction.paymentType) {
-      case "point":
-        return "Points Transaction";
-      case "card":
-        return "Card Payment";
-      default:
-        return "Transaction";
+    if (transaction.paymentType === "point") {
+      return transaction.amount ? "Add Points" : "Booked Venue";
+    } else if (transaction.paymentType === "card") {
+      return "Booked Venue";
     }
+    return "Transaction";
   };
 
   const getTransactionAmount = (transaction: Transaction) => {
-    switch (transaction.paymentType) {
-      case "point":
+    if (data?.data?.totalPoints) {
+      // if (transaction.paymentType === "point") {
+      if (transaction.amount) {
         return `+ ${transaction.points} pts`;
-      case "card":
-        return `- $${transaction.amount?.toFixed(2)}`;
-      default:
-        return "";
+      } else {
+        return `- ${transaction.points} pts`;
+      }
+    } else if (data?.data?.totalCost) {
+      // } else if (transaction.paymentType === "card") {
+      return `- $${transaction.amount?.toFixed(2)}`;
     }
+    return "";
   };
 
   const getTransactionColor = (transaction: Transaction) => {
-    switch (transaction.paymentType) {
-      case "point":
-        return "green";
-      case "card":
-        return "volcano";
-      default:
-        return "blue";
+    if (data?.data?.totalPoints) {
+      // if (transaction.paymentType === "point") {
+      return transaction.amount ? "green" : "volcano";
+    } else if (data?.data?.totalCost) {
+      // } else if (transaction.paymentType === "card") {
+      return "volcano"; // Always red for card
     }
+    return "blue";
   };
 
   const formattedTransactions = historyData.map((transaction: Transaction) => ({
