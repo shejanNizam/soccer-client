@@ -113,7 +113,7 @@ export default function ChangePasswordModal({
 
         <div className="flex justify-between items-center mb-2">
           <p></p>
-          <Link href="/forgot-password" className="text-primary">
+          <Link href="/forget-password" className="text-primary">
             Forgot password?
           </Link>
         </div>

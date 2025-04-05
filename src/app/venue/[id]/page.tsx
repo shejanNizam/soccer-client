@@ -42,6 +42,7 @@ export default function VenueDetailPage() {
 
   const { data, isLoading } = useGetVenueByIdQuery(id as string);
   const venue = data?.data;
+  console.log(venue);
 
   if (isLoading)
     return (
@@ -49,7 +50,11 @@ export default function VenueDetailPage() {
         <Spin size="large" />
       </div>
     );
-  const formattedAddress = `${venue.address?.city}, ${venue.address?.state}, ${venue.address?.country}`;
+  const formattedAddress = `${
+    venue?.address?.city ? venue?.address?.city : "N/A"
+  }, ${venue?.address?.state ? venue?.address?.state : "N/A"}, ${
+    venue?.address?.country ? venue?.address?.country : "N/A"
+  }`;
   // const imageUrl = venue.coverPhoto?.url
   //   ? venue.coverPhoto.url.startsWith("http")
   //     ? venue.coverPhoto.url

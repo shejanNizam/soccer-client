@@ -3,7 +3,7 @@
 import { useAppDispatch } from "@/redux/hooks";
 import { Button, Checkbox, Form, Input } from "antd";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa";
 
 import { useLoginMutation } from "@/redux/api/authApi/authApi";
@@ -12,20 +12,28 @@ import { setCredentials } from "../../../redux/slices/authSlice";
 
 export default function Login() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
+
+  // Get redirect path from URL or default to home
+  const redirectPath = searchParams.get("from") || "/";
 
   // login api call
   const [login, { isLoading }] = useLoginMutation();
 
   const onFinish = async (values: { email: string; password: string }) => {
-    // console.log(values);
     try {
       const response = await login({
         email: values.email,
         password: values.password,
       }).unwrap();
+
+      // Store token in both localStorage and cookie
       localStorage.setItem("user_token", response?.data?.token);
+      document.cookie = `authToken=${response?.data?.token}; path=/; max-age=${
+        60 * 60 * 24 * 7
+      }`;
 
       dispatch(
         setCredentials({
@@ -41,7 +49,9 @@ export default function Login() {
           response?.message ||
           "Welcome to GrassRootz!",
       });
-      router.push("/");
+
+      // Redirect to the originally requested page or home
+      router.push(redirectPath);
     } catch (error) {
       ErrorSwal({
         title: `Login failed!`,
@@ -56,7 +66,12 @@ export default function Login() {
   };
 
   const handleBack = () => {
-    router.back();
+    // Go back or to home if no history
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push("/");
+    }
   };
 
   return (

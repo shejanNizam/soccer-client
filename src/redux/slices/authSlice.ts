@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
 
 interface TUser {
   id: string;
@@ -14,7 +15,8 @@ interface AuthState {
 
 const initialState: AuthState = {
   user: null,
-  token: null,
+  // token: null,
+  token: Cookies.get("token") || null,
   isLoading: true,
 };
 
@@ -45,6 +47,12 @@ const authSlice = createSlice({
     ) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
+      state.isLoading = false;
+      Cookies.set("token", action.payload.token, {
+        expires: 7,
+        secure: false,
+        sameSite: "strict",
+      });
     },
     // setLogin(state, action: PayloadAction<{ user: TUser; token: string }>) {
     //   state.user = action.payload.user;

@@ -21,7 +21,7 @@ export default function GetInTouch() {
   };
 
   return (
-    <div className="py-8">
+    <div className="pt-8 pb-20">
       <CustomHeading>Get in Touch</CustomHeading>
       <p className="mb-6 text-center w-[90%] md:w-[40%] mx-auto">
         {`Have questions or need support? Contact us via email, live chat, or
@@ -30,7 +30,7 @@ export default function GetInTouch() {
       </p>
       <div className="flex flex-col md:flex-row justify-center items-center gap-4 border border-primary rounded-lg max-w-4xl mx-auto p-4">
         <Form
-          form={form} // Pass the form instance to the Form component
+          form={form}
           onFinish={onFinish}
           layout="vertical"
           className="w-full md:w-1/2"
