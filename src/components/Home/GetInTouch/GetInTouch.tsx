@@ -1,23 +1,35 @@
 "use client";
 
 import CustomHeading from "@/lib/CustomHeading/CustomHeading";
-import { Button, Form, Input } from "antd";
-import { useForm } from "antd/es/form/Form"; // Import useForm hook
+import { useContactWithadminMutation } from "@/redux/features/common/commonApi";
+import { Button, Form, Input, message } from "antd";
+import { useForm } from "antd/es/form/Form";
 import Image from "next/image";
 import GET_IN_TOUCH from "../../../assets/home/touch/get-in_touch_img.svg";
 
 export default function GetInTouch() {
-  const [form] = useForm(); // Initialize the form instance
+  const [form] = useForm();
+  const [contactwithAdmin, { isLoading }] = useContactWithadminMutation();
 
-  const onFinish = (values: {
+  const onFinish = async (values: {
     name: string;
     email: string;
     message: string;
   }) => {
-    console.log("Received values of form: ", values);
+    try {
+      // Send the form data to the API
+      await contactwithAdmin(values).unwrap();
 
-    // Clear the form fields after submission
-    form.resetFields();
+      // Show success message
+      message.success("Your message has been sent to Admin!");
+
+      // Clear the form fields after successful submission
+      form.resetFields();
+    } catch (error) {
+      // Show error message
+      message.error("Failed to send your message. Please try again.");
+      console.error("Error submitting form:", error);
+    }
   };
 
   return (
@@ -45,7 +57,16 @@ export default function GetInTouch() {
           <Form.Item
             label="Your Email"
             name="email"
-            rules={[{ required: true, message: "Please input your email!" }]}
+            rules={[
+              {
+                required: true,
+                message: "Please input your email!",
+              },
+              {
+                type: "email",
+                message: "Please enter a valid email address!",
+              },
+            ]}
           >
             <Input placeholder="Enter your email..." />
           </Form.Item>
@@ -57,7 +78,12 @@ export default function GetInTouch() {
             <Input.TextArea placeholder="Enter your message..." rows={4} />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" className="w-full">
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="w-full"
+              loading={isLoading}
+            >
               Send
             </Button>
           </Form.Item>

@@ -32,8 +32,23 @@ export const commonApi = baseApi.injectEndpoints({
       },
       providesTags: ["common"],
     }),
+    // contact with admin
+    contactWithadmin: builder.mutation({
+      query: (contactData) => {
+        return {
+          url: "/contact",
+          method: "POST",
+          body: contactData,
+        };
+      },
+      invalidatesTags: ["common"],
+    }),
   }),
 });
 
-export const { useGetAboutQuery, useGetPrivacyQuery, useGetTermsQuery } =
-  commonApi;
+export const {
+  useGetAboutQuery,
+  useGetPrivacyQuery,
+  useGetTermsQuery,
+  useContactWithadminMutation,
+} = commonApi;
