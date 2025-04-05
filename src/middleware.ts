@@ -3,7 +3,11 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 // 1. Base protected paths
-const protectedPaths = ["/profile", "/book-venue", "/dashboard"];
+const protectedPaths = [
+  "/profile", // Protected profile routes
+  "/book-venue", // Book venue routes
+  "/dashboard",
+];
 
 // 2. Public paths that might exist under protected parents
 const publicExceptions = [

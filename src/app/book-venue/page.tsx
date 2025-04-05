@@ -261,7 +261,7 @@ export default function BookVenue() {
                   type="primary"
                   htmlType="submit"
                   className="w-full"
-                  loading={isLoading}
+                  // loading={isLoading}
                 >
                   Book Now
                 </Button>

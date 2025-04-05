@@ -136,7 +136,7 @@ export default function Login() {
             </Form.Item>
             <Form.Item>
               <Link href="/forget-password" className="text-primary underline">
-                Forget password?
+                Forgot password?
               </Link>
             </Form.Item>
           </div>

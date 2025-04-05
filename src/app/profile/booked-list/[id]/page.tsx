@@ -10,6 +10,7 @@ export default function BookedListDetails() {
   const params = useParams();
   const { id } = params;
   const baseImageUrl = process.env.NEXT_PUBLIC_IMAGE_URL || "";
+  console.log(id);
 
   const { data, isLoading } = useGetBookedListByIdQuery(id);
 

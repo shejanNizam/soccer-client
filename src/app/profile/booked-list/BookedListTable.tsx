@@ -10,7 +10,7 @@ import { useState } from "react";
 
 interface Booking {
   id: string;
-  venue: string;
+  venue: { id: string; name: string };
   key: string;
   siNo: number;
   venueName: string;
@@ -38,9 +38,10 @@ const BookedListTable = ({ status }: BookingTableProps) => {
         item: {
           id: string;
           transaction: string;
+          date: string;
           timeRange: string;
           status: string;
-          venue: string;
+          venue: { id: string; name: string };
           createdAt: string;
         },
         index: number
@@ -49,20 +50,21 @@ const BookedListTable = ({ status }: BookingTableProps) => {
         key: item.id,
         siNo: index + 1,
         venue: item?.venue,
-        venueName: item.id || "Venue Name",
-        scheduleDate: dayjs(item.createdAt).format("DD MMM YYYY"),
+        venueName: item.venue.name || "Venue Name",
+        scheduleDate: dayjs(item.date).format("DD MMM YYYY"),
         scheduleTime: item.timeRange,
         status: item.status,
       })
     ) || [];
-  console.log(dataSource);
+  // console.log(dataSource);
 
   const handleDetails = (record: Booking) => {
-    router.push(`/profile/booked-list/${record.venue}`);
+    console.log(record);
+    router.push(`/profile/booked-list/${record.venue?.id}`);
   };
 
   const handleReschedule = (record: Booking) => {
-    router.push(`/book-venue?venueId=${record?.venue}`);
+    router.push(`/book-venue?venueId=${record?.venue?.id}`);
   };
 
   const columns: ColumnsType<Booking> = [

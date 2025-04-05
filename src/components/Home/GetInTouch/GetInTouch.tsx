@@ -4,7 +4,7 @@ import CustomHeading from "@/lib/CustomHeading/CustomHeading";
 import { Button, Form, Input } from "antd";
 import { useForm } from "antd/es/form/Form"; // Import useForm hook
 import Image from "next/image";
-import GET_IN_TOUCH from "../../../assets/home/touch/get-in_touch_img.png";
+import GET_IN_TOUCH from "../../../assets/home/touch/get-in_touch_img.svg";
 
 export default function GetInTouch() {
   const [form] = useForm(); // Initialize the form instance
