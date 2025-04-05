@@ -64,7 +64,8 @@ const BookedListTable = ({ status }: BookingTableProps) => {
   };
 
   const handleReschedule = (record: Booking) => {
-    router.push(`/book-venue?venueId=${record?.venue?.id}`);
+    router.push(`/book-venue?requestId=${record?.id}`);
+    // router.push(`/book-venue`);
   };
 
   const columns: ColumnsType<Booking> = [

@@ -3,6 +3,8 @@ import {
   useAddBookUsingPaymentMutation,
   useAddBookUsingPointMutation,
   useGetShiftQuery,
+  useGetSingleRequestQuery,
+  useRescheduleRequestMutation,
 } from "@/redux/features/venue/venueApi";
 import { ErrorSwal, SuccessSwal } from "@/utils/allSwal";
 import {
@@ -18,7 +20,7 @@ import {
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import VENUE_IMG from "../../assets/book_venue/book_venue_img.png";
 
 const { Option } = Select;
@@ -35,20 +37,116 @@ export default function BookVenue() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const venueId = searchParams.get("venueId");
+  const requestId = searchParams.get("requestId");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedTimeRange, setSelectedTimeRange] = useState("");
+  const [stateVenueId, setStateVenueId] = useState(venueId);
 
-  const { data, isLoading } = useGetShiftQuery({ venueId, date });
+  const { data, isLoading } = useGetShiftQuery({ stateVenueId, date });
   const timeSlots = data?.data;
 
   const [bookByPoint, { isLoading: isLoadingPoint }] =
     useAddBookUsingPointMutation();
   const [bookByPayment, { isLoading: isLoadingPayment }] =
     useAddBookUsingPaymentMutation();
+  useAddBookUsingPointMutation();
+  const [rescheduleRequest, { isLoading: isLoadingReschelude }] =
+    useRescheduleRequestMutation();
 
-  const onFinish = (values: VenueBookingForm) => {
-    setIsModalVisible(true);
-    setSelectedTimeRange(values.time);
+  const { data: requestedData } = useGetSingleRequestQuery(requestId);
+
+  useEffect(() => {
+    if (!requestId || !requestedData) {
+      return;
+    }
+
+    setStateVenueId(requestedData?.data?.venue);
+  }, [requestId, requestedData]);
+
+  useEffect(() => {
+    if (requestedData) {
+      const request = requestedData.data;
+
+      form.setFieldsValue({
+        date: dayjs(request.date),
+      });
+      setDate(request.date.split("T")[0]);
+      setSelectedTimeRange(request.timeRange);
+      form.setFieldsValue({
+        time: request.timeRange,
+      });
+    }
+  }, [requestedData, form]);
+
+  // const onFinish = async (values: VenueBookingForm) => {
+  //   if (venueId) {
+  //     setIsModalVisible(true);
+  //     setSelectedTimeRange(values.time);
+  //   } else if (requestId) {
+  //     try {
+  //       const rescheduleData = {
+  //         id: requestId,
+  //         date: date,
+  //         timeRange: selectedTimeRange,
+  //         status: "pending",
+  //       };
+
+  //       console.log(rescheduleData);
+  //       // const response = await rescheduleRequest(rescheduleData).unwrap();
+  //       await rescheduleRequest(rescheduleData).unwrap();
+
+  //       SuccessSwal({
+  //         title: "Rescheduled!",
+  //         text: "Reschedule request sent successfully!",
+  //       });
+  //       router.push(`/profile/booked-list`);
+  //     } catch (error) {
+  //       ErrorSwal({
+  //         title: "Re Schedule request Failed!",
+  //         text:
+  //           (error as { data?: { message?: string } })?.data?.message ||
+  //           (error as { message?: string })?.message ||
+  //           "Failed Reschedule!",
+  //       });
+  //     }
+  //   } else {
+  //     console.log("first");
+  //   }
+  // };
+  const onFinish = async (values: VenueBookingForm) => {
+    if (venueId) {
+      setIsModalVisible(true);
+      setSelectedTimeRange(values.time);
+    } else if (requestId) {
+      try {
+        // Create the reschedule data in the format the backend expects
+        const rescheduleData = {
+          id: requestId,
+          date: date,
+          timeRange: values.time, // Changed from timeRange to time if needed
+          status: "pending",
+        };
+        console.log(rescheduleData);
+        const response = await rescheduleRequest(rescheduleData).unwrap();
+        console.log(response);
+
+        SuccessSwal({
+          title: "Rescheduled!",
+          text: "Reschedule request sent successfully!",
+        });
+        router.push(`/profile/booked-list`);
+      } catch (error) {
+        ErrorSwal({
+          title: "Re Schedule request Failed!",
+          text:
+            (error as { data?: { message?: string } })?.data?.message ||
+            (error as { message?: string })?.message ||
+            "Failed Reschedule!",
+        });
+      }
+    } else {
+      console.log("No venueId or requestId found");
+    }
   };
 
   const handlePoints = async () => {
@@ -257,14 +355,25 @@ export default function BookVenue() {
 
               {/* Book Button */}
               <Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="w-full"
-                  // loading={isLoading}
-                >
-                  Book Now
-                </Button>
+                {requestId ? (
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="w-full"
+                    // loading={isLoading}
+                  >
+                    Re Schedule
+                  </Button>
+                ) : (
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="w-full"
+                    // loading={isLoading}
+                  >
+                    Book Now
+                  </Button>
+                )}
               </Form.Item>
             </Form>
           </div>
@@ -284,7 +393,7 @@ export default function BookVenue() {
             <Button
               key="points"
               onClick={handlePoints}
-              loading={isLoadingPoint}
+              loading={isLoadingPoint || isLoadingReschelude}
             >
               Points
             </Button>
@@ -292,7 +401,7 @@ export default function BookVenue() {
               key="card"
               type="primary"
               onClick={handleCard}
-              loading={isLoadingPayment}
+              loading={isLoadingPayment || isLoadingReschelude}
             >
               Card
             </Button>

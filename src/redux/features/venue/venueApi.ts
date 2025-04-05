@@ -25,15 +25,26 @@ export const venueApi = baseApi.injectEndpoints({
 
     // get schedule
     getShift: builder.query({
-      query: ({ venueId, date }) => ({
+      query: ({ stateVenueId, date }) => ({
         url: "/venue-request/shift",
         method: "GET",
         params: {
-          venueId,
+          venueId: stateVenueId,
           date,
         },
       }),
       providesTags: ["venue"],
+    }),
+
+    //-----------
+    //  get booked list by ID
+    getSingleRequest: builder.query({
+      query: (id) => {
+        return {
+          url: `/venue-request/${id}`,
+          method: "GET",
+        };
+      },
     }),
 
     // add book request using point
@@ -59,10 +70,22 @@ export const venueApi = baseApi.injectEndpoints({
       invalidatesTags: ["venue"],
     }),
 
+    // add reschedule book request
+    rescheduleRequest: builder.mutation({
+      query: (data) => {
+        console.log(data);
+        return {
+          url: `/venue-request/${data?.id}`,
+          method: "PUT",
+          body: data,
+        };
+      },
+      invalidatesTags: ["venue"],
+    }),
+
     // get venue request in dashboard (approved, pending, re-schedule)
     getBookedList: builder.query({
       query: ({ page = 1, limit = 15, status, date }) => {
-        console.log(status);
         return {
           url: `/venue-request`,
           method: "GET",
@@ -93,8 +116,10 @@ export const {
   useGetVenueQuery,
   useGetVenueByIdQuery,
   useGetShiftQuery,
+  useGetSingleRequestQuery,
   useAddBookUsingPointMutation,
   useAddBookUsingPaymentMutation,
+  useRescheduleRequestMutation,
   useGetBookedListQuery,
   useGetBookedListByIdQuery,
 } = venueApi;
