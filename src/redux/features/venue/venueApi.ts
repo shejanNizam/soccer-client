@@ -104,7 +104,7 @@ export const venueApi = baseApi.injectEndpoints({
     getBookedListById: builder.query({
       query: (id) => {
         return {
-          url: `venue/${id}`,
+          url: `/venue-request/${id}`,
           method: "GET",
         };
       },
