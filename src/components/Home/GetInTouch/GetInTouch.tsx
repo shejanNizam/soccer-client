@@ -2,7 +2,8 @@
 
 import CustomHeading from "@/lib/CustomHeading/CustomHeading";
 import { useContactWithadminMutation } from "@/redux/features/common/commonApi";
-import { Button, Form, Input, message } from "antd";
+import { ErrorSwal, SuccessSwal } from "@/utils/allSwal";
+import { Button, Form, Input } from "antd";
 import { useForm } from "antd/es/form/Form";
 import Image from "next/image";
 import GET_IN_TOUCH from "../../../assets/home/touch/get-in_touch_img.svg";
@@ -18,17 +19,25 @@ export default function GetInTouch() {
   }) => {
     try {
       // Send the form data to the API
-      await contactwithAdmin(values).unwrap();
+      const response = await contactwithAdmin(values).unwrap();
 
-      // Show success message
-      message.success("Your message has been sent to Admin!");
+      SuccessSwal({
+        title: "Success",
+        text:
+          response?.message ||
+          response?.data?.message ||
+          "Your message has been sent to Admin!",
+      });
 
-      // Clear the form fields after successful submission
       form.resetFields();
     } catch (error) {
-      // Show error message
-      message.error("Failed to send your message. Please try again.");
-      console.error("Error submitting form:", error);
+      ErrorSwal({
+        title: "Error",
+        text:
+          (error as { data?: { message?: string } })?.data?.message ||
+          (error as { message?: string })?.message ||
+          "Something went wrong! Please try again.",
+      });
     }
   };
 

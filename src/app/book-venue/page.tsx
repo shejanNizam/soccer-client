@@ -47,25 +47,30 @@ export default function BookVenue() {
 
   const [bookByPoint, { isLoading: isLoadingPoint }] =
     useAddBookUsingPointMutation();
+
   const [bookByPayment, { isLoading: isLoadingPayment }] =
     useAddBookUsingPaymentMutation();
-  useAddBookUsingPointMutation();
+
+  // useAddBookUsingPointMutation();
+
   const [rescheduleRequest, { isLoading: isLoadingReschelude }] =
     useRescheduleRequestMutation();
 
+  // console.log(requestId, "------------------------>>");
   const { data: requestedData } = useGetSingleRequestQuery(requestId);
+  console.log(requestedData?.data, "------------>>");
 
   useEffect(() => {
     if (!requestId || !requestedData) {
       return;
     }
 
-    setStateVenueId(requestedData?.data?.venue);
+    setStateVenueId(requestedData?.data?.venue?.id);
   }, [requestId, requestedData]);
 
   useEffect(() => {
     if (requestedData) {
-      const request = requestedData.data;
+      const request = requestedData?.data;
 
       form.setFieldsValue({
         date: dayjs(request.date),
@@ -78,41 +83,6 @@ export default function BookVenue() {
     }
   }, [requestedData, form]);
 
-  // const onFinish = async (values: VenueBookingForm) => {
-  //   if (venueId) {
-  //     setIsModalVisible(true);
-  //     setSelectedTimeRange(values.time);
-  //   } else if (requestId) {
-  //     try {
-  //       const rescheduleData = {
-  //         id: requestId,
-  //         date: date,
-  //         timeRange: selectedTimeRange,
-  //         status: "pending",
-  //       };
-
-  //       console.log(rescheduleData);
-  //       // const response = await rescheduleRequest(rescheduleData).unwrap();
-  //       await rescheduleRequest(rescheduleData).unwrap();
-
-  //       SuccessSwal({
-  //         title: "Rescheduled!",
-  //         text: "Reschedule request sent successfully!",
-  //       });
-  //       router.push(`/profile/booked-list`);
-  //     } catch (error) {
-  //       ErrorSwal({
-  //         title: "Re Schedule request Failed!",
-  //         text:
-  //           (error as { data?: { message?: string } })?.data?.message ||
-  //           (error as { message?: string })?.message ||
-  //           "Failed Reschedule!",
-  //       });
-  //     }
-  //   } else {
-  //     console.log("first");
-  //   }
-  // };
   const onFinish = async (values: VenueBookingForm) => {
     if (venueId) {
       setIsModalVisible(true);
@@ -126,9 +96,9 @@ export default function BookVenue() {
           timeRange: values.time, // Changed from timeRange to time if needed
           status: "pending",
         };
-        console.log(rescheduleData);
-        const response = await rescheduleRequest(rescheduleData).unwrap();
-        console.log(response);
+        // console.log(rescheduleData);
+        await rescheduleRequest(rescheduleData).unwrap();
+        // console.log(response);
 
         SuccessSwal({
           title: "Rescheduled!",
