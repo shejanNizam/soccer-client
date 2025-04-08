@@ -70,7 +70,7 @@ const Featured: React.FC = () => {
       <CustomHeading>FEATURED</CustomHeading>
 
       {/* Text */}
-      <p className="w-full lg:w-[50%] mx-auto mb-8">
+      <p className="w-full lg:w-[35%] mx-auto mb-8">
         Live secrets, match candidates, move, place stars, scenario, local
         backing, learn analysis, Birthday blogs, but community, are overgain to
         plague.
