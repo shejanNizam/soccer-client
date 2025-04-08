@@ -6,7 +6,7 @@ export default function WhyChooseUs() {
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Heading */}
-      <CustomHeading>Why Choose Us</CustomHeading>
+      <CustomHeading>WHY CHOOSE US</CustomHeading>
 
       {/* Content Container */}
       <div className="flex flex-col lg:flex-row justify-center items-center gap-8 xl:px-40">
