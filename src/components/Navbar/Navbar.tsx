@@ -16,7 +16,7 @@ import { FaBars, FaBell, FaTimes } from "react-icons/fa";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import main_logo_img from "../../assets/mail_logo_img.png";
+import main_logo_img from "../../assets/mail_logo_img.svg";
 import default_img from "../../assets/user_img_default.png";
 
 export default function Navbar() {

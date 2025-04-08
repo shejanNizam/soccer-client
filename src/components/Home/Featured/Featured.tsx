@@ -6,20 +6,20 @@ import { CarouselRef } from "antd/es/carousel";
 import Image, { StaticImageData } from "next/image";
 import React, { useRef } from "react";
 import { BiSolidLeftArrow, BiSolidRightArrow } from "react-icons/bi";
-import image5 from "../../../assets/home/featured/feature_five.png";
-import image4 from "../../../assets/home/featured/feature_four.png";
+import image5 from "../../../assets/home/featured/feature_five.svg";
+import image4 from "../../../assets/home/featured/feature_four.svg";
 import {
   default as image1,
   default as image6,
-} from "../../../assets/home/featured/feature_one.png";
+} from "../../../assets/home/featured/feature_one.svg";
 import {
   default as image3,
   default as image8,
-} from "../../../assets/home/featured/feature_three.png";
+} from "../../../assets/home/featured/feature_three.svg";
 import {
   default as image2,
   default as image7,
-} from "../../../assets/home/featured/feature_two.png";
+} from "../../../assets/home/featured/feature_two.svg";
 
 type ImageType = {
   id: number;
@@ -101,7 +101,7 @@ const Featured: React.FC = () => {
                   alt={`Slide ${image.id}`}
                   layout="fill"
                   objectFit="cover"
-                  placeholder="blur"
+                  // placeholder="blur"
                   className="rounded-xl"
                 />
               </div>

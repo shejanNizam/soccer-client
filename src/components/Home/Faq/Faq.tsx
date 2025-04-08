@@ -4,7 +4,7 @@ import CustomHeading from "@/lib/CustomHeading/CustomHeading";
 import { Collapse } from "antd";
 import Image from "next/image";
 import React, { useState } from "react";
-import faqImage from "../../../assets/home/faq/faq_img.png";
+import faqImage from "../../../assets/home/faq/faq_img.svg";
 
 const { Panel } = Collapse;
 

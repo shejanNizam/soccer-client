@@ -1,6 +1,6 @@
 import CustomHeading from "@/lib/CustomHeading/CustomHeading";
 import Image from "next/image";
-import choose_image from "../../../assets/home/choose/choose_img.png";
+import choose_image from "../../../assets/home/choose/choose_img.svg";
 
 export default function WhyChooseUs() {
   return (

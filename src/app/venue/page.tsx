@@ -4,7 +4,7 @@ import { useGetVenueQuery } from "@/redux/features/venue/venueApi";
 import { Spin } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import VENUE_IMG from "../../assets/venue_img.png";
+import VENUE_IMG from "../../assets/venue_img.svg";
 
 type Address = {
   country: string;

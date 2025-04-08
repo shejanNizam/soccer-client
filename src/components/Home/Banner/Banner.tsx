@@ -1,6 +1,6 @@
 import { Button } from "antd";
 import Link from "next/link";
-import BANNER_BG_IMAGE from "../../../assets/home/banner_bg.png";
+import BANNER_BG_IMAGE from "../../../assets/home/banner_bg.svg";
 
 export default function Banner() {
   return (

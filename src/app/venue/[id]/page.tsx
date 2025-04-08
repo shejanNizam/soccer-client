@@ -5,7 +5,7 @@ import { Spin } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import VENUE_IMG from "../../../assets/venue_img.png";
+import VENUE_IMG from "../../../assets/venue_img.svg";
 
 // type Address = {
 //   country: string;
@@ -106,7 +106,7 @@ export default function VenueDetailPage() {
             <div className="flex items-center text-primary">
               <span className="text-lg font-semibold mr-2">Max Capacity:</span>
               <span className="text-lg font-bold">
-                {venue.maxCapacity} people
+                {venue.maxCapacity} peoples
               </span>
             </div>
             <div className="flex items-center text-primary mt-2">
