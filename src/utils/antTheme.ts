@@ -41,11 +41,15 @@ export const mainTheme = {
       colorBorder: "#DEAD35",
       colorTextPlaceholder: "#666666",
       borderRadius: 4,
-      height: 40,
+      height: 80,
       // Add other Input tokens as needed
     },
     Collapse: {
       colorText: "#ffffff",
+      colorIcon: "#ffffff",
+      headerBg: "transparent",
+      colorBorder: "#ffffff",
+      colorFillAlter: "transparent",
     },
     DatePicker: {
       colorBorder: "#DEAD35",
@@ -57,7 +61,7 @@ export const mainTheme = {
     InputPassword: {
       colorBorder: "#DEAD35",
       borderRadius: 4,
-      height: 60,
+      height: 80,
       colorTextPlaceholder: "#666666",
       // Add other InputPassword tokens as needed
     },
@@ -68,7 +72,7 @@ export const mainTheme = {
     Select: {
       colorBorder: "#DEAD35",
       borderRadius: 8,
-      height: 56,
+      height: 80,
       colorTextPlaceholder: "#666666",
       // Add other Select tokens as needed
     },

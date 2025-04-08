@@ -22,24 +22,24 @@ const faqData: FAQItem[] = [
       'You can watch live soccer matches by navigating to the "Live Matches" section on our website.',
   },
   {
-    _id: 1,
+    _id: 2,
     question: "2. Where can I find the latest soccer news and updates?",
     answer:
       'The latest soccer news and updates are available in the "News" section.',
   },
   {
-    _id: 1,
+    _id: 3,
     question: "3. How do I check match schedules and fixtures?",
     answer:
       'Match schedules and fixtures can be found in the "Schedule" section.',
   },
   {
-    _id: 1,
+    _id: 4,
     question: "4. Can I buy tickets for soccer matches on this website?",
     answer: 'Yes, you can purchase tickets in the "Tickets" section.',
   },
   {
-    _id: 1,
+    _id: 5,
     question: "5. How do I register for an account on this website?",
     answer:
       'You can register for an account by clicking on the "Sign Up" button at the top right corner of the homepage.',
@@ -78,16 +78,16 @@ const Faq: React.FC = () => {
             onChange={onChange}
             accordion
             bordered={false}
-            className="faq-accordion"
+            className="faq-accordion [&>.ant-collapse-item>.ant-collapse-header]:text-white"
           >
-            {faqData.map((item, index) => (
+            {faqData?.map((item) => (
               <Panel
                 header={
                   <span className="text-primary font-semibold">
                     {item.question}
                   </span>
                 }
-                key={String(index + 1)}
+                key={String(item._id)}
                 className="mb-4 border border-primary rounded-lg"
               >
                 <div className="p-4 rounded-lg">
