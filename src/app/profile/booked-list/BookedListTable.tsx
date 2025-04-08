@@ -60,7 +60,7 @@ const BookedListTable = ({ status }: BookingTableProps) => {
 
   const handleDetails = (record: Booking) => {
     console.log(record);
-    router.push(`/profile/booked-list/${record.venue?.id}`);
+    router.push(`/profile/booked-list/${record?.id}`);
   };
 
   const handleReschedule = (record: Booking) => {

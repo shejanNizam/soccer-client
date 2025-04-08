@@ -9,8 +9,8 @@ import VENUE_IMG from "../../../../assets/venue_img.png";
 export default function BookedListDetails() {
   const params = useParams();
   const { id } = params;
+  // console.log(id);
   const baseImageUrl = process.env.NEXT_PUBLIC_IMAGE_URL || "";
-  console.log(id);
 
   const { data, isLoading } = useGetBookedListByIdQuery(id);
 
@@ -22,8 +22,9 @@ export default function BookedListDetails() {
     );
 
   const venue = data?.data;
-  const address = `${venue?.address.city}, ${venue?.address.state}, ${venue?.address.country}`;
-  const time = `${venue?.startTime} - ${venue?.endTime}`;
+  console.log(venue);
+  const address = `${venue?.venue?.address?.city}, ${venue?.venue?.address?.state}, ${venue?.venue?.address?.country}`;
+  const time = `${venue?.timeRange}`;
   // const imageUrl = venue?.coverPhoto.url;
   const imageUrl = venue?.coverPhoto?.url
     ? venue?.coverPhoto.url.startsWith("http")
@@ -50,17 +51,17 @@ export default function BookedListDetails() {
           {/* Details */}
           <div className="w-full lg:w-1/2 text-primary">
             <h1 className="text-3xl lg:text-4xl font-bold">
-              {venue?.name}
+              {venue?.venue?.name}
               <p className="text-sm text-gray-400 mt-2">{address}</p>
             </h1>
             <p className="text-xl lg:text-2xl mt-4">
-              Price: ${venue?.price} / Points: {venue?.points}
+              Price: ${venue?.venue?.price} / Points: {venue?.venue?.points}
             </p>
             <p className="text-xl lg:text-2xl mt-2">
-              Max Capacity: {venue?.maxCapacity}
+              Max Capacity: {venue?.venue?.maxCapacity}
             </p>
             <p className="text-lg lg:text-xl mt-4">
-              {new Date(venue?.createdAt).toLocaleDateString("en-US", {
+              {new Date(venue?.date).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
@@ -72,8 +73,10 @@ export default function BookedListDetails() {
 
         {/* Title and Description */}
         <div className="mt-8 lg:mt-12">
-          <h2 className="text-xl lg:text-2xl font-bold">{venue?.title}</h2>
-          <p className="mt-4 text-lg lg:text-xl">{venue?.description}</p>
+          <h2 className="text-xl lg:text-2xl font-bold">
+            {venue?.venue?.title}
+          </h2>
+          <p className="mt-4 text-lg lg:text-xl">{venue?.venue?.description}</p>
         </div>
       </div>
     </div>
