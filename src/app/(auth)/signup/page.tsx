@@ -201,10 +201,16 @@ export default function Signup() {
             >
               <Checkbox>
                 <span className="text-white">I agreed </span>
-                <Link href="/terms-of-use">
+                <Link href="/liability-waiver">
+                  <span className="text-primary underline">
+                    liability waiver
+                  </span>
+                </Link>{" "}
+                <span className="text-white"> & </span>
+                <Link href="/terms-condition">
                   <span className="text-primary underline">Terms</span>
                 </Link>{" "}
-                <span className="text-white">and </span>
+                <span className="text-white"> & </span>
                 <Link href="/privacy-policy">
                   <span className="text-primary underline">Privacy Policy</span>
                 </Link>
