@@ -166,6 +166,7 @@ export default function Signup() {
               </Form.Item>
 
               <Form.Item
+                className="[&_.ant-upload]:w-full"
                 label={<span className="font-semibold"> Upload ID Card </span>}
                 name="idCardImage"
                 valuePropName="fileList"
@@ -180,7 +181,9 @@ export default function Signup() {
                   beforeUpload={() => false}
                   maxCount={1}
                 >
-                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                  <Button className="w-full" icon={<UploadOutlined />}>
+                    Click to Upload
+                  </Button>
                 </Upload>
               </Form.Item>
             </div>
