@@ -161,14 +161,17 @@ export default function UserProfile() {
         </button>
 
         {/* Profile Image */}
-        <Image
-          src={previewImage || default_img.src}
-          alt="User Profile Image"
-          className="w-32 h-32 md:w-64 md:h-64 object-cover rounded-full"
-          width={256}
-          height={256}
-          onError={() => setPreviewImage(default_img.src)}
-        />
+        <div className="relative">
+          <Image
+            src={previewImage || default_img.src}
+            alt="User Profile Image"
+            className="w-32 h-32 md:w-64 md:h-64 object-cover rounded-full"
+            width={256}
+            height={256}
+            onError={() => setPreviewImage(default_img.src)}
+          />
+          <div className="absolute top-0 right-0 bg-gray-200 rounded-full p-1"></div>
+        </div>
 
         {/* Profile Information */}
         <div className="flex flex-col w-full">
