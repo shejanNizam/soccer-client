@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import ChangePasswordModal from "@/components/modals/ChangePasswordModal";
 import EditProfileModal from "@/components/modals/EditProfileModal";
 import { useUpdateUserDataMutation } from "@/redux/api/userApi/userApi";
+import { useRouter } from "next/navigation";
 import { FaEdit } from "react-icons/fa";
 import default_img from "../../../assets/user_img_default.png";
 
@@ -36,6 +37,7 @@ interface User {
 }
 
 export default function UserProfile() {
+  const router = useRouter();
   const baseUrl = process.env.NEXT_PUBLIC_IMAGE_URL || "";
   const { user: authUser } = useSelector(
     (state: { auth: { user: User } }) => state.auth
@@ -151,6 +153,7 @@ export default function UserProfile() {
   };
 
   const handleEditposition = () => {
+    router.push("/profile/edit-position");
     console.log("first");
   };
 
@@ -165,19 +168,6 @@ export default function UserProfile() {
           Update
         </button>
 
-        {/* Profile Image */}
-        {/* <div className="relative">
-          <Image
-            src={previewImage || default_img.src}
-            alt="User Profile Image"
-            className="w-32 h-32 md:w-64 md:h-64 object-cover rounded-full"
-            width={256}
-            height={256}
-            onError={() => setPreviewImage(default_img.src)}
-          />
-          <div className="absolute w-40 h-20 bg-gray-200 rounded-full p-1"></div>
-        </div> */}
-
         <div className="relative">
           <Image
             src={previewImage || default_img.src}
@@ -191,7 +181,10 @@ export default function UserProfile() {
             <div className="flex flex-col items-center text-primary font-bold text-sm">
               <div>★☆☆☆☆</div>
               <div>Bench-warmer</div>
-              <button onClick={handleEditposition}>
+              <button
+                className="bg-primary/50 rounded-full px-2 py-1"
+                onClick={handleEditposition}
+              >
                 <FaEdit size={20} />
               </button>
             </div>

@@ -85,7 +85,7 @@ export default function EditProfileModal({
       return Upload.LIST_IGNORE;
     }
     setIdCardFile(file);
-    return false; // Prevent automatic upload
+    return false;
   };
 
   // Handle ID card removal
