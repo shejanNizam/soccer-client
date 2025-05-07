@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import ChangePasswordModal from "@/components/modals/ChangePasswordModal";
 import EditProfileModal from "@/components/modals/EditProfileModal";
 import { useUpdateUserDataMutation } from "@/redux/api/userApi/userApi";
+import { FaEdit } from "react-icons/fa";
 import default_img from "../../../assets/user_img_default.png";
 
 interface User {
@@ -149,6 +150,10 @@ export default function UserProfile() {
     }
   };
 
+  const handleEditposition = () => {
+    console.log("first");
+  };
+
   return (
     <div className="flex flex-col justify-center items-center gap-6 min-h-screen">
       {/* Profile Section */}
@@ -161,6 +166,18 @@ export default function UserProfile() {
         </button>
 
         {/* Profile Image */}
+        {/* <div className="relative">
+          <Image
+            src={previewImage || default_img.src}
+            alt="User Profile Image"
+            className="w-32 h-32 md:w-64 md:h-64 object-cover rounded-full"
+            width={256}
+            height={256}
+            onError={() => setPreviewImage(default_img.src)}
+          />
+          <div className="absolute w-40 h-20 bg-gray-200 rounded-full p-1"></div>
+        </div> */}
+
         <div className="relative">
           <Image
             src={previewImage || default_img.src}
@@ -170,7 +187,15 @@ export default function UserProfile() {
             height={256}
             onError={() => setPreviewImage(default_img.src)}
           />
-          <div className="absolute top-0 right-0 bg-gray-200 rounded-full p-1"></div>
+          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-auto min-w-[130px] rounded-2xl bg-orange-600 p-1 text-center mb-2">
+            <div className="flex flex-col items-center text-primary font-bold text-sm">
+              <div>★☆☆☆☆</div>
+              <div>Bench-warmer</div>
+              <button onClick={handleEditposition}>
+                <FaEdit size={20} />
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Profile Information */}

@@ -106,7 +106,7 @@ export default function EditProfileModal({
         destroyOnClose
         maskClosable
         closeIcon={<FaTimes size={20} />}
-        width={500}
+        width={400}
       >
         <Form
           layout="vertical"
@@ -204,7 +204,7 @@ export default function EditProfileModal({
           </Form.Item>
 
           {/* ID Card Upload */}
-          <Form.Item label="ID Card">
+          <Form.Item className="[&_.ant-upload]:w-full" label="ID Card">
             <Upload
               maxCount={1}
               accept="image/*"
@@ -234,7 +234,9 @@ export default function EditProfileModal({
               }
               onRemove={handleIdCardRemove}
             >
-              <Button icon={<FaPlus />}>Upload ID Card</Button>
+              <Button className="w-full" icon={<FaPlus />}>
+                Upload ID Card
+              </Button>
             </Upload>
           </Form.Item>
 

@@ -93,9 +93,9 @@ const Featured: React.FC = () => {
           className="overflow-hidden px-8 md:px-12"
           responsive={responsiveSettings}
         >
-          {images.map((image) => (
+          {images?.map((image) => (
             <div key={image.id} className="p-2">
-              <div className="w-full h-80 relative  overflow-hidden">
+              <div className="w-full h-80 relative overflow-hidden">
                 <Image
                   src={image.src}
                   alt={`Slide ${image.id}`}
