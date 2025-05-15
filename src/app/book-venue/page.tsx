@@ -45,7 +45,7 @@ export default function BookVenue() {
   const { data, isLoading } = useGetShiftQuery({ stateVenueId, date });
   const timeSlots = data?.data;
 
-  const [bookByPoint, { isLoading: isLoadingPoint }] =
+  const [bookByPoint, { isLoading: isLoadingPoint, error }] =
     useAddBookUsingPointMutation();
 
   const [bookByPayment, { isLoading: isLoadingPayment }] =
@@ -56,7 +56,7 @@ export default function BookVenue() {
   const [rescheduleRequest, { isLoading: isLoadingReschelude }] =
     useRescheduleRequestMutation();
 
-  // console.log(requestId, "------------------------>>");
+  console.log(requestId, "------------------------>>");
   const { data: requestedData } = useGetSingleRequestQuery(requestId);
   console.log(requestedData?.data, "------------>>");
 
@@ -98,6 +98,7 @@ export default function BookVenue() {
         };
         // console.log(rescheduleData);
         await rescheduleRequest(rescheduleData).unwrap();
+        // await bookByPayment(rescheduleData).unwrap();
         // console.log(response);
 
         SuccessSwal({
@@ -132,6 +133,7 @@ export default function BookVenue() {
       };
 
       const response = await bookByPoint(bookingData).unwrap();
+      console.log("sdasdsadasd", response);
 
       if (response.code === 200) {
         SuccessSwal({
