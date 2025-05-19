@@ -79,7 +79,7 @@ export default function Signup() {
         <div className="bg-secondary border border-primary shadow-2xl rounded-xl w-full max-w-xl p-8 md:p-16 relative">
           <button
             onClick={handleBack}
-            className="absolute top-4 left-4 text-gray-400 hover:text-gray-300 focus:outline-none"
+            className="absolute top-4 left-4 text-gray-400 hover:text-gray-300 focus:outline-hidden"
             aria-label="Go Back"
           >
             <FaArrowLeft size={24} />

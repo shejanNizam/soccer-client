@@ -60,7 +60,7 @@ const Venue = () => {
         {venues?.map((venue: Venue) => (
           <div
             key={venue?.id}
-            className="flex flex-col md:flex-row items-center w-full rounded overflow-hidden shadow-lg"
+            className="flex flex-col md:flex-row items-center w-full rounded-sm overflow-hidden shadow-lg"
           >
             {/* Left Side: Image */}
             <div className="w-full md:w-1/2 h-64 md:h-auto ">
@@ -89,12 +89,12 @@ const Venue = () => {
 
               <div className="mt-4 flex gap-2">
                 <Link href={`/venue/${venue.id}`}>
-                  <button className="bg-button hover:bg-button/90 text-white font-bold py-2 px-4 rounded">
+                  <button className="bg-button hover:bg-button/90 text-white font-bold py-2 px-4 rounded-sm">
                     Details
                   </button>
                 </Link>
                 <Link href={`/book-venue?venueId=${venue.id}`}>
-                  <button className="bg-button hover:bg-button/90 text-white font-bold py-2 px-4 rounded">
+                  <button className="bg-button hover:bg-button/90 text-white font-bold py-2 px-4 rounded-sm">
                     Book now
                   </button>
                 </Link>

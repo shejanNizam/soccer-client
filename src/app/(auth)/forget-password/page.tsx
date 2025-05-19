@@ -49,7 +49,7 @@ const ForgetPassword = () => {
       <div className="bg-secondary border border-primary shadow-lg rounded-lg w-full max-w-md p-6 relative">
         <button
           onClick={handleBack}
-          className="absolute top-4 left-4 text-gray-500 hover:text-gray-300 focus:outline-none"
+          className="absolute top-4 left-4 text-gray-500 hover:text-gray-300 focus:outline-hidden"
           aria-label="Go Back"
         >
           <FaArrowLeft size={24} />

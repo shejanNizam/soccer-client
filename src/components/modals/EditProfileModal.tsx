@@ -146,7 +146,7 @@ export default function EditProfileModal({
                   className="absolute top-8 right-8"
                 >
                   <div
-                    className="p-2 bg-white rounded-full shadow cursor-pointer"
+                    className="p-2 bg-white rounded-full shadow-sm cursor-pointer"
                     title="Change Profile Image"
                   >
                     <FaPlus />

@@ -269,7 +269,7 @@ export default function Navbar() {
                 <button
                   onClick={toggleMenu}
                   type="button"
-                  className="inline-flex items-center justify-center p-2 rounded-md text-primary hover:text-button focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary transition duration-200"
+                  className="inline-flex items-center justify-center p-2 rounded-md text-primary hover:text-button focus:outline-hidden focus:ring-2 focus:ring-inset focus:ring-primary transition duration-200"
                   aria-controls="mobile-menu"
                   aria-expanded={isOpen}
                   aria-label="Toggle navigation menu"
@@ -322,7 +322,7 @@ export default function Navbar() {
                 </Link>
                 <button
                   onClick={closeMenu}
-                  className="text-primary hover:text-primary/90 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
+                  className="text-primary hover:text-primary/90 focus:outline-hidden focus:ring-2 focus:ring-inset focus:ring-primary"
                   aria-label="Close menu"
                 >
                   <FaTimes size={24} />

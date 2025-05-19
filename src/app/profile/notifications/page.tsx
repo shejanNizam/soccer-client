@@ -93,7 +93,7 @@ export default function Notifications() {
                 notification.viewStatus ? "shadow-2xl" : "bg-hash"
               }`}
             >
-              <IoNotificationsOutline className="bg-[#E8EAEF] w-[40px] h-[40px] rounded-sm text-secondary p-2" />
+              <IoNotificationsOutline className="bg-[#E8EAEF] w-[40px] h-[40px] rounded-xs text-secondary p-2" />
               <div>
                 <h3 className="text-xl font-semibold text-white">
                   {notification.title}

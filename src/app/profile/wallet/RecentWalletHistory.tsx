@@ -104,7 +104,7 @@ export default function RecentWalletHistory({
         loading={isLoading}
         renderItem={(item) => (
           <List.Item
-            className="hover:bg-gray-50 rounded transition"
+            className="hover:bg-gray-50 rounded-sm transition"
             key={item.key}
           >
             <List.Item.Meta

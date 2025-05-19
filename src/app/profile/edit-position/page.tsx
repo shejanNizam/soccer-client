@@ -66,7 +66,7 @@ export default function EditPositionPage() {
                         key={star}
                         type="button"
                         onClick={() => handleStarClick(star)}
-                        className="text-3xl focus:outline-none"
+                        className="text-3xl focus:outline-hidden"
                       >
                         {star <= selectedStars ? "★" : "☆"}
                       </button>

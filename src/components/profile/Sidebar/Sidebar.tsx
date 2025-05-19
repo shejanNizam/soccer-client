@@ -60,7 +60,7 @@ export default function Sidebar({
           <button
             onClick={toggleSidebarCollapsed}
             aria-label={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
-            className="focus:outline-none"
+            className="focus:outline-hidden"
           >
             {isCollapsed ? (
               <FaArrowRight size={20} />

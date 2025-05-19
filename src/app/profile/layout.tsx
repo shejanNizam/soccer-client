@@ -29,7 +29,7 @@ export default function ProfileLayout({ children }: ProfileLayoutProps) {
       {/* Mobile Sidebar Toggle Button */}
       {/* <button
         onClick={toggleMobileSidebar}
-        className="md:hidden absolute top-4 right-4 z-40 bg-primary text-white p-1 rounded shadow"
+        className="md:hidden absolute top-4 right-4 z-40 bg-primary text-white p-1 rounded-sm shadow-sm"
       >
         <FaBars size={16} />
       </button> */}

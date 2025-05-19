@@ -153,7 +153,7 @@ const VerifyEmail = () => {
       <div className="bg-secondary border border-primary shadow-lg rounded-lg w-full max-w-md p-6 relative">
         <button
           onClick={() => router.back()}
-          className="absolute top-4 left-4 text-gray-400 hover:text-gray-800 focus:outline-none z-50"
+          className="absolute top-4 left-4 text-gray-400 hover:text-gray-800 focus:outline-hidden z-50"
           aria-label="Go Back"
         >
           <FaArrowLeft size={24} />

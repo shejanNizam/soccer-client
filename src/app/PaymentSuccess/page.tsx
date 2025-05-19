@@ -52,7 +52,7 @@ const PaymentSuccess = () => {
         {/* Action Button */}
         <Link
           href={user?.email ? "/" : "/login"}
-          className="mt-6 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75"
+          className="mt-6 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-sm focus:outline-hidden focus:ring-2 focus:ring-green-400 focus:ring-opacity-75"
         >
           {user?.email ? "Go to Home" : "Go to Login"}{" "}
         </Link>
