@@ -24,7 +24,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import VENUE_IMG from "../../assets/book_venue/book_venue_img.png";
 
-const { Option } = Select;
+// const { Option } = Select;
 
 type VenueBookingForm = {
   date: string;
@@ -267,109 +267,90 @@ export default function BookVenue() {
                       isMute: boolean;
                       totalBooking: number;
                       bookedUsers: { name: string; email: string }[];
-                    }) => {
-                      const bookedUsersList =
-                        slot.bookedUsers.length > 0 ? (
-                          <ul
-                            className="list-disc list-inside max-h-40 overflow-y-auto p-2 bg-gray-900 text-white rounded shadow-lg"
-                            style={{ paddingBottom: "12px" }}
-                          >
-                            {slot.bookedUsers.map((user, idx) => (
-                              <li key={idx} className="mb-2">
-                                {user.name} ({user.email})
-                              </li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <span>No bookings yet</span>
-                        );
-
-                      return (
-                        <Select.Option
-                          key={slot.timeRange}
-                          value={slot.timeRange}
-                          disabled={slot.isMute}
-                          style={{
-                            whiteSpace: "normal",
-                            // minHeight: 48,
-                            cursor: "pointer",
+                    }) => (
+                      <Select.Option
+                        key={slot.timeRange}
+                        value={slot.timeRange}
+                        disabled={slot.isMute}
+                        style={{
+                          whiteSpace: "normal",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <Tooltip
+                          placement="right"
+                          mouseEnterDelay={0.3}
+                          mouseLeaveDelay={0.1}
+                          overlayInnerStyle={{
+                            maxHeight: 200,
+                            overflowY: "auto",
+                            padding: "12px 16px",
+                            backgroundColor: "#1f2937",
+                            borderRadius: 8,
+                            boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+                            color: "#f9fafb",
+                            fontSize: 14,
+                            lineHeight: 1.5,
+                            minWidth: 250,
                           }}
-                        >
-                          <Tooltip
-                            placement="right"
-                            mouseEnterDelay={0.3}
-                            mouseLeaveDelay={0.1}
-                            overlayInnerStyle={{
-                              maxHeight: 200,
-                              overflowY: "auto",
-                              padding: "12px 16px",
-                              backgroundColor: "#1f2937", // dark gray (Tailwind slate-800)
-                              borderRadius: 8,
-                              boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
-                              color: "#f9fafb", // light text
-                              fontSize: 14,
-                              lineHeight: 1.5,
-                              minWidth: 250,
-                            }}
-                            title={
-                              slot.bookedUsers.length > 0 ? (
-                                <div>
-                                  <div
-                                    style={{
-                                      fontWeight: "600",
-                                      marginBottom: 8,
-                                      borderBottom: "1px solid #374151",
-                                      paddingBottom: 4,
-                                    }}
-                                  >
-                                    Booked Users ({slot.bookedUsers.length})
-                                  </div>
-                                  <ul
-                                    style={{
-                                      margin: 0,
-                                      paddingLeft: 16,
-                                      maxHeight: 160,
-                                      overflowY: "auto",
-                                    }}
-                                  >
-                                    {slot.bookedUsers.map((user, idx) => (
-                                      <li key={idx} style={{ marginBottom: 6 }}>
-                                        <span>{user.name}</span>{" "}
-                                        <small style={{ color: "#9ca3af" }}>
-                                          ({user.email})
-                                        </small>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div>
-                              ) : (
-                                <span
+                          title={
+                            slot.bookedUsers.length > 0 ? (
+                              <div>
+                                <div
                                   style={{
-                                    color: "#9ca3af",
-                                    fontStyle: "italic",
+                                    fontWeight: "600",
+                                    marginBottom: 8,
+                                    borderBottom: "1px solid #374151",
+                                    paddingBottom: 4,
                                   }}
                                 >
-                                  No bookings yet
-                                </span>
-                              )
-                            }
-                          >
-                            <div className="flex justify-between font-semibold items-center">
-                              <span>{slot.timeRange}</span>
+                                  Booked Users ({slot.bookedUsers.length})
+                                </div>
+                                <ul
+                                  style={{
+                                    margin: 0,
+                                    paddingLeft: 16,
+                                    maxHeight: 160,
+                                    overflowY: "auto",
+                                  }}
+                                >
+                                  {slot.bookedUsers.map((user, idx) => (
+                                    <li key={idx} style={{ marginBottom: 6 }}>
+                                      <span>{user.name}</span>{" "}
+                                      <small style={{ color: "#9ca3af" }}>
+                                        ({user.email})
+                                      </small>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ) : (
                               <span
-                                className={`font-bold cursor-pointer ${
-                                  slot.totalBooking > 0
-                                    ? "text-secondary"
-                                    : "text-gray-500"
-                                }`}
+                                style={{
+                                  color: "#9ca3af",
+                                  fontStyle: "italic",
+                                }}
                               >
-                                ({slot.totalBooking} booked)
+                                No bookings yet
                               </span>
-                            </div>
-                          </Tooltip>
-                        </Select.Option>
-                      );
-                    }
+                            )
+                          }
+                        >
+                          <div className="flex justify-between font-semibold items-center">
+                            <span>{slot.timeRange}</span>
+                            <span
+                              className={`font-bold cursor-pointer ${
+                                slot.totalBooking > 0
+                                  ? "text-secondary"
+                                  : "text-gray-500"
+                              }`}
+                            >
+                              ({slot.totalBooking} booked)
+                            </span>
+                          </div>
+                        </Tooltip>
+                      </Select.Option>
+                    )
                   )}
                 </Select>
               </Form.Item>
