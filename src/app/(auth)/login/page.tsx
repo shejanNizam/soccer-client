@@ -19,7 +19,7 @@ export default function Login() {
   // Get redirect path from URL or default to home
   const redirectPath = searchParams.get("from") || "/";
 
-  // login api call
+  // login api cal
   const [login, { isLoading }] = useLoginMutation();
 
   const onFinish = async (values: { email: string; password: string }) => {
