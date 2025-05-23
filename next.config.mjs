@@ -4,10 +4,10 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**",
+        hostname: "api.soccer-social.com",
       },
     ],
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
