@@ -1,5 +1,6 @@
 "use client";
 
+import { useUpdateUserDataMutation } from "@/redux/api/userApi/userApi";
 import { Button, Form, Input } from "antd";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -17,7 +18,8 @@ export default function EditPositionPage() {
   const router = useRouter();
   const [form] = Form.useForm();
   const [selectedStars, setSelectedStars] = useState(1);
-
+  const [updateUserData, { isLoading: isUpdating }] =
+    useUpdateUserDataMutation();
   const handleStarClick = (starCount: number) => {
     setSelectedStars(starCount);
     form.setFieldsValue({
@@ -26,12 +28,21 @@ export default function EditPositionPage() {
     });
   };
 
-  const onFinish = (values: {
+  const onFinish = async (values: {
     name: string;
     starCount: number;
     position: string;
   }) => {
-    console.log("Submitted values:", values);
+    try {
+      const formData = new FormData();
+      formData.append("rating.level", values?.position);
+      formData.append("rating.score", String(values?.starCount));
+      await updateUserData(formData).unwrap();
+      return;
+    } catch (error) {
+      console.log(error);
+    }
+    // console.log("Submitted values:", values);
   };
 
   const handleBack = () => {
@@ -82,7 +93,13 @@ export default function EditPositionPage() {
                 </Form.Item>
 
                 <Form.Item>
-                  <Button type="primary" htmlType="submit" size="large" block>
+                  <Button
+                    loading={isUpdating}
+                    type="primary"
+                    htmlType="submit"
+                    size="large"
+                    block
+                  >
                     Submit
                   </Button>
                 </Form.Item>
