@@ -44,7 +44,7 @@ export default function GetInTouch() {
   return (
     <div className="pt-8 pb-20">
       <CustomHeading>GET IN TOUCH</CustomHeading>
-      <p className="mb-6 text-center w-[90%] md:w-[40%] mx-auto">
+      <p className="mb-6 text-center w-[90%] md:w-[40%] mx-auto text-white">
         {`Have questions or need support? Contact us via email, live chat, or
         social media. We're here to assist with match updates, tickets,
         streaming, and more!`}

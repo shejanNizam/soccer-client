@@ -86,18 +86,18 @@ export default function VenueDetailPage() {
               <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2">
                 {venue.name}
               </h1>
-              <p className="text-lg text-gray-300 mb-2">{venue.title}</p>
+              <p className="text-lg text-white mb-2">{venue.title}</p>
               <p className="text-primary text-sm">{formattedAddress}</p>
             </div>
 
             <div className="mt-4 md:mt-0">
               <div className="flex items-center text-xl md:text-2xl">
-                <span className="font-semibold mr-2">Price:</span>
-                <span className="text-yellow-500">${venue.price}</span>
+                <span className="font-semibold mr-2 text-white">Price:</span>
+                <span className="text-primary">${venue.price}</span>
               </div>
               <div className="flex items-center text-xl md:text-2xl">
-                <span className="font-semibold mr-2">Points:</span>
-                <span className="text-yellow-500">{venue.points}</span>
+                <span className="font-semibold mr-2 text-white">Points:</span>
+                <span className="text-primary">{venue.points}</span>
               </div>
             </div>
           </div>
@@ -118,8 +118,12 @@ export default function VenueDetailPage() {
           </div>
 
           <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-2">Description</h2>
-            <p className="whitespace-pre-line">{venue.description}</p>
+            <h2 className="text-xl text-primary font-semibold mb-2">
+              Description
+            </h2>
+            <p className="whitespace-pre-line text-white">
+              {venue.description}
+            </p>
           </div>
 
           <Link href={`/book-venue?venueId=${venue.id}`}>

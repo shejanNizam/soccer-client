@@ -206,7 +206,7 @@ export default function BookVenue() {
         {/* Heading and Subtitle */}
         <div className="text-center">
           <h1 className="text-4xl font-bold text-primary mb-4">Book a Venue</h1>
-          <p className="text-xl md:w-[70%] mx-auto">
+          <p className="text-xl md:w-[60%] mx-auto text-white">
             Easily book a soccer venue for matches, training, or events. Choose
             from top facilities, check availability, and secure your spot
             hassle-free. Perfect for teams, tournaments, and recreational play.

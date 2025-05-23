@@ -34,7 +34,7 @@ export default function WhyChooseUs() {
                 <h3 className="text-lg sm:text-xl text-primary font-semibold">
                   Latest Soccer News & Updates
                 </h3>
-                <p className="text-sm sm:text-base">
+                <p className="text-sm sm:text-base text-white">
                   Stay ahead with real-time match results, transfer news, and
                   in-depth analysis from top leagues worldwide.
                 </p>
@@ -46,7 +46,7 @@ export default function WhyChooseUs() {
                 <h3 className="text-lg sm:text-xl text-primary font-semibold">
                   Live Match Streaming & Highlights
                 </h3>
-                <p className="text-sm sm:text-base">
+                <p className="text-sm sm:text-base text-white">
                   Watch live games, replays, and exclusive highlights with
                   high-quality streaming options.
                 </p>
@@ -58,7 +58,7 @@ export default function WhyChooseUs() {
                 <h3 className="text-lg sm:text-xl text-primary font-semibold">
                   Easy Ticket Booking
                 </h3>
-                <p className="text-sm sm:text-base">
+                <p className="text-sm sm:text-base text-white">
                   Secure your seats for upcoming matches with our seamless
                   ticketing system and exclusive discounts.
                 </p>
@@ -70,7 +70,7 @@ export default function WhyChooseUs() {
                 <h3 className="text-lg sm:text-xl text-primary font-semibold">
                   Match Schedules & Stats
                 </h3>
-                <p className="text-sm sm:text-base">
+                <p className="text-sm sm:text-base text-white">
                   Get detailed fixtures, team fixtures, player statistics, and
                   head-to-head comparisons to stay informed.
                 </p>

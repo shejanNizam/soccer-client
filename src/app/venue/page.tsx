@@ -49,7 +49,7 @@ const Venue = () => {
     <div className="min-h-screen py-40">
       <header className="text-center mb-8">
         <h1 className="text-4xl text-primary font-bold">Venue</h1>
-        <p className="mt-4 md:w-[40%] mx-auto">
+        <p className="mt-4 md:w-[40%] mx-auto text-white">
           Book a soccer venue effortlessly for matches, training, or events.
           Choose top facilities, check availability, and secure your spot
           online. Perfect for teams, tournaments, and casual games. Reserve now!
@@ -83,8 +83,10 @@ const Venue = () => {
                 <h1 className="text-4xl text-primary font-bold mb-2">
                   {venue.name}
                 </h1>
-                <h4 className="font-bold text-xl mb-2">{venue.title}</h4>
-                <p className="mb-2">{venue.description}</p>
+                <h4 className="font-bold text-xl mb-2 text-white">
+                  {venue.title}
+                </h4>
+                <p className="mb-2 text-white">{venue.description}</p>
               </div>
 
               <div className="mt-4 flex gap-2">
