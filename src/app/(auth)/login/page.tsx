@@ -25,8 +25,8 @@ export default function Login() {
   const onFinish = async (values: { email: string; password: string }) => {
     try {
       const response = await login({
-        email: values.email,
-        password: values.password,
+        email: values?.email,
+        password: values?.password,
       }).unwrap();
 
       // Store token in both localStorage and cookie
