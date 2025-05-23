@@ -16,6 +16,7 @@ import {
   Modal,
   Select,
   Spin,
+  Tooltip,
 } from "antd";
 import dayjs from "dayjs";
 import Image from "next/image";
@@ -23,7 +24,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import VENUE_IMG from "../../assets/book_venue/book_venue_img.png";
 
-const { Option } = Select;
+// const { Option } = Select;
 
 type VenueBookingForm = {
   date: string;
@@ -51,20 +52,15 @@ export default function BookVenue() {
   const [bookByPayment, { isLoading: isLoadingPayment }] =
     useAddBookUsingPaymentMutation();
 
-  // useAddBookUsingPointMutation();
-
   const [rescheduleRequest, { isLoading: isLoadingReschelude }] =
     useRescheduleRequestMutation();
 
-  // console.log(requestId, "------------------------>>");
   const { data: requestedData } = useGetSingleRequestQuery(requestId);
-  console.log(requestedData?.data, "------------>>");
 
   useEffect(() => {
     if (!requestId || !requestedData) {
       return;
     }
-
     setStateVenueId(requestedData?.data?.venue?.id);
   }, [requestId, requestedData]);
 
@@ -89,16 +85,13 @@ export default function BookVenue() {
       setSelectedTimeRange(values.time);
     } else if (requestId) {
       try {
-        // Create the reschedule data in the format the backend expects
         const rescheduleData = {
           id: requestId,
           date: date,
-          timeRange: values.time, // Changed from timeRange to time if needed
+          timeRange: values.time,
           status: "pending",
         };
-        // console.log(rescheduleData);
         await rescheduleRequest(rescheduleData).unwrap();
-        // console.log(response);
 
         SuccessSwal({
           title: "Rescheduled!",
@@ -173,7 +166,6 @@ export default function BookVenue() {
       const response = await bookByPayment(bookingData).unwrap();
 
       if (response.code === 200 && response.data?.url) {
-        // Redirect to payment URL
         window.location.href = response.data.url;
       } else {
         message.error(
@@ -181,7 +173,6 @@ export default function BookVenue() {
             response?.data?.message ||
             "Failed to initiate payment. Please try again."
         );
-        // throw new Error(response.message || "Failed to initiate payment");
       }
     } catch (error: unknown) {
       ErrorSwal({
@@ -275,24 +266,90 @@ export default function BookVenue() {
                       timeRange: string;
                       isMute: boolean;
                       totalBooking: number;
+                      bookedUsers: { name: string; email: string }[];
                     }) => (
-                      <Option
+                      <Select.Option
                         key={slot.timeRange}
                         value={slot.timeRange}
                         disabled={slot.isMute}
+                        style={{
+                          whiteSpace: "normal",
+                          cursor: "pointer",
+                        }}
                       >
-                        <div className="flex justify-between">
-                          <span>{slot.timeRange}</span>
-                          <span className="text-gray-500 ml-2">
-                            ({" "}
-                            <span className="text-secondary font-bold text-lg">
-                              {" "}
-                              {slot.totalBooking}{" "}
-                            </span>{" "}
-                            booked)
-                          </span>
-                        </div>
-                      </Option>
+                        <Tooltip
+                          placement="right"
+                          mouseEnterDelay={0.3}
+                          mouseLeaveDelay={0.1}
+                          overlayInnerStyle={{
+                            maxHeight: 200,
+                            overflowY: "auto",
+                            padding: "12px 16px",
+                            backgroundColor: "#1f2937",
+                            borderRadius: 8,
+                            boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+                            color: "#f9fafb",
+                            fontSize: 14,
+                            lineHeight: 1.5,
+                            minWidth: 250,
+                          }}
+                          title={
+                            slot.bookedUsers.length > 0 ? (
+                              <div>
+                                <div
+                                  style={{
+                                    fontWeight: "600",
+                                    marginBottom: 8,
+                                    borderBottom: "1px solid #374151",
+                                    paddingBottom: 4,
+                                  }}
+                                >
+                                  Booked Users ({slot.bookedUsers.length})
+                                </div>
+                                <ul
+                                  style={{
+                                    margin: 0,
+                                    paddingLeft: 16,
+                                    maxHeight: 160,
+                                    overflowY: "auto",
+                                  }}
+                                >
+                                  {slot.bookedUsers.map((user, idx) => (
+                                    <li key={idx} style={{ marginBottom: 6 }}>
+                                      <span>{user.name}</span>{" "}
+                                      <small style={{ color: "#9ca3af" }}>
+                                        ({user.email})
+                                      </small>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ) : (
+                              <span
+                                style={{
+                                  color: "#9ca3af",
+                                  fontStyle: "italic",
+                                }}
+                              >
+                                No bookings yet
+                              </span>
+                            )
+                          }
+                        >
+                          <div className="flex justify-between font-semibold items-center">
+                            <span>{slot.timeRange}</span>
+                            <span
+                              className={`font-bold cursor-pointer ${
+                                slot.totalBooking > 0
+                                  ? "text-secondary"
+                                  : "text-gray-500"
+                              }`}
+                            >
+                              ({slot.totalBooking} booked)
+                            </span>
+                          </div>
+                        </Tooltip>
+                      </Select.Option>
                     )
                   )}
                 </Select>
@@ -326,21 +383,11 @@ export default function BookVenue() {
               {/* Book Button */}
               <Form.Item>
                 {requestId ? (
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    className="w-full"
-                    // loading={isLoading}
-                  >
+                  <Button type="primary" htmlType="submit" className="w-full">
                     Re Schedule
                   </Button>
                 ) : (
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    className="w-full"
-                    // loading={isLoading}
-                  >
+                  <Button type="primary" htmlType="submit" className="w-full">
                     Book Now
                   </Button>
                 )}
