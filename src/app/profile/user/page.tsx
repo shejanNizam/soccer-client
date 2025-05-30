@@ -21,6 +21,10 @@ interface User {
     state?: string;
     city?: string;
   };
+  rating: {
+    level: string;
+    score: number;
+  };
   phone?: string;
   profileImage?: {
     url?: string;
@@ -75,11 +79,11 @@ export default function UserProfile() {
   const handleOpenEditModal = () => {
     setIsEditModalOpen(true);
     form.setFieldsValue({
-      name: user?.name || "",
-      country: user?.address?.country || "",
-      state: user?.address?.state || "",
-      city: user?.address?.city || "",
-      phone: user?.phone || "",
+      name: user?.name,
+      country: user?.address?.country,
+      state: user?.address?.state,
+      city: user?.address?.city,
+      phone: user?.phone,
     });
   };
 
@@ -179,8 +183,19 @@ export default function UserProfile() {
           />
           <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-auto min-w-[130px] rounded-2xl bg-orange-600 p-1 text-center mb-2">
             <div className="flex flex-col items-center text-primary font-bold text-sm">
-              <div>★☆☆☆☆</div>
-              <div>Bench-warmer</div>
+              <div>
+                {user?.rating?.score === 1
+                  ? "★☆☆☆☆"
+                  : user?.rating?.score === 2
+                  ? "★★☆☆☆"
+                  : user?.rating?.score === 3
+                  ? "★★★☆☆"
+                  : user?.rating?.score === 4
+                  ? "★★★★☆"
+                  : user?.rating?.score === 5 && "★★★★★"}
+              </div>
+              {/* <div>★☆☆☆☆</div> */}
+              <div>{user?.rating?.level}</div>
               <button
                 className="bg-primary/50 rounded-full px-2 py-1"
                 onClick={handleEditposition}

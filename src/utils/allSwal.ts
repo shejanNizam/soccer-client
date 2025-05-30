@@ -9,7 +9,7 @@ export function SuccessSwal({ title, text }: { title: string; text: string }) {
     confirmButtonText: "OK",
   });
 }
-
+//edit
 export function ErrorSwal({ title, text }: { title: string; text: string }) {
   return Swal.fire({
     title: title,
