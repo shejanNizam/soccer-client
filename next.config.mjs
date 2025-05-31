@@ -1,12 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "api.soccer-social.com",
-      },
-    ],
+    domains: ["api.soccer-social.com", "i.stack.imgur.com"],
   },
 };
 
