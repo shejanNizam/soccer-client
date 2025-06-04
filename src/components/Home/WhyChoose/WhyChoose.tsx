@@ -60,7 +60,7 @@ export default function WhyChooseUs() {
                   We organize pick-up games.
                 </h3>
                 <p className="text-sm sm:text-base text-white">
-                  With limited spots, it's first come first serve. Play
+                  With limited spots, it &apos;s first come first serve. Play
                   king-of-the-court with plenty of playing time.
                 </p>
               </div>
