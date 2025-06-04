@@ -17,32 +17,25 @@ interface FAQItem {
 const faqData: FAQItem[] = [
   {
     _id: 1,
-    question: "1. How can I watch live soccer matches on this website?",
+    question: "1. How long are the games?",
     answer:
-      'You can watch live soccer matches by navigating to the "Live Matches" section on our website.',
+      "Your playing time is a total of 1 hour. Each game is 4 minutes or first to 2 goals (whichever comes first)",
   },
   {
     _id: 2,
-    question: "2. Where can I find the latest soccer news and updates?",
-    answer:
-      'The latest soccer news and updates are available in the "News" section.',
+    question: "2. Am I on a team?",
+    answer: "5-a-side teams with 5 waiting on the bench.",
   },
   {
     _id: 3,
-    question: "3. How do I check match schedules and fixtures?",
+    question: "3. What teams win?",
     answer:
-      'Match schedules and fixtures can be found in the "Schedule" section.',
+      "King of the court concept. Each game is 4 minutes or first to 2 goals (whichever comes first). If one team wins 4 games in a row, we pick new teams to even out the competition.",
   },
   {
     _id: 4,
-    question: "4. Can I buy tickets for soccer matches on this website?",
-    answer: 'Yes, you can purchase tickets in the "Tickets" section.',
-  },
-  {
-    _id: 5,
-    question: "5. How do I register for an account on this website?",
-    answer:
-      'You can register for an account by clicking on the "Sign Up" button at the top right corner of the homepage.',
+    question: "4. Are there refs?",
+    answer: "No refs. Call your own fouls. Shin guards encouraged!",
   },
 ];
 

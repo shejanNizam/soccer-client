@@ -12,11 +12,11 @@ export default function Banner() {
     >
       <div className="container px-4 lg:pl-32 xl:pl-48">
         <h1 className="md:w-[80%] xl:w-[70%] text-3xl md:text-5xl xl:text-6xl font-bold text-primary ">
-          Ultimate Soccer Hub Scores, News, and Highlights
+          Welcome to the best pick-up soccer games in El Paso
         </h1>
         <p className="md:w-[70%] xl:w-[50%] text-primary font-medium text-base sm:text-lg md:text-xl mt-4">
-          Stay updated with the latest soccer news, live scores, match
-          highlights, player stats, and expert analysis from leagues worldwide.
+          We hold organized pick-up soccer games. Pay to play, reserve the day
+          and time you would like to play and come show us what you got!
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 py-6">

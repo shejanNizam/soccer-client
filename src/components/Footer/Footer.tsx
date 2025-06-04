@@ -10,7 +10,7 @@ import {
   FaPhoneAlt,
   FaTwitter,
 } from "react-icons/fa";
-import main_logo_img from "../../assets/mail_logo_img.svg";
+import main_logo_img from "../../assets/main_logo2.png";
 
 const Footer = () => (
   <footer className="hidden md:block bg-hash text-white py-8 w-full">

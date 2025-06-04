@@ -16,7 +16,7 @@ import { FaBars, FaBell, FaTimes } from "react-icons/fa";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import main_logo_img from "../../assets/mail_logo_img.svg";
+import main_logo_img from "../../assets/main_logo2.png";
 import default_img from "../../assets/user_img_default.png";
 
 export default function Navbar() {
@@ -161,16 +161,16 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="bg-hash shadow-2xl fixed w-full py-2 z-50">
+      <nav className="bg-hash shadow-2xl fixed w-full  z-50">
         <div className="px-4 md:container">
           <div className="max-w-7xl mx-auto">
             <div className="flex justify-between items-center">
               {/* Logo */}
               <Link href="/" onClick={closeMenu}>
                 <Image
-                  className="w-20 h-20"
-                  width={1000}
-                  height={1000}
+                  className="w-24 h-24"
+                  // width={1000}
+                  // height={1000}
                   src={main_logo_img}
                   alt="main_logo"
                 />
@@ -226,7 +226,7 @@ export default function Navbar() {
                           <Image
                             width={1000}
                             height={1000}
-                            className="w-12 h-12 rounded-full"
+                            className="w-10 h-10 rounded-full"
                             src={
                               user?.profileImage?.url
                                 ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${

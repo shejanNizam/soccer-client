@@ -17,7 +17,7 @@ export default function WhyChooseUs() {
             alt="Soccer Image"
             width={1000}
             height={1000}
-            className="rounded-xl w-full h-auto"
+            className="rounded-xl w-full h-auto object-cover"
           />
         </div>
 
@@ -32,11 +32,11 @@ export default function WhyChooseUs() {
               <div className=" absolute left-0 w-5 h-5 bg-primary rounded-full -ml-2"></div>
               <div className="lg:ml-8">
                 <h3 className="text-lg sm:text-xl text-primary font-semibold">
-                  Latest Soccer News & Updates
+                  The convenience of playing around your schedule.
                 </h3>
                 <p className="text-sm sm:text-base text-white">
-                  Stay ahead with real-time match results, transfer news, and
-                  in-depth analysis from top leagues worldwide.
+                  Create a profile, look up the day and time you want to play
+                  and .
                 </p>
               </div>
             </li>
@@ -44,11 +44,12 @@ export default function WhyChooseUs() {
               <div className=" absolute left-0 w-5 h-5 bg-primary rounded-full -ml-2"></div>
               <div className="lg:ml-8">
                 <h3 className="text-lg sm:text-xl text-primary font-semibold">
-                  Live Match Streaming & Highlights
+                  No long-term commitments.
                 </h3>
                 <p className="text-sm sm:text-base text-white">
-                  Watch live games, replays, and exclusive highlights with
-                  high-quality streaming options.
+                  No need to stress about joining a team and hoping you get
+                  enough playing time. Simply pay to play the day and time you
+                  want to play, and come back as many times as you want!
                 </p>
               </div>
             </li>
@@ -56,11 +57,11 @@ export default function WhyChooseUs() {
               <div className=" absolute left-0 w-5 h-5 bg-primary rounded-full -ml-2"></div>
               <div className="lg:ml-8">
                 <h3 className="text-lg sm:text-xl text-primary font-semibold">
-                  Easy Ticket Booking
+                  We organize pick-up games.
                 </h3>
                 <p className="text-sm sm:text-base text-white">
-                  Secure your seats for upcoming matches with our seamless
-                  ticketing system and exclusive discounts.
+                  With limited spots, it's first come first serve. Play
+                  king-of-the-court with plenty of playing time.
                 </p>
               </div>
             </li>
@@ -68,11 +69,11 @@ export default function WhyChooseUs() {
               <div className=" absolute left-0 w-5 h-5 bg-primary rounded-full -ml-2"></div>
               <div className="lg:ml-8">
                 <h3 className="text-lg sm:text-xl text-primary font-semibold">
-                  Match Schedules & Stats
+                  Tell your friends!
                 </h3>
                 <p className="text-sm sm:text-base text-white">
-                  Get detailed fixtures, team fixtures, player statistics, and
-                  head-to-head comparisons to stay informed.
+                  You and your friends can pick a time and date, with enough
+                  available spots, and show us what you got!
                 </p>
               </div>
             </li>
