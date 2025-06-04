@@ -199,7 +199,7 @@ export default function BookVenue() {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-
+console.log(timeSlots)
   return (
     <div className="min-h-screen bg-secondary py-40 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
