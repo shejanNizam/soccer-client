@@ -199,7 +199,7 @@ export default function BookVenue() {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-console.log(timeSlots)
+  console.log(timeSlots);
   return (
     <div className="min-h-screen bg-secondary py-40 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -360,7 +360,8 @@ console.log(timeSlots)
                 <p className="text-sm text-button mb-4">
                   <strong>Warning:</strong> Play at your own risk. Injuries may
                   occur. Follow all rules. Proper gear required. Field
-                  maintenance varies. Stay safe!
+                  maintenance varies. Please refer to the liability waiver for
+                  guidelines and safety measures. Stay safe!
                 </p>
                 <Form.Item
                   name="agree"

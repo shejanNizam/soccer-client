@@ -19,11 +19,11 @@ export default function Privacy() {
           <h3 className="text-4xl font-bold text-primary relative z-10">
             Privacy Policy
           </h3>
-          <p className=" md:w-[30%] mx-auto text-white relative z-10">
+          {/* <p className=" md:w-[30%] mx-auto text-white relative z-10">
             We provide live scores, match updates, news, streaming, stats, and
             ticket booking for soccer fans worldwide. Stay connected to the
             game!
-          </p>
+          </p> */}
         </div>
 
         <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">

@@ -125,35 +125,35 @@ const Footer = () => (
                 {/* Address with Google Maps Link */}
                 <div className="">
                   <a
-                    href="https://www.google.com/maps/search/?api=1&query=1234+Street+Name,City,State"
+                    href="https://www.google.com/maps/search/?api=1&query=8040 Gateway Blvd , El Paso , Texas 79907"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center mb-2 justify-center md:justify-start text-sm hover:text-primary transition"
                   >
                     <FaMapMarkerAlt className="mr-2" />
-                    1234 Street Name, City, State
+                    8040 Gateway Blvd , El Paso , Texas 79907
                   </a>
                 </div>
 
                 {/* Email with mailto Link */}
                 <div className="">
                   <a
-                    href="mailto:info@mycompany.com"
+                    href="mailto:soccersocialllc@gmail.com"
                     className="flex items-center mb-2 justify-center md:justify-start text-sm hover:text-primary transition"
                   >
                     <FaEnvelope className="mr-2" />
-                    info@mycompany.com
+                    soccersocialllc@gmail.com
                   </a>
                 </div>
 
                 {/* Phone Number with tel Link */}
                 <div className="">
                   <a
-                    href="tel:1234567890"
+                    href="tel:19153301909"
                     className="flex items-center justify-center md:justify-start text-sm hover:text-primary transition"
                   >
                     <FaPhoneAlt className="mr-2" />
-                    (123) 456-7890
+                    (915) 330-1909
                   </a>
                 </div>
               </ul>
@@ -166,7 +166,7 @@ const Footer = () => (
 
         {/* copyright part */}
         <div className="text-center text-sm">
-          &copy; {new Date().getFullYear()} MyCompany. All rights reserved.
+          &copy; {new Date().getFullYear()} Soccer-Social. All rights reserved.
         </div>
       </div>
     </div>
