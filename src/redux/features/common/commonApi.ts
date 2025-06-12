@@ -22,6 +22,15 @@ export const commonApi = baseApi.injectEndpoints({
       },
       providesTags: ["common"],
     }),
+    getliabilityWaiver: builder.query({
+      query: () => {
+        return {
+          url: "/settings/liability-waiver",
+          method: "GET",
+        };
+      },
+      providesTags: ["common"],
+    }),
     // gel all
     getTerms: builder.query({
       query: () => {
@@ -51,4 +60,5 @@ export const {
   useGetPrivacyQuery,
   useGetTermsQuery,
   useContactWithadminMutation,
+  useGetliabilityWaiverQuery
 } = commonApi;

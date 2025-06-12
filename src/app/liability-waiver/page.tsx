@@ -1,11 +1,11 @@
 "use client";
 
 import Footer from "@/components/Footer/Footer";
-import { useGetPrivacyQuery } from "@/redux/features/common/commonApi";
+import { useGetliabilityWaiverQuery } from "@/redux/features/common/commonApi";
 import localImage from "../../assets/about/about-us.png";
 
 export default function LiabilityWaiver() {
-  const { data } = useGetPrivacyQuery({});
+  const { data } = useGetliabilityWaiverQuery({});
   console.log(data);
   return (
     <>
