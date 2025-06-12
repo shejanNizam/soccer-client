@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-
 import ChangePasswordModal from "@/components/modals/ChangePasswordModal";
 import EditProfileModal from "@/components/modals/EditProfileModal";
 import { useUpdateUserDataMutation } from "@/redux/api/userApi/userApi";
@@ -26,8 +25,8 @@ interface User {
     score: number;
   };
   phone?: string;
-  gender?: string;
-  dob?: any;
+  gender: string;
+  dob: Date;
   profileImage?: {
     url?: string;
     path?: string;
@@ -102,8 +101,8 @@ export default function UserProfile() {
     state: string;
     city: string;
     phone: string;
-    gender: string;
-    dob: any;
+    // gender: string;
+    // dob: Date;
   }) => {
     const formData = new FormData();
 
