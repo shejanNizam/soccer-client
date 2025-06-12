@@ -26,6 +26,8 @@ interface User {
     score: number;
   };
   phone?: string;
+  gender?: string;
+  dob?: any;
   profileImage?: {
     url?: string;
     path?: string;
@@ -100,6 +102,8 @@ export default function UserProfile() {
     state: string;
     city: string;
     phone: string;
+    gender: string;
+    dob: any;
   }) => {
     const formData = new FormData();
 
@@ -210,6 +214,13 @@ export default function UserProfile() {
         <div className="flex flex-col w-full">
           <h2 className="text-2xl font-bold">{user?.name}</h2>
           <p className="text-primary mb-4">{user?.email}</p>
+          <p className="text-primary mb-4">Gender: {user?.gender}</p>
+          <p className="text-primary mb-4">
+            Date of birth:{" "}
+            {`${new Date(user?.dob).getDay()}/${new Date(
+              user?.dob
+            ).getMonth()}/${new Date(user?.dob).getFullYear()}`}
+          </p>
           <form className="w-full">
             <div className="flex flex-col gap-4">
               <div>

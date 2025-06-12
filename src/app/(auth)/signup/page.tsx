@@ -1,16 +1,22 @@
 "use client";
-
 import { useSignupMutation } from "@/redux/api/authApi/authApi";
 import { useAppDispatch } from "@/redux/hooks";
 import { ErrorSwal, SuccessSwal } from "@/utils/allSwal";
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, Upload, UploadFile } from "antd";
+import {
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  Upload,
+  UploadFile,
+  Select,
+  DatePicker,
+} from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa";
 import { setCredentials } from "../../../redux/slices/authSlice";
-
-// const { Dragger } = Upload;
 
 export default function Signup() {
   const router = useRouter();
@@ -25,6 +31,9 @@ export default function Signup() {
     password: string;
     confirmPassword: string;
     idCardImage: UploadFile[];
+    gender: string;
+    dob: string;
+    phone: string;
   }) => {
     try {
       const formData = new FormData();
@@ -32,6 +41,9 @@ export default function Signup() {
       formData.append("email", values.email);
       formData.append("password", values.password);
       formData.append("confirmPassword", values.confirmPassword);
+      formData.append("gender", values.gender);
+      formData.append("dob", values.dob);
+      formData.append("phone", values.phone);
 
       // More robust file handling
       if (values.idCardImage && values.idCardImage.length > 0) {
@@ -75,7 +87,7 @@ export default function Signup() {
 
   return (
     <>
-      <div className="min-h-screen w-full flex flex-col justify-center items-center bg-hash pt-20 px-4">
+      <div className="min-h-screen w-full flex flex-col justify-center items-center bg-hash py-28 px-4">
         <div className="bg-secondary border border-primary shadow-2xl rounded-xl w-full max-w-xl p-8 md:p-16 relative">
           <button
             onClick={handleBack}
@@ -122,7 +134,19 @@ export default function Signup() {
               >
                 <Input placeholder="Enter your email" size="large" />
               </Form.Item>
-
+              <Form.Item
+                label={<span className="font-semibold"> Phone </span>}
+                name="phone"
+                rules={[
+                  { required: false },
+                  {
+                    min: 11,
+                    message: "Phone number must be at least 11 characters",
+                  },
+                ]}
+              >
+                <Input placeholder="Enter your phone number" size="large" />
+              </Form.Item>
               <Form.Item
                 label={<span className="font-semibold"> Password </span>}
                 name="password"
@@ -185,6 +209,38 @@ export default function Signup() {
                     Click to Upload
                   </Button>
                 </Upload>
+              </Form.Item>
+
+              {/* Gender Field */}
+              <Form.Item
+                label={<span className="font-semibold"> Gender </span>}
+                name="gender"
+                rules={[
+                  { required: true, message: "Please select your gender" },
+                ]}
+              >
+                <Select placeholder="Select your gender" size="large">
+                  <Select.Option value="male">Male</Select.Option>
+                  <Select.Option value="female">Female</Select.Option>
+                </Select>
+              </Form.Item>
+
+              {/* Date of Birth Field */}
+              <Form.Item
+                label={<span className="font-semibold"> Date of Birth </span>}
+                name="dob"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select your date of birth",
+                  },
+                ]}
+              >
+                <DatePicker
+                  placeholder="Select your date of birth"
+                  style={{ width: "100%" }}
+                  size="large"
+                />
               </Form.Item>
             </div>
 

@@ -168,7 +168,7 @@ export default function Navbar() {
               {/* Logo */}
               <Link href="/" onClick={closeMenu}>
                 <Image
-                  className="w-24 h-24"
+                  className="w-24 h-24 object-cover"
                   // width={1000}
                   // height={1000}
                   src={main_logo_img}
@@ -226,7 +226,7 @@ export default function Navbar() {
                           <Image
                             width={1000}
                             height={1000}
-                            className="w-10 h-10 rounded-full"
+                            className="w-10 h-10 rounded-full object-cover"
                             src={
                               user?.profileImage?.url
                                 ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${
