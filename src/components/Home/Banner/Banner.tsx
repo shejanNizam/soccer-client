@@ -28,7 +28,7 @@ export default function Banner() {
           </Link>
           <Link href="/venue">
             <Button type="primary" className="w-full sm:w-auto">
-              Venue
+              Book Now
             </Button>
           </Link>
         </div>

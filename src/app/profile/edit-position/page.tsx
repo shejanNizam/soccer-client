@@ -7,11 +7,11 @@ import { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 
 const positionMap = {
-  1: "Bench-warmer",
-  2: "Rising Talent",
-  3: "First Teamer",
-  4: "Play Maker",
-  5: "Elite Player",
+  1: "Beginner",
+  2: "Novice",
+  3: "Average",
+  4: "Semi-Pro",
+  5: "Professional",
 };
 
 export default function EditPositionPage() {

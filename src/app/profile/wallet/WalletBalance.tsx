@@ -24,14 +24,14 @@ export default function WalletBalance({ paymentType }: WalletBalanceProps) {
             {paymentType === "point" ? `Available points` : `Total Cost`}
           </p>
           <h2 className="text-2xl font-bold text-gray-800">
-            {paymentType === "point"
-              ? data?.data?.totalPoints
-              : `$${data?.data?.totalCost}`}
             {/* {paymentType === "point"
               ? data?.data?.totalPoints
+              : `$${data?.data?.totalCost || 0}`} */}
+            {paymentType === "point"
+              ? data?.data?.totalPoints
                 ? data?.data?.totalPoints
-                : "N/A"
-              : `$${data?.data?.totalCost ? data?.data?.totalCost : "N/A"}`} */}
+                : "0"
+              : `$${data?.data?.totalCost ? data?.data?.totalCost : "0"}`}
           </h2>
         </div>
       </div>
