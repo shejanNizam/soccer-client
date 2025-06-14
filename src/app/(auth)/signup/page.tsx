@@ -140,8 +140,8 @@ export default function Signup() {
                 rules={[
                   { required: false },
                   {
-                    min: 11,
-                    message: "Phone number must be at least 11 characters",
+                    min: 9,
+                    message: "Phone number must be at least 9 characters",
                   },
                 ]}
               >
