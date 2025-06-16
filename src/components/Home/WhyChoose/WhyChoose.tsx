@@ -35,8 +35,7 @@ export default function WhyChooseUs() {
                   The convenience of playing around your schedule.
                 </h3>
                 <p className="text-sm sm:text-base text-white">
-                  Create a profile, look up the day and time you want to play
-                  and .
+                  Create a profile, look up games, and be ready to play!
                 </p>
               </div>
             </li>
