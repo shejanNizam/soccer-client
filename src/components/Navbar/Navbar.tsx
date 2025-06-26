@@ -128,6 +128,12 @@ export default function Navbar() {
         }).then(() => {
           dispatch(logout());
           localStorage.removeItem("user_token");
+          // Remove authToken cookie
+          document.cookie =
+            "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          // Remove any other auth-related cookies if needed
+          // Remove Redux persisted state if used
+          // Optionally reload the page to clear all state
           router.push("/login");
         });
       }

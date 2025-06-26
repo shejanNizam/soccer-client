@@ -7,6 +7,7 @@ const protectedPaths = [
   "/profile", // Protected profile routes
   "/book-venue", // Book venue routes
   "/dashboard",
+  "/book-venue", // Protect book-venue page
 ];
 
 // 2. Public paths that might exist under protected parents
@@ -15,7 +16,7 @@ const publicExceptions = [
 ];
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const { pathname, search } = request.nextUrl;
 
   // Skip public exceptions
   if (publicExceptions.some((path) => pathname.startsWith(path))) {
@@ -23,14 +24,14 @@ export function middleware(request: NextRequest) {
   }
 
   // Check if current path is protected
-  const isProtected = protectedPaths.some((path) => pathname.startsWith(path));
+  const isProtected = protectedPaths.some((path) => pathname === path);
 
   const token = request.cookies.get("authToken")?.value;
 
   if (isProtected && !token) {
-    // Store attempted URL for redirect after login
+    // Store attempted URL for redirect after login (include search params)
     const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("from", pathname);
+    loginUrl.searchParams.set("from", pathname + search);
     return NextResponse.redirect(loginUrl);
   }
 

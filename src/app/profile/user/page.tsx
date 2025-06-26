@@ -56,7 +56,6 @@ export default function UserProfile() {
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [file, setFile] = useState<UploadFile | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [idCardFile, setIdCardFile] = useState<File | null>(null);
   const [idCardError, setIdCardError] = useState(false);
 
   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
@@ -80,7 +79,7 @@ export default function UserProfile() {
   const handleOpenEditModal = () => {
     setIsEditModalOpen(true);
     form.setFieldsValue({
-      name: user?.name,
+      // name: user?.name, // Do not set name field for editing
       country: user?.address?.country,
       state: user?.address?.state,
       city: user?.address?.city,
@@ -91,7 +90,6 @@ export default function UserProfile() {
   const handleCloseModal = () => {
     setIsEditModalOpen(false);
     setFile(null);
-    setIdCardFile(null);
     form.resetFields();
   };
 
@@ -106,7 +104,7 @@ export default function UserProfile() {
   }) => {
     const formData = new FormData();
 
-    formData.append("name", values.name);
+    // formData.append("name", values.name);
     formData.append("phone", values.phone);
     formData.append("address.country", values.country);
     formData.append("address.state", values.state);
@@ -114,10 +112,6 @@ export default function UserProfile() {
 
     if (file && file.originFileObj instanceof Blob) {
       formData.append("profileImage", file.originFileObj);
-    }
-
-    if (idCardFile) {
-      formData.append("idCardImage", idCardFile);
     }
 
     try {
@@ -314,8 +308,6 @@ export default function UserProfile() {
         setPreviewImage={setPreviewImage}
         file={file}
         setFile={setFile}
-        idCardFile={idCardFile}
-        setIdCardFile={setIdCardFile}
         isUpdating={isUpdating}
         user={user}
         baseUrl={baseUrl}

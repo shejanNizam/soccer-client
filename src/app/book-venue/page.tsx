@@ -237,6 +237,17 @@ export default function BookVenue() {
                 rules={[{ required: true, message: "Please select a date!" }]}
               >
                 <DatePicker
+                  disabledDate={(date) => {
+                    const day = date.day(); // 0 = Sunday, 5 = Friday, 6 = Saturday
+                    // Only allow Fri, Sat, Sun in the next 7 days
+                    const today = dayjs().startOf("day");
+                    const maxDay = today.add(7, "day");
+                    return (
+                      !(day === 5 || day === 6 || day === 0) ||
+                      date.isBefore(today) ||
+                      date.isAfter(maxDay)
+                    );
+                  }}
                   className="w-full"
                   onChange={handleDateChange}
                   value={date ? dayjs(date) : null}

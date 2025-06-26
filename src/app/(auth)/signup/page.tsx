@@ -222,7 +222,7 @@ export default function Signup() {
                 <Select placeholder="Select your gender" size="large">
                   <Select.Option value="male">Male</Select.Option>
                   <Select.Option value="female">Female</Select.Option>
-                  <Select.Option value="other">Others</Select.Option>
+                  <Select.Option value="other">Other</Select.Option>
                 </Select>
               </Form.Item>
 

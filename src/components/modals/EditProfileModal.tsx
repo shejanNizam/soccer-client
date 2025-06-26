@@ -28,12 +28,9 @@ interface EditProfileModalProps {
   setPreviewImage: (url: string | null) => void;
   file: UploadFile | null;
   setFile: (file: UploadFile | null) => void;
-  idCardFile: File | null;
-  setIdCardFile: (file: File | null) => void;
   isUpdating: boolean;
   user: {
     profileImage?: { url?: string };
-    idCardImage?: { url?: string };
   };
   baseUrl: string;
 }
@@ -47,8 +44,6 @@ export default function EditProfileModal({
   setPreviewImage,
   file,
   setFile,
-  idCardFile,
-  setIdCardFile,
   isUpdating,
   user,
   baseUrl,
@@ -76,21 +71,6 @@ export default function EditProfileModal({
     if (file.originFileObj && file.originFileObj instanceof Blob) {
       setPreviewImage(URL.createObjectURL(file.originFileObj));
     }
-  };
-
-  // Handle file upload for ID card
-  const handleBeforeUploadIdCard = (file: File) => {
-    const isImage = file.type && file.type.startsWith("image/");
-    if (!isImage) {
-      return Upload.LIST_IGNORE;
-    }
-    setIdCardFile(file);
-    return false;
-  };
-
-  // Handle ID card removal
-  const handleIdCardRemove = () => {
-    setIdCardFile(null);
   };
 
   return (
@@ -156,14 +136,7 @@ export default function EditProfileModal({
             </div>
           </Form.Item>
 
-          {/* Name */}
-          <Form.Item
-            label="Name"
-            name="name"
-            rules={[{ required: true, message: "Please enter your name" }]}
-          >
-            <Input placeholder="Enter your name" />
-          </Form.Item>
+          {/* Name (disabled) */}
 
           {/* Country */}
           <Form.Item
@@ -201,43 +174,6 @@ export default function EditProfileModal({
             ]}
           >
             <Input placeholder="Enter your phone number" />
-          </Form.Item>
-
-          {/* ID Card Upload */}
-          <Form.Item className="[&_.ant-upload]:w-full" label="ID Card">
-            <Upload
-              maxCount={1}
-              accept="image/*"
-              beforeUpload={handleBeforeUploadIdCard}
-              showUploadList={true}
-              fileList={
-                idCardFile
-                  ? [
-                      {
-                        uid: "-1",
-                        name: idCardFile.name,
-                        status: "done",
-                      },
-                    ]
-                  : user?.idCardImage?.url
-                  ? [
-                      {
-                        uid: "-2",
-                        name: "current_id_card.jpg",
-                        status: "done",
-                        url: user.idCardImage.url.startsWith("http")
-                          ? user.idCardImage.url
-                          : `${baseUrl}${user.idCardImage.url}`,
-                      },
-                    ]
-                  : []
-              }
-              onRemove={handleIdCardRemove}
-            >
-              <Button className="w-full" icon={<FaPlus />}>
-                Upload ID Card
-              </Button>
-            </Upload>
           </Form.Item>
 
           {/* Save Changes Button */}
