@@ -8,9 +8,9 @@ import {
   FaLinkedinIn,
   FaMapMarkerAlt,
   FaPhoneAlt,
-  FaTwitter,
 } from "react-icons/fa";
 import main_logo_img from "../../assets/main_logo2.png";
+import { FaX } from "react-icons/fa6";
 
 const Footer = () => (
   <footer className="hidden md:block bg-hash text-white py-8 w-full">
@@ -54,7 +54,7 @@ const Footer = () => (
                 href="https://twitter.com"
                 className="hover:text-primary"
               >
-                <FaTwitter size={32} />
+                <FaX size={32} />
               </Link>
               <Link
                 target="_blank"

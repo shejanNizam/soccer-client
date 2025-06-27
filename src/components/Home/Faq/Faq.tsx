@@ -19,18 +19,18 @@ const faqData: FAQItem[] = [
     _id: 1,
     question: "1. How long are the games?",
     answer:
-      "Your playing time is a total of 1 hour. Each game is 4 minutes or first to 2 goals (whichever comes first)",
+      "Your playing time is a total of 1 hour. Each game is 4 minutes or first to 3 goals (whichever comes first)",
   },
   {
     _id: 2,
     question: "2. Am I on a team?",
-    answer: "5-a-side teams with 5 waiting on the bench.",
+    answer: "Teams are chosen before start. 4 vs 4 with 4 players waiting on the bench.",
   },
   {
     _id: 3,
     question: "3. What teams win?",
     answer:
-      "King of the court concept. Each game is 4 minutes or first to 2 goals (whichever comes first). If one team wins 4 games in a row, we pick new teams to even out the competition.",
+      "King of the court concept. Each game is 4 minutes or first to 3 goals (whichever comes first). If one team wins 4 games in a row, we pick new teams to even out the competition.",
   },
   {
     _id: 4,

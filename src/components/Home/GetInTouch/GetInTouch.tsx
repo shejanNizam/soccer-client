@@ -45,9 +45,7 @@ export default function GetInTouch() {
     <div className="pt-8 pb-20">
       <CustomHeading>GET IN TOUCH</CustomHeading>
       <p className="mb-6 text-center w-[90%] md:w-[40%] mx-auto text-white">
-        {`Have questions or need support? Contact us via email, live chat, or
-        social media. We're here to assist with match updates, tickets,
-        streaming, and more!`}
+        {`Have questions or need support? `}
       </p>
       <div className="flex flex-col md:flex-row justify-center items-center gap-4 border border-primary rounded-lg max-w-4xl mx-auto p-4">
         <Form
