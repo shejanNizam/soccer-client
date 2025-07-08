@@ -29,11 +29,11 @@ const Footer = () => (
               />
             </Link>
 
-            <p className="text-sm text-center md:text-left">
+            {/* <p className="text-sm text-center md:text-left">
               A soccer website providing news, live scores, analysis, training
               tips, gear, and a passionate community for fans worldwide. Stay
               connected!
-            </p>
+            </p> */}
 
             <div className="flex gap-4">
               <Link
