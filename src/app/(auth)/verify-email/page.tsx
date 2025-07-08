@@ -215,9 +215,9 @@ const VerifyEmail = () => {
             </Button>
           </Form.Item>
         </Form>
-        <p className="text-center text-white mt-2 text-xs italic">
-          ‼️The OTP sent to your email might be in the spam folder. Please check
-          there.
+        <p className="text-center  text-red-500 mt-2 text-md italic">
+          ⚠️ The OTP sent to your email might be in the spam folder. Please
+          check there.
         </p>
       </div>
     </div>
